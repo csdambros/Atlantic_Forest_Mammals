@@ -5,3 +5,6 @@
 *.html
 .Rproj.user
 */
+*.csv
+*.md
+*.txt

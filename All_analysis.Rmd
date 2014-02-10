@@ -409,25 +409,26 @@ Neutral model 2
 
 
 
-```{r neutral_theory_real_simulation, cache=TRUE}
+```{r neutral_theory_real_simulation}
+
+N<-matrix(N,nrow(M))
+
+if(file.exists("resu.simu10k.txt")){
+
+  resu.simu<- read.table("resu.simu10k.txt",header=TRUE)
+  
+  }else{
 
 #m=0.01790858  #migration rate
 #v=0.0017789240  #speciation rate
 #N=100 #Number of individuals in each node
 
-N<-matrix(N,nrow(M))
 reps2<-10000
-
 initbuffer<-10000
 
-similarity.simu<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),reps2))
-similarity.simu.jac<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),reps2))
-hill.simu<-matrix(NA,nrow(environment.AF.2d),reps2)
-rich.simu<-matrix(NA,nrow(environment.AF.2d),reps2)
+sp.abund2<-simunetwork(N,M,v,nruns=initbuffer,simplify=FALSE)
 
 resu.simu<-matrix(NA,sum(N),reps2)
-
-sp.abund2<-simunetwork(N,M,v,nruns=initbuffer,simplify=FALSE)
 
 for(rep in 1:reps2){
 
@@ -440,10 +441,16 @@ resu.simu[,rep]<-sp.abund2
 
 #tapply(rep(1,sum(N)),list(rep(1:length(N),N),resu.simu[,1]),sum)
 
+}
 ```
 
 
 ```{r }
+
+similarity.simu<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),ncol(resu.simu)))
+similarity.simu.jac<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),ncol(resu.simu)))
+hill.simu<-matrix(NA,nrow(environment.AF.2d),ncol(resu.simu))
+rich.simu<-matrix(NA,nrow(environment.AF.2d),ncol(resu.simu))
 
 for(i in 1:ncol(resu.simu)){
 
@@ -470,10 +477,10 @@ environment.AF.2d[,paste("pcoa.mor.sim.",1:3,sep="")]<-environment.AF.2d[,paste(
 environment.AF.2d[,paste("pcoa.jac.sim.",1:3,sep="")]<-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]*NA
 
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.sim.",1:3,sep="")]<-#PCA.AF[,1:3]
-prcomp(apply(similarity.simu[,,round(.6*reps2):reps2],2,function(x)rowMeans(x)))$x[,1:3]
+prcomp(apply(similarity.simu[,,round(.6*ncol(resu.simu)):ncol(resu.simu)],2,function(x)rowMeans(x)))$x[,1:3]
 
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.jac.sim.",1:3,sep="")]<-#PCA.AF[,1:3]
-prcomp(apply(similarity.simu.jac[,,round(.6*reps2):reps2],2,function(x)rowMeans(x)))$x[,1:3]
+prcomp(apply(similarity.simu.jac[,,round(.6*ncol(resu.simu)):ncol(resu.simu)],2,function(x)rowMeans(x)))$x[,1:3]
 
 
 plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22)
@@ -715,6 +722,13 @@ plot(rich~rich.simu.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"
 ```{r,}
 
 detach(mammal.data)
+
+```
+
+```{r extracting_R_chunks}
+
+
+purl("All_analysis.Rmd")
 
 ```
 

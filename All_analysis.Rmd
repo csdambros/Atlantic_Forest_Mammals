@@ -439,6 +439,8 @@ resu.simu[,rep]<-sp.abund2
 #print(rep)
 }
 
+write.table(resu.simu,file="resu.simu10k.txt")
+
 #tapply(rep(1,sum(N)),list(rep(1:length(N),N),resu.simu[,1]),sum)
 
 }

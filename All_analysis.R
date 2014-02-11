@@ -1,17 +1,5 @@
-Comparing dispersal, environmental and mid-domain effects on species distribution
-============================
 
-`r rm(list=ls())`
-
-## By CSDambros
-
-
->html updated in `r as.character(Sys.time())`
-
-### Load required packages, import auxiliary functions and set default graphical parameters
-
-
-```{r Loading packages, results='hide',message=FALSE}
+## @knitr Loading packages, results='hide',message=FALSE
 
 require(raster)
 require(rgdal)
@@ -26,43 +14,33 @@ Custom.Palette<- colorRampPalette(colors=c('lightblue','yellow','red'),bias=1,sp
 color.select<-function(x){Custom.Palette(101)[1+round(((x-min(x))/diff(range(x)))*100)]}
 
 op<-par(no.readonly=TRUE)
-```
 
-### Importing the main data file
 
-```{r Importing data}
+## @knitr Importing data
 
 mammal.data=read.csv('NC5.csv')# Data from each locality
 
 
-```
 
 
-### Importing maps from shapefiles
->The maps must be in a folder called "Shapefiles/" before running the code
-
-```{r Importing maps, results="hide"}
+## @knitr Importing maps, results="hide"
 
 folder<-"Shapefiles/"
 
 brazil<-readShapeSpatial(paste(folder,"BR_Contorno.shp",sep=""))
 biomes<-readShapeSpatial(paste(folder,"bioma.shp",sep=""))
 
-```
 
-### Importing data from the WorldClim (automatically download data if necessary)
 
-```{r Importing environmental layers from worldclim, results="hide"}
+## @knitr Importing environmental layers from worldclim, results="hide"
 
 wclim <- getData("worldclim", var="bio", res=2.5, path="")
 wclim.clipped<-crop(wclim,extent(-70,-30,-35,5))
 #rm(wclim)
 
-```
 
-### Transform data and extract variables from data sets
 
-```{r Transforming data, results="hide"}
+## @knitr Transforming data, results="hide"
 
 ### Calculate the distance from the coast
 
@@ -105,11 +83,9 @@ mammal.short.PA[is.na(mammal.short.PA)]<-0
 
 #head(mammal.data)
 
-```
 
-### Create a data with the points grouped in 2x2 quadrants
 
-```{r Creating_2x2_degrees_for_the_whole_AF}
+## @knitr Creating_2x2_degrees_for_the_whole_AF
 
 AF.Long<-unlist(lapply((biomes[6,]@polygons)[[1]]@Polygons,function(x)x@coords[,1]))
 AF.Lat<-unlist(lapply((biomes[6,]@polygons)[[1]]@Polygons,function(x)x@coords[,2]))
@@ -120,11 +96,9 @@ AF.Long2<-ceiling(c(AF.Long,Long)/2)*2-1
 #Create a dataframe with the unique locations representing the AF (the point 53 is an isolated island))
 environment.AF.2d<-unique(data.frame(AF.Long2=AF.Long2,AF.Lat2=AF.Lat2))
 
-```
 
-### Summarizing environmental data and groupping species in each quadrant
 
-```{r Summarizing environmental data for each quadrant}
+## @knitr Summarizing environmental data for each quadrant
 
 species.2d<-tapply(rep(1,length(Lat2)),list(paste(Long2,Lat2),ESPECIE),sum)
 species.2d[is.na(species.2d)]<-0
@@ -157,11 +131,9 @@ environment.2d[,paste("pcoa.jac.",1:3,sep="")]<-cmdscale(vegdist(species.2d,"jac
 
 #plot(pcoa.jac.1~Lat2,data=environment.2d)
 
-```
 
-### Plot a map of the original data and data grouped in quadrants
 
-```{r plotting maps, fig.width=10,fig.height=10,echo=FALSE}
+## @knitr plotting maps, fig.width=10,fig.height=10,echo=FALSE
 
 
 par(xpd=NA)
@@ -200,24 +172,9 @@ text(-28,-4,"Area (ha)",cex=2)
 
 #text(environment.2d$Long2,environment.2d$Lat2,rowSums(species.2d))
 
-```
-
-Mid-Domain model
-===============
-
-Simulate the range of distribution for each species
------------------------------
-
->The model pick one species at a time. Then measures how in how many quadrants the species was present
->Select one quadrant at random and spread the species from there until the number of occupied quadrants equals the original number
->Repeat for all species several times.
 
 
-* Creating a network (matrix) describing the connectivity between quadrants
-
->In this model, migration can just occur between quadrants in contact to each other
-
-```{r Connectivity}
+## @knitr Connectivity
 
 #Create a matrix of euclidean distances between all pairs of quadrants
 dist.AF.2d<-as.matrix(dist(environment.AF.2d[,1:2]))
@@ -230,9 +187,9 @@ connect.2d<-connect.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF
 #rownames(connect.2d)<-1:26
 
 
-```
 
-```{r plotconnectivity, echo=FALSE, fig.width=16,fig.height=8}
+
+## @knitr plotconnectivity, echo=FALSE, fig.width=16,fig.height=8
 
 par(mfrow=c(1,2))
 
@@ -250,9 +207,9 @@ segments(matrix(environment.2d$Long2,nnodes.2d,nnodes.2d),
 
 
 par(op)
-```
 
-```{r Mid-Domain, cache=FALSE}
+
+## @knitr Mid-Domain, cache=FALSE
 
 reps=999
 
@@ -279,10 +236,9 @@ environment.2d[,paste("pcoa.MidD.jac.",1:3,sep="")]<-(
 
 plot(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.2d)
 
-```
 
 
-```{r ,fig.width=18,fig.height=9,echo=FALSE}
+## @knitr ,fig.width=18,fig.height=9,echo=FALSE
 
 par(mfrow=c(1,2))
 
@@ -295,15 +251,9 @@ rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environ
      col=adjustcolor(color.select(environment.2d$pcoa.MidD.jac.1),alpha=.8))
 
 par(op)
-```
 
 
-Neutral model
-===============
->based in Economo and Keitt (2008)
-
-
-```{r plot.connectivity, echo=FALSE, fig.width=16,fig.height=8}
+## @knitr plot.connectivity, echo=FALSE, fig.width=16,fig.height=8
 
 par(mfrow=c(1,2),xpd=NA)
 
@@ -320,10 +270,9 @@ segments(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d),
          t(matrix(environment.AF.2d$AF.Lat2,nnodes.AF.2d,nnodes.AF.2d)),col=connect.AF.2d*2)
 
 
-```
 
 
-```{r Optimization, cache=TRUE, results='hide',fig.show='hide'}
+## @knitr Optimization, cache=TRUE, results='hide',fig.show='hide'
 
 #Set initial parameters
 
@@ -367,10 +316,9 @@ optimized<-optim(c(m,v),lower=0.001,upper=0.999,method="L-BFGS-B",function(x){
 
 
 
-```
 
 
-```{r}
+## @knitr 
 m<-optimized$par[1]
 v<-optimized$par[2]
 
@@ -401,16 +349,9 @@ plot(decostand(prcomp(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d
      decostand(environment.2d$pcoa.jac.1,'range'))
 
 
-```
 
 
-Neutral model 2
-===============
->based simulation of individuals (takes more than 3 hours to run in a regular computer)
-
-
-
-```{r neutral_theory_real_simulation}
+## @knitr neutral_theory_real_simulation
 
 N<-matrix(N,nrow(M))
 
@@ -445,10 +386,9 @@ if(file.exists("resu.simu10k.txt")){
     #tapply(rep(1,sum(N)),list(rep(1:length(N),N),resu.simu[,1]),sum)
     
     }
-```
 
 
-```{r Calculating_statistics_from_neutral_real_simu}
+## @knitr Calculating_statistics_from_neutral_real_simu
 
 similarity.simu<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),ncol(resu.simu)))
 similarity.simu.jac<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),ncol(resu.simu)))
@@ -498,10 +438,9 @@ plot(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.sim.1,bg=1,pch=3,ce
 cor(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.sim.1,use="c")
 
 
-```
 
 
-```{r using_sdm-logistic_regression_of_each_species, warning=FALSE}
+## @knitr using_sdm-logistic_regression_of_each_species, warning=FALSE
 
 #Calculates the glm coefficients (slope and intercept) for each species
 #glm.results gives the glm results (with p values) for all species
@@ -543,9 +482,9 @@ environment.AF.2d[,as.character(colnames(rich.logis))]<-NA
 environment.AF.2d[environment.2d$matchin.AF.2d,colnames(Hill.logis)]<-Hill.logis
 environment.AF.2d[environment.2d$matchin.AF.2d,colnames(rich.logis)]<-rich.logis
 
-```
 
-```{r species_similarity_in_sdms}
+
+## @knitr species_similarity_in_sdms
 
 
 species.2d.logis<-species.2d*0
@@ -575,11 +514,9 @@ for(j in glm.variables.2d){
   }
 
 
-```
 
 
-
-```{r plot_sdms,fig.show='asis'}
+## @knitr plot_sdms,fig.show='asis'
 
 par(op)
 
@@ -619,15 +556,15 @@ for (i in glm.variables.2d){
 
 detach(environment.2d)
 
-```
 
-```{r binding_all_data_frames}
+
+## @knitr binding_all_data_frames
 
 environment.AF.2d[,colnames(environment.2d)]<-NA
 environment.AF.2d[environment.2d$match,colnames(environment.2d)]<-environment.2d
-```
 
-```{r comparisons of the models}
+
+## @knitr comparisons of the models
 
 # Species richness
 
@@ -722,27 +659,26 @@ plot(rich~rich.simu.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"
 
 
 
-```
 
 
-```{r detach_data}
+## @knitr detach_data
 
 detach(mammal.data)
 
-```
 
-```{r extracting_R_chunks}
+
+## @knitr extracting_R_chunks
 
 
 purl("All_analysis.Rmd")
 
-```
 
 
-```{r knit2html, echo=FALSE, eval=FALSE}
+## @knitr knit2html, echo=FALSE, eval=FALSE
+## 
+## library(knitr)
+## 
+## knit2html("All_analysis.Rmd")
+## 
 
-library(knitr)
 
-knit2html("All_analysis.Rmd")
-
-```

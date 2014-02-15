@@ -174,7 +174,7 @@ text(-28,-4,"Area (ha)",cex=2)
 
 
 
-## @knitr Connectivity
+## @knitr Connectivity, echo=FALSE
 
 #Create a matrix of euclidean distances between all pairs of quadrants
 dist.AF.2d<-as.matrix(dist(environment.AF.2d[,1:2]))
@@ -234,7 +234,7 @@ similarity.MidD.sd<-apply(similarity.MidD,2,function(x)apply(x,1,sd,na.rm=TRUE))
 environment.2d[,paste("pcoa.MidD.jac.",1:3,sep="")]<-(
   prcomp(similarity.MidD.mean)$x)[,1:3]
 
-plot(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.2d)
+#plot(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.2d)
 
 
 
@@ -245,17 +245,20 @@ par(mfrow=c(1,2))
 plot(brazil)
 rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
      col=adjustcolor(color.select(environment.2d$rich.MidD.mean),alpha=.8))
+title("A)",cex=3,adj=0)
+
 
 plot(brazil)
 rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
      col=adjustcolor(color.select(environment.2d$pcoa.MidD.jac.1),alpha=.8))
+title("B)",cex=3,adj=0)
 
 par(op)
 
 
 ## @knitr plot.connectivity, echo=FALSE, fig.width=16,fig.height=8
 
-par(mfrow=c(1,2),xpd=NA)
+par(mfrow=c(1,2))
 
 plot(brazil,border="darkgrey")
 rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,border=adjustcolor("darkgrey",alpha=1))
@@ -269,7 +272,7 @@ segments(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d),
          t(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d)),
          t(matrix(environment.AF.2d$AF.Lat2,nnodes.AF.2d,nnodes.AF.2d)),col=connect.AF.2d*2)
 
-
+par(op)
 
 
 ## @knitr Optimization, cache=TRUE, results='hide',fig.show='hide'
@@ -317,7 +320,6 @@ optimized<-optim(c(m,v),lower=0.001,upper=0.999,method="L-BFGS-B",function(x){
 
 
 
-
 ## @knitr 
 m<-optimized$par[1]
 v<-optimized$par[2]
@@ -341,13 +343,11 @@ environment.AF.2d[,paste("pcoa.mor.",1:3,sep="")]<-environment.AF.2d[,paste("pco
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.",1:3,sep="")]<-#PCA.AF[,1:3]
   prcomp(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])$x[,1:3]
 
-plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22)
-points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),bg=1,pch=21)
-points(environment.2d$Lat2,decostand(environment.2d$pcoa.MidD.jac.1,'range'),bg=2,pch=23)
+#plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22)
+#points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),bg=1,pch=21)
+#points(environment.2d$Lat2,decostand(environment.2d$pcoa.MidD.jac.1,'range'),bg=2,pch=23)
 
-plot(decostand(prcomp(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])$x[,1],'range'),
-     decostand(environment.2d$pcoa.jac.1,'range'))
-
+#plot(decostand(prcomp(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])$x[,1],'range'),decostand(environment.2d$pcoa.jac.1,'range'))
 
 
 
@@ -390,6 +390,8 @@ if(file.exists("resu.simu10k.txt")){
 
 ## @knitr Calculating_statistics_from_neutral_real_simu
 
+similarity.simu.total<-array(NA,dim=c(nrow(environment.AF.2d),nrow(environment.AF.2d),ncol(resu.simu)))
+similarity.simu.jac.total<-array(NA,dim=c(nrow(environment.AF.2d),nrow(environment.AF.2d),ncol(resu.simu)))
 similarity.simu<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),ncol(resu.simu)))
 similarity.simu.jac<-array(NA,dim=c(nrow(environment.2d),nrow(environment.2d),ncol(resu.simu)))
 hill.simu<-matrix(NA,nrow(environment.AF.2d),ncol(resu.simu))
@@ -399,6 +401,9 @@ for(i in 1:ncol(resu.simu)){
   
   ver<-tapply(rep(1,sum(N)),list(rep(1:length(N),N),resu.simu[,i]),sum)
   ver[is.na(ver)]<-0
+  
+  similarity.simu.total[,,i]<-as.matrix(vegdist(ver,"morisita"))
+  similarity.simu.jac.total[,,i]<-as.matrix(vegdist(ver,"jaccard"))
   
   similarity.simu[,,i]<-as.matrix(vegdist(ver,"morisita"))[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]
   similarity.simu.jac[,,i]<-as.matrix(vegdist(ver,"jaccard"))[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]
@@ -414,10 +419,21 @@ environment.AF.2d$rich.simu.sd<-apply(rich.simu,1,sd)
 environment.AF.2d$hill.simu.mean<-rowMeans(hill.simu)
 environment.AF.2d$hill.simu.sd<-apply(hill.simu,1,sd)
 
+environment.AF.2d[,paste("pcoa.mor.sim.total.",1:3,sep="")]<-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]*NA
+
+environment.AF.2d[,paste("pcoa.jac.sim.total.",1:3,sep="")]<-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]*NA
 
 environment.AF.2d[,paste("pcoa.mor.sim.",1:3,sep="")]<-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]*NA
 
 environment.AF.2d[,paste("pcoa.jac.sim.",1:3,sep="")]<-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]*NA
+
+
+environment.AF.2d[,paste("pcoa.mor.sim.total.",1:3,sep="")]<-#PCA.AF[,1:3]
+  prcomp(apply(similarity.simu.total[,,round(.6*ncol(resu.simu)):ncol(resu.simu)],2,function(x)rowMeans(x)))$x[,1:3]
+
+environment.AF.2d[,paste("pcoa.jac.sim.total.",1:3,sep="")]<-#PCA.AF[,1:3]
+  prcomp(apply(similarity.simu.jac.total[,,round(.6*ncol(resu.simu)):ncol(resu.simu)],2,function(x)rowMeans(x)))$x[,1:3]
+
 
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.sim.",1:3,sep="")]<-#PCA.AF[,1:3]
   prcomp(apply(similarity.simu[,,round(.6*ncol(resu.simu)):ncol(resu.simu)],2,function(x)rowMeans(x)))$x[,1:3]
@@ -425,18 +441,47 @@ environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.sim.",1:3,sep="")
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.jac.sim.",1:3,sep="")]<-#PCA.AF[,1:3]
   prcomp(apply(similarity.simu.jac[,,round(.6*ncol(resu.simu)):ncol(resu.simu)],2,function(x)rowMeans(x)))$x[,1:3]
 
+#cor(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.sim.1,use="c")
+
+
+
+
+## @knitr ,fig.width=18,fig.height=9,echo=FALSE
+
+par(mfrow=c(1,2))
+
+plot(brazil)
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,
+     col=adjustcolor(color.select(environment.AF.2d$rich.simu.mean),alpha=.8))
+title("A)",cex=3,adj=0)
+
+
+plot(brazil)
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,
+     col=adjustcolor(color.select(environment.AF.2d$pcoa.jac.sim.total.1),alpha=.8))
+title("B)",cex=3,adj=0)
+
+par(op)
+
+
+## @knitr , fig.width=16,fig.height=8
+
+par(mfrow=c(1,2))
 
 plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22)
-points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.sim.1,'range',na.rm=T),bg=1,pch=3,cex=2)
 
-points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),bg=4,pch=24)
 points(environment.2d$Lat2,decostand(environment.2d$pcoa.MidD.jac.1,'range'),bg=2,pch=23)
 
-plot(decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),decostand(environment.AF.2d$pcoa.mor.sim.1,'range',na.rm=T),bg=1,pch=3,cex=2)
-plot(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.sim.1,bg=1,pch=3,cex=2)
+points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),bg=4,pch=24)
 
-cor(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.sim.1,use="c")
+points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.sim.1,'range',na.rm=T),bg=1,pch=3,cex=2)
 
+plot.new()
+
+legend("topleft",c("Observed","MidD","Neutral-ana","Neutral-simu"),pch=c(22,23,24,3),pt.bg=c("gold",2,4,3),bty="n",y.intersp=1.2,cex=2)
+
+#plot(decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),decostand(environment.AF.2d$pcoa.mor.sim.1,'range',na.rm=T),bg=1,pch=3,cex=2)
+#plot(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.sim.1,bg=1,pch=3,cex=2)
 
 
 
@@ -486,7 +531,6 @@ environment.AF.2d[environment.2d$matchin.AF.2d,colnames(rich.logis)]<-rich.logis
 
 ## @knitr species_similarity_in_sdms
 
-
 species.2d.logis<-species.2d*0
 
 reps=100
@@ -516,7 +560,7 @@ for(j in glm.variables.2d){
 
 
 
-## @knitr plot_sdms,fig.show='asis'
+## @knitr plot_sdms,fig.align='center',fig.width=16,fig.height=16
 
 par(op)
 
@@ -529,11 +573,14 @@ for (i in glm.variables.2d){plot(Hill.logis[[paste("Hill.logis.",i,sep="")]]~env
 par(mfrow=c(ceiling(length(rich.logis)/ceiling(sqrt(length(rich.logis)))),ceiling(sqrt(length(rich.logis)))))
 for (i in glm.variables.2d){plot(rich.logis[[paste("rich.logis.",i,sep="")]]~environment.2d[[i]],pch=21,bg=color.select(rich.logis[[paste("rich.logis.",i,sep="")]]),xlab=i,ylab="Diversity",axes=FALSE);box()}
 
+
+
+
+## @knitr 
 ################################
 # Plotting the diversity predictions on the map
 
 attach(environment.2d)
-
 
 par(mfrow=c(ceiling(length(Hill.logis)/ceiling(sqrt(length(Hill.logis)))),ceiling(sqrt(length(Hill.logis)))),mar=c(0,0,0,0))
 for (i in glm.variables.2d){

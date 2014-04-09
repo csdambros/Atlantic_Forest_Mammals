@@ -17,6 +17,7 @@ require(raster)
 require(rgdal)
 require(maptools)
 require(vegan)
+require(mgcv)
 
 source("anetwork.R")
 source("MidD.R")
@@ -54,9 +55,10 @@ biomes<-readShapeSpatial(paste(folder,"bioma.shp",sep=""))
 
 ```{r Importing environmental layers from worldclim, results="hide"}
 
-wclim <- getData("worldclim", var="bio", res=2.5, path="")
+wclim <- raster::getData("worldclim", var="bio", res=2.5, path="")
 wclim.clipped<-crop(wclim,extent(-70,-30,-35,5))
 #rm(wclim)
+
 
 ```
 
@@ -90,13 +92,25 @@ mammal.data$Distance.coast<-apply(Distance.coast.matrix,1,min)
 mammal.data$Long.closest<-apply(Distance.coast.matrix,1,function(x){LONG.coast.east[x==min(x)]})
 mammal.data$Lat.closest<-apply(Distance.coast.matrix,1,function(x){LAT.coast.east[x==min(x)]})
 
-rm(Distance.coast.matrix,LAT.diff,LONG.diff,Longitude.matrix,Latitude.matrix,
-   LONG.matrix.east,LAT.matrix.east,LONG.coast.east,LAT.coast.east,LAT.coast,LONG.coast,
-   long.chui,poly)
-
 #Grouping the latitude and longitude in 2x2 degrees (create new variables in the dataframe)
 mammal.data$Long2<-floor(mammal.data$Long/2)*2+1
 mammal.data$Lat2<-floor(mammal.data$Lat/2)*2+1
+
+Longitude.matrix2<-matrix(mammal.data$Long2,nrow=length(mammal.data$Lat2),ncol=length(LONG.coast.east))
+Latitude.matrix2<-matrix(mammal.data$Lat2,nrow=length(mammal.data$Lat2),ncol=length(LONG.coast.east))
+
+LONG.diff2<-LONG.matrix.east-Longitude.matrix2
+LAT.diff2<-LAT.matrix.east-Latitude.matrix2
+
+Distance.coast.matrix2<-sqrt(LONG.diff2^2+LAT.diff2^2)
+mammal.data$Distance.coast2<-apply(Distance.coast.matrix2,1,min)
+
+mammal.data$Long.closest2<-apply(Distance.coast.matrix2,1,function(x){LONG.coast.east[x==min(x)]})
+mammal.data$Lat.closest2<-apply(Distance.coast.matrix2,1,function(x){LAT.coast.east[x==min(x)]})
+
+rm(Distance.coast.matrix,LAT.diff,LONG.diff,Longitude.matrix,Latitude.matrix,
+   LONG.matrix.east,LAT.matrix.east,LONG.coast.east,LAT.coast.east,LAT.coast,LONG.coast,
+   long.chui,poly,Distance.coast.matrix2,LAT.diff2,LONG.diff2,Longitude.matrix2,Latitude.matrix2)
 
 attach(mammal.data)
 
@@ -123,25 +137,88 @@ environment.AF.2d<-unique(data.frame(AF.Long2=AF.Long2,AF.Lat2=AF.Lat2))
 ```
 
 ```{r}
-
-species.2d<-tapply(rep(1,length(Lat2)),list(paste(Long2,Lat2),ESPECIE),sum)
-
-
-species.ab<-tapply(ABUNDANCIA,list(LOCALIDADE,ESPECIE),sum)# CAUTION: SOME SPECIES WERE NOT DETECTED IN ANY STUDY RECORDING ABUNDANCE
-locality.species.AB[is.na(locality.species.AB)]<-0
-
+# 
+#species.2d<-tapply(rep(1,length(Lat2)),list(paste(Long2,Lat2),ESPECIE),sum)
+# 
+# 
+#species.ab<-tapply(ABUNDANCIA,list(LOCALIDADE,ESPECIE),sum)# CAUTION: SOME SPECIES WERE NOT DETECTED IN ANY STUDY RECORDING ABUNDANCE
+# locality.species.AB[is.na(locality.species.AB)]<-0
+# 
 species.ab.loc<-tapply(rep(1,length(Lat)),list(paste(Long,Lat),ESPECIE),sum)
+species.ab.loc[is.na(species.ab.loc)]<-0
+#dim(species.ab)
+#
+# 
 
-locality.species.PA<-ifelse(is.na(locality.species.PA),0,1)
+species.loc <- species.ab.loc
+species.loc[species.loc>0]<-1
 
-Long2
-
-AF.Lat
-
+# 
 
 ```
 
+### Summarizing environmental data
 
+``` {r}
+
+environment<-data.frame(unique(cbind(Long,Lat)))
+environment<-environment[order(factor(paste(environment[,1],environment[,2]))),]
+
+environment$dist.coast<-tapply(as.numeric(Distance.coast),paste(Long,Lat),mean)
+environment$conservation<-tapply(as.numeric(CONSERVACAO),paste(Long,Lat),mean)
+environment$vegetation<-tapply(as.numeric(FISIONOMIA),paste(Long,Lat),mean)
+
+###
+
+environment[paste("bio",1:19,sep="")]<-NA
+
+#Take the mean climatic values of four points around the observed area
+
+for(i in 1:nrow(environment)){
+  temp.clim<-extract(wclim.clipped,extent(environment[i,1]-.05,environment[i,1]+.05,environment[i,2]-.05,environment[i,2]+.05))
+  environment[i,paste("bio",1:19,sep="")]<-colMeans(temp.clim,na.rm=TRUE)}
+
+environment[,paste("PCA.wclim.",1:3,sep="")]<-prcomp(decostand(environment[,paste("bio",1:19,sep="")],"standardize"))$x[,1:3]
+
+# Creating observed statistics
+
+environment$rich<-rowSums(species.loc)
+similarity.jac.loc<-vegdist(species.loc,"jaccard")
+environment[,paste("pcoa.jac.",1:3,sep="")]<-cmdscale(similarity.jac.loc,k=3)
+
+environment<-data.frame(environment,std=decostand(environment,"standardize"))
+
+```
+
+Regressions of the richness and species composition against the climatic variables
+
+```{r}
+
+summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+
+summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+
+summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+
+```
+
+Mantel tests
+
+```{r}
+
+geodist.loc<-dist(environment[,c("Lat","Long")])
+envdist.loc<-dist(environment[grep("std",colnames(environment))][3:24])
+
+plot(1-similarity.jac.loc~geodist.loc,col=2)
+plot(1-similarity.jac.loc~envdist.loc,col=2)
+
+mantel(similarity.jac.loc,geodist.loc)
+mantel(similarity.jac.loc,envdist.loc)
+
+mantel.partial(similarity.jac.loc,geodist.loc,envdist.loc)
+mantel.partial(similarity.jac.loc,envdist.loc,geodist.loc)
+
+```
 
 
 ### Summarizing environmental data and groupping species in each quadrant
@@ -155,10 +232,9 @@ species.2d[species.2d>0]<-1
 environment.2d<-data.frame(unique(cbind(Long2,Lat2)))
 environment.2d<-environment.2d[order(factor(paste(environment.2d[,1],environment.2d[,2]))),]
 
+environment.2d$dist.coast<-tapply(as.numeric(Distance.coast2),paste(Long2,Lat2),mean)
 environment.2d$conservation<-tapply(as.numeric(CONSERVACAO),paste(Long2,Lat2),mean)
 environment.2d$vegetation<-tapply(as.numeric(FISIONOMIA),paste(Long2,Lat2),mean)
-
-environment.2d$matchin.AF.2d<-match(paste(environment.2d[,1],environment.2d[,2]),paste(environment.AF.2d[,1],environment.AF.2d[,2]))
 
 # r extracting environmental data from worldclim layers, results="hide"}
 
@@ -174,14 +250,45 @@ environment.2d[,paste("PCA.wclim.",1:3,sep="")]<-prcomp(decostand(environment.2d
 # Creating observed statistics
 
 environment.2d$rich<-rowSums(species.2d)
-
 similarity.jac<-vegdist(species.2d,"jaccard")
-
 environment.2d[,paste("pcoa.jac.",1:3,sep="")]<-cmdscale(similarity.jac,k=3)
 
 #plot(pcoa.jac.1~Lat2,data=environment.2d)
 
+environment.2d<-data.frame(environment.2d,std=decostand(environment.2d,"standardize"))
+
+environment.2d$matchin.AF.2d<-match(paste(environment.2d[,1],environment.2d[,2]),paste(environment.AF.2d[,1],environment.AF.2d[,2]))
+
 ```
+
+Regressions of the richness and species composition against the climatic variables (2d)
+
+```{r}
+
+summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+
+```
+
+Mantel tests
+
+```{r}
+
+geodist.2d<-dist(environment.2d[,c("Lat2","Long2")])
+envdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][3:24])
+
+plot(1-similarity.jac~geodist.2d,col=2)
+plot(1-similarity.jac~envdist.2d,col=2)
+
+mantel(similarity.jac,geodist.2d)
+mantel(similarity.jac,envdist.2d)
+
+mantel.partial(similarity.jac,geodist.2d,envdist.2d)
+mantel.partial(similarity.jac,envdist.2d,geodist.2d)
+
+```
+
 
 ### Plot a map of the original data and data grouped in quadrants
 
@@ -541,7 +648,7 @@ environment.AF.2d[,paste("pcoa.mor.neutral.total.",1:3,sep="")]<-#PCA.AF[,1:3]
   prcomp(apply(similarity.neutral.total[,,round(.6*ncol(neutral.sim.ind)):ncol(neutral.sim.ind)],2,function(x)rowMeans(x)))$x[,1:3]
 
 environment.AF.2d[,paste("pcoa.jac.neutral.total.",1:3,sep="")]<-#PCA.AF[,1:3]
-  prcomp(apply(similarity.neutral.jac.total[,,round(.6*ncol(neutral.sim.ind)):ncol(neutral.sim.ind)],2,function(x)rowMeans(x)))$x[,1:3]
+  -prcomp(apply(similarity.neutral.jac.total[,,round(.6*ncol(neutral.sim.ind)):ncol(neutral.sim.ind)],2,function(x)rowMeans(x)))$x[,1:3]
 
 similarity.neutral.mean<-apply(similarity.neutral[,,round(.6*ncol(neutral.sim.ind)):ncol(neutral.sim.ind)],2,function(x)rowMeans(x))
 
@@ -551,7 +658,7 @@ environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.neutral.",1:3,sep
 similarity.neutral.jac.mean<-apply(similarity.neutral.jac[,,round(.6*ncol(neutral.sim.ind)):ncol(neutral.sim.ind)],2,function(x)rowMeans(x))
 
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.jac.neutral.",1:3,sep="")]<-#PCA.AF[,1:3]
-  prcomp(similarity.neutral.jac.mean)$x[,1:3]
+  -prcomp(similarity.neutral.jac.mean)$x[,1:3]
 
 #cor(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.neutral.1,use="c")
 
@@ -803,6 +910,39 @@ environment.AF.2d[environment.2d$match,colnames(environment.2d)]<-environment.2d
 ```
 
 
+```{r}
+
+MR1.1<-step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.AF.2d))
+
+MR1.1<-(lm(rich~1,data=environment.AF.2d))
+
+summary(MR1.2<-update(MR1.1,~.+rich.neutral.mean))
+summary(MR1.3<-update(MR1.1,~.+rich.MidD.mean))
+
+AIC(MR1.1,MR1.2,MR1.3)
+
+summary(MC1.1<-step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.AF.2d)))
+
+summary(MC1.2<-update(MC1.1,~.+pcoa.jac.neutral.1))
+summary(MC1.3<-update(MC1.1,~.+pcoa.MidD.jac.1))
+
+summary(MC1.4<-update(MC1.1,~pcoa.jac.neutral.1))
+summary(MC1.5<-update(MC1.1,~pcoa.MidD.jac.1))
+
+AIC(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5)
+
+summary(MC2.1<-step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.AF.2d)))
+
+summary(MC2.2<-update(MC2.1,~.+pcoa.jac.neutral.2))
+summary(MC2.3<-update(MC2.1,~.+pcoa.MidD.jac.2))
+
+AIC(MC2.1,MC2.2,MC2.3)
+
+
+```
+
+
+
 Comparing the models fit
 ========================
 
@@ -883,14 +1023,14 @@ for (i in vars){
 # Neutral
 
 par(op)
-plot(rich~rich.neutral.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),])
-lines(smooth.spline(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"rich.neutral.mean"],environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"rich"],nknots=5),lwd=2,col=2)
+plot(rich~rich.neutral.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],pch=21,col=NULL,bg=4)
+abline(lm(rich~rich.neutral.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]))
 
 # Mid Domain
 
 par(op)
-plot(rich~rich.MidD.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),])
-lines(smooth.spline(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"rich.MidD.mean"],environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"rich"],nknots=5),lwd=2,col=2)
+plot(rich~rich.MidD.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],col=NULL,bg=2,pch=21)
+abline(lm(rich~rich.MidD.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]))
 
 ```
 
@@ -932,7 +1072,7 @@ summary(lm(pcoa.jac.1~pcoa.jac.neutral.1,data=environment.AF.2d))
 par(op)
 plot(pcoa.jac.1~pcoa.jac.neutral.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),])
 
-abline(lm(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"pcoa.jac.1"]~environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"pcoa.jac.neutral.1"]),lwd=2,col=2)
+abline(lm(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"pcoa.jac.1"]~environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"pcoa.jac.neutral.1"]),lwd=2,col=4)
 
 #colnames(environment.AF.2d)
 
@@ -940,6 +1080,15 @@ par(op)
 
 #################
 # Mid-Domain
+
+par(op)
+
+summary(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]))
+
+plot(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),])
+
+abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]),lwd=2,col=2)
+
 
 ```
 
@@ -957,27 +1106,26 @@ abline(0,1,lwd=2,lty=2)
 
 title("Richness")
 
-abline(lm(rich~rich.neutral.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),col=4)
-abline(lm(rich~rich.MidD.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),col=2)
+abline(lm(rich~rich.neutral.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),lwd=2,col=4)
+
+abline(lm(rich~rich.MidD.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),lwd=2,col=2)
 
 vars<-c("conservation","PCA.wclim.1","PCA.wclim.2")
 
-for (i in vars){
+#for (i in vars){
   
-var.model<-lm(as.formula(paste("rich~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range"))
+#var.model<-lm(as.formula(paste("rich~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range"))
 
+#abline(lm(rich~predict(var.model),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")))
 
-abline(lm(as.formula(paste("rich~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=3)
-
-  abline(lm(as.formula(paste("rich~",paste("rich.logis.",i,sep=""))),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=6)
-}
+#abline(lm(as.formula(paste("rich~",paste("rich.logis.",i,sep=""))),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=6)
+#}
 
 
 # Species composition (PCA)
 
 plot(0:1,0:1,type="n",xlab="Predicted",ylab="Observed")
 abline(0,1,lwd=2,lty=2)
-
 
 title("Species composition (PCA)")
 
@@ -988,12 +1136,12 @@ abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=decostand(environment.AF.2d[!is.na(env
 
 #vars<-c("Lat2","Long2","conservation","vegetation",paste("bio",1:19,sep=""),"PCA.wclim.1","PCA.wclim.2")
 
-vars<-c("vegetation","PCA.wclim.1","PCA.wclim.2")
+#vars<-c("vegetation","PCA.wclim.1","PCA.wclim.2")
 
-for (i in vars){
-abline(lm(as.formula(paste("pcoa.jac.1~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=3)
-abline(lm(as.formula(paste("pcoa.jac.1~",paste("pcoa.logis.jac.",i,".1",sep=""))),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=6)
-}
+#for (i in vars){
+#abline(lm(as.formula(paste("pcoa.jac.1~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=3)
+#abline(lm(as.formula(paste("pcoa.jac.1~",paste("pcoa.logis.jac.",i,".1",sep=""))),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=6)
+#}
 
 
 #Species composition (Jaccard index )
@@ -1024,7 +1172,11 @@ points(decostand(as.vector(as.dist(similarity.MidD.mean)),"range")
 
 #points(as.dist(similarity.MidD.mean),similarity.jac,col=2)
 
-abline(lm(similarity.jac~as.dist(similarity.neutral.jac.mean)),col=4)
+#abline(lm(similarity.jac~as.dist(1-similarity.neutral.jac.mean)),col=4)
+
+abline(lm(decostand(as.vector(similarity.jac),"range")~decostand(-as.vector(as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])),"range"))
+,col=4)
+
 
 #points(rich~rich.MidD.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range"),pch=21,bg=2)
 abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),col=2)
@@ -1036,12 +1188,12 @@ abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=decostand(environment.AF.2d[!is.na(env
 
 #vars<-c("Lat2","Long2","conservation","vegetation",paste("bio",1:19,sep=""),"PCA.wclim.1","PCA.wclim.2")
 
-vars<-c("vegetation","PCA.wclim.1","PCA.wclim.2")
+#vars<-c("vegetation","PCA.wclim.1","PCA.wclim.2")
 
-for (i in vars){
-abline(lm(as.formula(paste("pcoa.jac.1~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=3)
-abline(lm(as.formula(paste("pcoa.jac.1~",paste("pcoa.logis.jac.",i,".1",sep=""))),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=6)
-}
+#for (i in vars){
+#abline(lm(as.formula(paste("pcoa.jac.1~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=3)
+#abline(lm(as.formula(paste("pcoa.jac.1~",paste("pcoa.logis.jac.",i,".1",sep=""))),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=6)
+#}
 
 ```
 
@@ -1107,6 +1259,7 @@ s.mse.MidD.jac = s.bias.sq.MidD.jac + s.var.MidD.jac
 
 S<-decostand(apply(similarity.neutral.jac,3,as.vector),"standardize")
 E<-rowMeans(S)
+
 
 s.bias.sq.neu.jac<-sum((O-E)^2)
 s.var.neu.jac<-(sum(colSums((S-E)^2)))/(ncol(S)-1)

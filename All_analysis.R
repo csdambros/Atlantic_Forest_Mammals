@@ -166,11 +166,11 @@ environment<-data.frame(environment,std=decostand(environment,"standardize"))
 
 ## @knitr 
 
-summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+#summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
 
-summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+#summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
 
-summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+#summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
 
 
 
@@ -230,9 +230,9 @@ environment.2d$matchin.AF.2d<-match(paste(environment.2d[,1],environment.2d[,2])
 
 ## @knitr 
 
-summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
-summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
-summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+#summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+#summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+#summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
 
 
 

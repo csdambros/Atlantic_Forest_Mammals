@@ -194,11 +194,11 @@ Regressions of the richness and species composition against the climatic variabl
 
 ```{r}
 
-summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+#summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
 
-summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+#summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
 
-summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
+#summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment)))
 
 ```
 
@@ -265,9 +265,9 @@ Regressions of the richness and species composition against the climatic variabl
 
 ```{r}
 
-summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
-summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
-summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+#summary(step(lm(rich~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+#summary(step(lm(pcoa.jac.1~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
+#summary(step(lm(pcoa.jac.2~std.dist.coast+std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=environment.2d)))
 
 ```
 

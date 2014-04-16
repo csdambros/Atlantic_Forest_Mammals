@@ -5,7 +5,7 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 ##### By CSDambros
 
->html updated at 2014-04-16 09:44:11
+>html updated at 2014-04-16 10:38:38
 
 ### Methods
 
@@ -162,10 +162,10 @@ Additionally, we tested for the direct association of the response variables aga
 
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 09:53:42 2014 -->
+<!-- Wed Apr 16 10:48:11 2014 -->
 <TABLE border=0, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1285.10 </TD> <TD align="right"> 196.85 </TD> <TD align="right"> 1481.94 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1278.09 </TD> <TD align="right"> 196.17 </TD> <TD align="right"> 1474.26 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
   <TR> <TD align="right"> conservation </TD> <TD align="right"> 1038.67 </TD> <TD align="right"> 202.79 </TD> <TD align="right"> 1241.46 </TD> </TR>
   <TR> <TD align="right"> vegetation </TD> <TD align="right"> 1100.87 </TD> <TD align="right"> 199.00 </TD> <TD align="right"> 1299.87 </TD> </TR>
@@ -180,19 +180,19 @@ Additionally, we tested for the direct association of the response variables aga
 #### Table 2. AIC values comparing the 10 regression models tested. MR1.1: Environmental predictors; MR1.2: Environmental + Neutral predictions; MR1.3: ; MR1.4: ; MR1.5: ; MR1.6: ; MR1.7: ; MR1.8: ; MR1.9: ; MR1.10: .
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 09:53:42 2014 -->
+<!-- Wed Apr 16 10:48:11 2014 -->
 <TABLE border=0, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> df </TH> <TH> AIC </TH>  </TR>
   <TR> <TD align="right"> MR1.1 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 69.84 </TD> </TR>
   <TR> <TD align="right"> MR1.2 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 71.78 </TD> </TR>
-  <TR> <TD align="right"> MR1.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 70.83 </TD> </TR>
+  <TR> <TD align="right"> MR1.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 70.64 </TD> </TR>
   <TR> <TD align="right"> MR1.4 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.32 </TD> </TR>
-  <TR> <TD align="right"> MR1.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.79 </TD> </TR>
+  <TR> <TD align="right"> MR1.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.64 </TD> </TR>
   <TR> <TD align="right"> MR1.6 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.45 </TD> </TR>
-  <TR> <TD align="right"> MR1.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.05 </TD> </TR>
+  <TR> <TD align="right"> MR1.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.03 </TD> </TR>
   <TR> <TD align="right"> MR1.8 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.96 </TD> </TR>
   <TR> <TD align="right"> MR1.9 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.32 </TD> </TR>
-  <TR> <TD align="right"> MR1.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.79 </TD> </TR>
+  <TR> <TD align="right"> MR1.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.64 </TD> </TR>
    </TABLE>
 
 
@@ -202,10 +202,10 @@ Additionally, we tested for the direct association of the response variables aga
 #### Table 3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 09:53:42 2014 -->
+<!-- Wed Apr 16 10:48:11 2014 -->
 <TABLE border=0, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.84 </TD> <TD align="right"> 1.89 </TD> <TD align="right"> 10.73 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.80 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 10.68 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
   <TR> <TD align="right"> conservation </TD> <TD align="right"> 5.99 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.25 </TD> </TR>
   <TR> <TD align="right"> vegetation </TD> <TD align="right"> 5.52 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.77 </TD> </TR>
@@ -220,29 +220,29 @@ Additionally, we tested for the direct association of the response variables aga
 #### Table 4. AIC values comparing the 10 regression models tested. MR1.1: Environmental predictors; MR1.2: Environmental + Neutral predictions; MR1.3: ; MR1.4: ; MR1.5: ; MR1.6: ; MR1.7: ; MR1.8: ; MR1.9: ; MR1.10: .
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 09:53:42 2014 -->
+<!-- Wed Apr 16 10:48:11 2014 -->
 <TABLE border=0, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> df </TH> <TH> AIC </TH>  </TR>
   <TR> <TD align="right"> MC1.1 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 42.92 </TD> </TR>
   <TR> <TD align="right"> MC1.2 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 37.40 </TD> </TR>
-  <TR> <TD align="right"> MC1.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 40.26 </TD> </TR>
+  <TR> <TD align="right"> MC1.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 40.31 </TD> </TR>
   <TR> <TD align="right"> MC1.4 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 39.28 </TD> </TR>
-  <TR> <TD align="right"> MC1.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.38 </TD> </TR>
+  <TR> <TD align="right"> MC1.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.48 </TD> </TR>
   <TR> <TD align="right"> MC1.6 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 43.45 </TD> </TR>
-  <TR> <TD align="right"> MC1.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 45.28 </TD> </TR>
+  <TR> <TD align="right"> MC1.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 45.35 </TD> </TR>
   <TR> <TD align="right"> MC1.8 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 39.12 </TD> </TR>
   <TR> <TD align="right"> MC1.9 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 39.28 </TD> </TR>
-  <TR> <TD align="right"> MC1.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.38 </TD> </TR>
+  <TR> <TD align="right"> MC1.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.48 </TD> </TR>
   <TR> <TD align="right"> MC2.1 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 64.97 </TD> </TR>
   <TR> <TD align="right"> MC2.2 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 65.43 </TD> </TR>
-  <TR> <TD align="right"> MC2.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 66.42 </TD> </TR>
+  <TR> <TD align="right"> MC2.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 66.46 </TD> </TR>
   <TR> <TD align="right"> MC2.4 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 75.94 </TD> </TR>
-  <TR> <TD align="right"> MC2.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 75.07 </TD> </TR>
+  <TR> <TD align="right"> MC2.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 74.98 </TD> </TR>
   <TR> <TD align="right"> MC2.6 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 79.45 </TD> </TR>
-  <TR> <TD align="right"> MC2.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 78.48 </TD> </TR>
+  <TR> <TD align="right"> MC2.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 78.39 </TD> </TR>
   <TR> <TD align="right"> MC2.8 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 76.15 </TD> </TR>
   <TR> <TD align="right"> MC2.9 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 75.94 </TD> </TR>
-  <TR> <TD align="right"> MC2.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 75.07 </TD> </TR>
+  <TR> <TD align="right"> MC2.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 74.98 </TD> </TR>
    </TABLE>
 
 
@@ -251,7 +251,7 @@ The mantel test results show a stronger environmental effect when grouping the p
 #### Table 5. Mantel and partial Mantel test results comparing the correlation of species similarity against geographical distance and environmental dissimilarity. The minus sign indicate partial results (Geo - Env: Geographical distance without the effect of environmenal dissimilarity).
 
 <!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 09:53:42 2014 -->
+<!-- Wed Apr 16 10:48:11 2014 -->
 <TABLE border=0, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> statistic </TH> <TH> signif </TH>  </TR>
   <TR> <TD align="right"> Local Geo </TD> <TD align="right"> 0.48 </TD> <TD align="right"> 0.00 </TD> </TR>
@@ -271,6 +271,9 @@ Both neutal and Mid Domain models had very similar predictions for the distance-
 ![plot of chunk Fig 3. distance decay real.midDomain and neutral mor](figure/Fig 3. distance decay real.midDomain and neutral mor.png) 
 
 #### Fig. 3. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey).
+
+### Discussion
+
 
 
 ----------------------------
@@ -306,6 +309,83 @@ Both neutal and Mid Domain models had very similar predictions for the distance-
 #### Fig S5. Comparison of the change in species composition along the latitudinal gradient predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
 
 
+#### Table S1. List of the sites, authors, etc. used in this manuscript
+
+#### Table S2. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
+
+<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
+<!-- Wed Apr 16 10:48:16 2014 -->
+<TABLE border=0, bgcolor=#989898>
+<TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1278.09 </TD> <TD align="right"> 196.17 </TD> <TD align="right"> 1474.26 </TD> </TR>
+  <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
+  <TR> <TD align="right"> Long2 </TD> <TD align="right"> 1357.45 </TD> <TD align="right"> 179.67 </TD> <TD align="right"> 1537.12 </TD> </TR>
+  <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 1459.36 </TD> <TD align="right"> 188.67 </TD> <TD align="right"> 1648.03 </TD> </TR>
+  <TR> <TD align="right"> conservation </TD> <TD align="right"> 1038.67 </TD> <TD align="right"> 202.79 </TD> <TD align="right"> 1241.46 </TD> </TR>
+  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 1100.87 </TD> <TD align="right"> 199.00 </TD> <TD align="right"> 1299.87 </TD> </TR>
+  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 1366.41 </TD> <TD align="right"> 180.91 </TD> <TD align="right"> 1547.31 </TD> </TR>
+  <TR> <TD align="right"> bio2 </TD> <TD align="right"> 1362.95 </TD> <TD align="right"> 196.31 </TD> <TD align="right"> 1559.26 </TD> </TR>
+  <TR> <TD align="right"> bio3 </TD> <TD align="right"> 1441.70 </TD> <TD align="right"> 189.88 </TD> <TD align="right"> 1631.58 </TD> </TR>
+  <TR> <TD align="right"> bio4 </TD> <TD align="right"> 1377.84 </TD> <TD align="right"> 175.20 </TD> <TD align="right"> 1553.04 </TD> </TR>
+  <TR> <TD align="right"> bio5 </TD> <TD align="right"> 1261.78 </TD> <TD align="right"> 203.83 </TD> <TD align="right"> 1465.61 </TD> </TR>
+  <TR> <TD align="right"> bio6 </TD> <TD align="right"> 1454.76 </TD> <TD align="right"> 187.13 </TD> <TD align="right"> 1641.89 </TD> </TR>
+  <TR> <TD align="right"> bio7 </TD> <TD align="right"> 1355.76 </TD> <TD align="right"> 186.80 </TD> <TD align="right"> 1542.57 </TD> </TR>
+  <TR> <TD align="right"> bio8 </TD> <TD align="right"> 1301.47 </TD> <TD align="right"> 191.31 </TD> <TD align="right"> 1492.78 </TD> </TR>
+  <TR> <TD align="right"> bio9 </TD> <TD align="right"> 1177.35 </TD> <TD align="right"> 184.58 </TD> <TD align="right"> 1361.93 </TD> </TR>
+  <TR> <TD align="right"> bio10 </TD> <TD align="right"> 1270.14 </TD> <TD align="right"> 197.19 </TD> <TD align="right"> 1467.32 </TD> </TR>
+  <TR> <TD align="right"> bio11 </TD> <TD align="right"> 1431.17 </TD> <TD align="right"> 177.59 </TD> <TD align="right"> 1608.76 </TD> </TR>
+  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 1355.68 </TD> <TD align="right"> 193.86 </TD> <TD align="right"> 1549.54 </TD> </TR>
+  <TR> <TD align="right"> bio13 </TD> <TD align="right"> 1436.17 </TD> <TD align="right"> 198.81 </TD> <TD align="right"> 1634.98 </TD> </TR>
+  <TR> <TD align="right"> bio14 </TD> <TD align="right"> 1324.93 </TD> <TD align="right"> 189.42 </TD> <TD align="right"> 1514.34 </TD> </TR>
+  <TR> <TD align="right"> bio15 </TD> <TD align="right"> 1379.40 </TD> <TD align="right"> 187.84 </TD> <TD align="right"> 1567.25 </TD> </TR>
+  <TR> <TD align="right"> bio16 </TD> <TD align="right"> 1437.55 </TD> <TD align="right"> 198.11 </TD> <TD align="right"> 1635.66 </TD> </TR>
+  <TR> <TD align="right"> bio17 </TD> <TD align="right"> 1315.26 </TD> <TD align="right"> 189.81 </TD> <TD align="right"> 1505.06 </TD> </TR>
+  <TR> <TD align="right"> bio18 </TD> <TD align="right"> 1410.36 </TD> <TD align="right"> 202.59 </TD> <TD align="right"> 1612.95 </TD> </TR>
+  <TR> <TD align="right"> bio19 </TD> <TD align="right"> 1247.06 </TD> <TD align="right"> 196.66 </TD> <TD align="right"> 1443.72 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 1362.20 </TD> <TD align="right"> 181.26 </TD> <TD align="right"> 1543.46 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 1413.74 </TD> <TD align="right"> 199.67 </TD> <TD align="right"> 1613.41 </TD> </TR>
+   </TABLE>
+
+
+#### Table S3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
+
+<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
+<!-- Wed Apr 16 10:48:16 2014 -->
+<TABLE border=0, bgcolor=#989898>
+<TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.80 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 10.68 </TD> </TR>
+  <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
+  <TR> <TD align="right"> Long2 </TD> <TD align="right"> 4.38 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.53 </TD> </TR>
+  <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 4.22 </TD> <TD align="right"> 2.19 </TD> <TD align="right"> 6.41 </TD> </TR>
+  <TR> <TD align="right"> conservation </TD> <TD align="right"> 5.99 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.25 </TD> </TR>
+  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 5.52 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.77 </TD> </TR>
+  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 4.94 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.17 </TD> </TR>
+  <TR> <TD align="right"> bio2 </TD> <TD align="right"> 5.91 </TD> <TD align="right"> 2.22 </TD> <TD align="right"> 8.13 </TD> </TR>
+  <TR> <TD align="right"> bio3 </TD> <TD align="right"> 4.75 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 6.96 </TD> </TR>
+  <TR> <TD align="right"> bio4 </TD> <TD align="right"> 4.29 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.44 </TD> </TR>
+  <TR> <TD align="right"> bio5 </TD> <TD align="right"> 6.27 </TD> <TD align="right"> 2.27 </TD> <TD align="right"> 8.54 </TD> </TR>
+  <TR> <TD align="right"> bio6 </TD> <TD align="right"> 5.01 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 7.22 </TD> </TR>
+  <TR> <TD align="right"> bio7 </TD> <TD align="right"> 5.13 </TD> <TD align="right"> 2.19 </TD> <TD align="right"> 7.32 </TD> </TR>
+  <TR> <TD align="right"> bio8 </TD> <TD align="right"> 4.72 </TD> <TD align="right"> 2.16 </TD> <TD align="right"> 6.88 </TD> </TR>
+  <TR> <TD align="right"> bio9 </TD> <TD align="right"> 5.90 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 8.15 </TD> </TR>
+  <TR> <TD align="right"> bio10 </TD> <TD align="right"> 5.96 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.22 </TD> </TR>
+  <TR> <TD align="right"> bio11 </TD> <TD align="right"> 4.46 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 6.67 </TD> </TR>
+  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 5.78 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 8.01 </TD> </TR>
+  <TR> <TD align="right"> bio13 </TD> <TD align="right"> 5.53 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 7.76 </TD> </TR>
+  <TR> <TD align="right"> bio14 </TD> <TD align="right"> 5.32 </TD> <TD align="right"> 2.22 </TD> <TD align="right"> 7.54 </TD> </TR>
+  <TR> <TD align="right"> bio15 </TD> <TD align="right"> 5.10 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 7.35 </TD> </TR>
+  <TR> <TD align="right"> bio16 </TD> <TD align="right"> 5.61 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.86 </TD> </TR>
+  <TR> <TD align="right"> bio17 </TD> <TD align="right"> 5.37 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.60 </TD> </TR>
+  <TR> <TD align="right"> bio18 </TD> <TD align="right"> 5.83 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.09 </TD> </TR>
+  <TR> <TD align="right"> bio19 </TD> <TD align="right"> 5.75 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.98 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 4.65 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 6.84 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 5.76 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 8.00 </TD> </TR>
+   </TABLE>
+
+
+----------------------------
+
+
 
 
 
@@ -322,17 +402,17 @@ Both neutal and Mid Domain models had very similar predictions for the distance-
 
 ### Figures comparing the models
 
-![plot of chunk comparisons of the models - richness](figure/comparisons of the models - richness1.png) ![plot of chunk comparisons of the models - richness](figure/comparisons of the models - richness2.png) ![plot of chunk comparisons of the models - richness](figure/comparisons of the models - richness3.png) 
+
 
 
 ### Fig sp comp
 
-![plot of chunk species composition plot](figure/species composition plot1.png) ![plot of chunk species composition plot](figure/species composition plot2.png) ![plot of chunk species composition plot](figure/species composition plot3.png) 
+
 
 
 # Comparison of the observed and predicted by the models
 
-![plot of chunk observed vs predicted](figure/observed vs predicted.png) 
+
 
 
 

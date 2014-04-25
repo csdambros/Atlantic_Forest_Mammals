@@ -1,11 +1,20 @@
+---
+output: html_document
+---
+
+
 Comparing dispersal, environmental and mid-domain effects on species distribution
 ============================
 
 
 
+
+
+
+
 ##### By CSDambros
 
->html updated at 2014-04-16 10:38:38
+>html updated at 2014-04-24 12:37:23
 
 ### Methods
 
@@ -23,8 +32,8 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 #### Data collection
 
   We compiled a database based on the literature in which diverse authors have sampled small mammals along the AF (Appendix S1 in Supporting Information). We have used Google @ search tool for sampling articles, and the main keywords used in combination were “small mammal”, “marsupial”, “rodent”, “community”, “composition”, “richness”, “diversity”, and “Atlantic Forest”. Unpublished data sampled by NCC was also included (Appendix S1). There was some variation in the area covered by each surveyed study (see Appendix S1), but we have established a minimum of sampling effort for a given article to be accepted in our database: at least 1000 trap-nights, 6 months of field work, and use of wire type and/or Sherman live-traps installed on the ground or understory level of the forest. Besides that, and for independence assumptions, we have chosen surveyed areas distant at least 10 km from each other; most of the field surveys available in the literature sampled only one geographical location under this condition. From each selected survey, we obtained local species composition and abundance data when available. 
-
-  Data on conservation were taken directly from information available on the articles consulted, and classified as categories of forest conservation (degrees 1 to 5), where primary conserved forest means 5 and disturbed secondary forest, including with clearings, means 1. Physiognomy data were taken either from information available on the area descriptions and from general sources such as (Veloso et al., 1991). We compiled the 19 environmental variables available in Bioclim (www.worldclim.org/bioclim) in a scale of 2.5 arc minutes: annual mean temperature (1), mean diurnal range (2), isothermality (3), temperature seasonality (4), maximum and minimum temperature of the warmest and coldest months (5 and 6), temperature annual range (7), mean temperature of the wettest, driest, warmest and coldest quarters (8-11), annual precipitation (12), precipitation of the wettest and driest months (13 and 14), precipitation seasonality (15), and precipitation of the wettest, direst, warmest and coldest quarters (16-19).  
+  We compiled the 19 environmental variables available in Bioclim (www.worldclim.org/bioclim) in a scale of 2.5 arc minutes: annual mean temperature (1), mean diurnal range (2), isothermality (3), temperature seasonality (4), maximum and minimum temperature of the warmest and coldest months (5 and 6), temperature annual range (7), mean temperature of the wettest, driest, warmest and coldest quarters (8-11), annual precipitation (12), precipitation of the wettest and driest months (13 and 14), precipitation seasonality (15), and precipitation of the wettest, direst, warmest and coldest quarters (16-19). Because most of the variables are correlated to each other, we used just annual mean temperature (bio1) and precipitation (bio2) as predictor variables in our main models. We present the results using the remaining variables as supplements (see below). 
+  Data on conservation were taken directly from information available on the articles consulted, and classified as categories of forest conservation (degrees 1 to 5), where primary conserved forest means 5 and disturbed secondary forest, including with clearings, means 1. Vegetation type information was taken either from information available on the area descriptions and from general sources such as (Veloso et al., 1991). Because the poor classification of conservation and vegetation types, and to avoid overfitting the regression models, we present the results of these variables only as alternative models in the supplements.
 
 
 
@@ -35,7 +44,7 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 #### Analysis
 
-  The environmental predictor variables were used as predictors of the species diversity and included in simulation models (see below). Most of the 19 WorldClim variables are correlated to each other, so we grouped these variables in two Principal Component Axes (PCA1 and PCA2) (But see Supplementary material S4 for individual comparisons). We standardized all the variables previously to the analyses. We preferred to use the described environmental variables as predictors and excluded the highly correlated variables of latitude and longitude. We used them to calculate the pairwise distance among sampling units and the linear distance of each sampling site to the coast.
+  The environmental predictor variables were used as predictors of the species diversity and included in simulation models (see below). We standardized the environmental variables previously to the analyses. We preferred to use the described environmental variables as predictors and excluded the highly correlated variables of latitude and longitude. We used them to calculate the pairwise distance among sampling units.
 
 
 
@@ -55,27 +64,23 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 
 
-![plot of chunk Fig. 1 Study site](figure/Fig. 1 Study site.png) 
+![plot of chunk Fig_1_Study_site](figure/Fig_1_Study_site.png) 
 
 #### Fig. 1. Map of the Atlantic Forest (AF; blue shade) showing the orinal sampling points (red circles) and the quadrants encompassing the entire AF. The size of the circles represent the size o the original sampling area in the log scale. Green shade represent the quadrants where small mammal data was available. 
 
+####
 
-  For estimating the influence of dispersal limitation on species local diversity (S) and turnover (Jaccard index; PCoA1 and PCoA2), we simulated the AF as a network of interconnected quadrants where the species or individuals could move between adjacent quadrants (Fig. 2). We used two models to recreate the species distribution under dispersal alone: the Mid-Domain spreading-dye model (Colwell and Hurtt 1994; Colwell and Lees 2000), and the analytical neutral approach borrowed from the population genetics (Nagylaki, 1980) and presented by Economo & Keitt (2008) for community ecology. These models were created just using the grouped data in quadrants because of the completeness of data, and due to computational limitation.
-  In the Mid-Domain spreading dye model, we recorded the number of quadrants occupied by each small mammal species. For each species, one of the 26 quadrants was randomly selected and the species occurrence was spread from the selected quadrant to neighboring quadrants until the original number of quadrants was occupied. This procedure was repeated 10,000 times for the 64 species. Each quadrant had up to eight neighbors (Moore neighborhood), and the model was bounded by the domain where actual small mammal data was recorded (26 quadrants).
-
-
-
+  For estimating the influence of dispersal limitation on species local diversity (S) and turnover (Jaccard index; PCoA1 and PCoA2), we simulated the AF as a network of interconnected quadrants where the species or individuals could move between adjacent quadrants (Fig. S2). We used two models to recreate the species distribution under dispersal alone: the Mid-Domain spreading-dye model (Colwell and Hurtt 1994; Colwell and Lees 2000), and the analytical neutral approach borrowed from the population genetics (Nagylaki, 1980) and presented by Economo & Keitt (2008) for community ecology. These models were created just using the grouped data in quadrants because of the completeness of data, and due to computational limitation.
+  In the Mid-Domain spreading dye model, we recorded the number of quadrants occupied by each small mammal species. For each species, one of the 26 quadrants was randomly selected and the species occurrence was spread from the selected quadrant to neighboring quadrants until the original number of quadrants was occupied. This procedure was repeated 10,000 times for the 64 species. Each quadrant had up to eight neighbors (Moore neighborhood; Fig. S2), and the model was bounded by the domain where actual small mammal data was recorded (26 quadrants).
 
 
 
 
 
-  In the neutral model, the whole area comprising the AF was divided in 56 2x2 degrees quadrants from which 26 had small mammal data available (Fig. 1). The model started with a single species occupying all the 56 quadrants. In each generation, new species were added in each quadrant by point speciation with rate v, set the same for all quadrants (see Economo & Keitt (2010) and Muneepeerakul et al. (2008) for more details and other uses). v represents the probability of an individual to become a new species but could also represent the addition of new species by immigration from a larger species pool outside the AF (eg. the Cerrado or Amazonian forests). To recreate the dispersal of individuals, we determined that a quadrant could just be colonized by a neighbor (Moore neighborhood), and that all quadrants had the same migration rate (parameter m). The local community size (number of individuals) was set the same for all quadrants (N = 100). The model was run for multiple generations, until the diversity within (PIE and HillPIE) and among quadrants (Morisita-Horn similarity) reached a steady-state (usually more than 30,000 generations).
 
 
-![plot of chunk Fig. 2 - Connectivity map 26 and 56](figure/Fig. 2 - Connectivity map 26 and 56.png) 
 
-#### Fig. 2. Map representing the connectivity of quadrants used to simulate the individual dispersal in the Mid Domain (A) and neutral (B) models.
+  In the neutral model, the whole area comprising the AF was divided in 56 2x2 degrees quadrants from which 26 had small mammal data available (Fig. 1). The model started with a single species occupying all the 56 quadrants. In each generation, new species were added in each quadrant by point speciation with rate v, set the same for all quadrants (see Economo & Keitt (2010) and Muneepeerakul et al. (2008) for more details and other uses). v represents the probability of an individual to become a new species but could also represent the addition of new species by immigration from a larger species pool outside the AF (eg. the Cerrado or Amazonian forests). To recreate the dispersal of individuals, we determined that a quadrant could just be colonized by a neighbor (Moore neighborhood; Fig S2), and that all quadrants had the same migration rate (parameter m). The local community size (number of individuals) was set the same for all quadrants (N = 100). The model was run for multiple generations, until the diversity within (PIE and HillPIE) and among quadrants (Morisita-Horn similarity) reached a steady-state (usually more than 30,000 generations).
 
 
   Differently from the Mid-domain model, the values of m, v, and N were initially set independently of the observed data. Because different combinations of these parameters can create the same patterns of species distribution (Etienne 2006?; Economo and Keitt 2010), and because estimates for these parameters based on empirical data are not available, we did not attempt to estimate realistic parameters, but focused on the general patterns that the model could produce (see discussion for implications of this procedure). N was arbitrarily defined as 100 individuals for all quadrants, and m and v were used as knobs to best fit the model to the observed similarity in species composition. These parameters were simultaneously tunned using the L-BFSG-S optimization algorithm. In summary, m and v were adjusted to minimize the differences between the predictions of the neutral model to the observed data, giving the best possible explanation of dispersal to the observed data (this procedure is conceptually analog to a regression analysis using maximum likelihood optimization). Because the number of individuals per quadrant was kept constant during the optimization, the differences in diversity were due to the location of a quadrant in the network and the number of neighbor quadrants, but not affected by the differences in abundance.
@@ -90,8 +95,8 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 
 
-  The model proposed by Economo and Keitt (2008) is probabilistic and does not require the simulation of each individual in the metacommunity, being less computationally intensive. This model allowed us to investigate thoroughly the parameter space of m and v to find the best explanatory model for the observed data. However, because the model is based on probabilities, it does not allow one to calculate statistics based on the raw data (eg. the Jaccard similarity index). Because not all original studies recorded species abundances, we compared the Morisita-Horn from the neutral model and the Jaccard indexis from the data for optimization. These indexes are usulally highly correlated and we believe this procedure did not have profound effects on the analysis (CITATION - CHAO?). 
-  To calculate the Jaccard similarity index from the neutral model, We  simulated each individual in the metacommunity using the previously optimized parameters. We run an initial buffer of 30,000 generations. Then the model was run for additional 1000 generations 5,000 times, representing 5,000 simulations. The mean of all the 5,000 simulations was used to calculate the remain summary statistics (see below). The correlation between the probabilistic and the simulated model was 99.98% when comparing the Morisita-Horn index of pairwise similarity, so we believe the simulations run long enough to capture the final predictions of the neutral model.
+  The model proposed by Economo and Keitt (2008) is probabilistic and does not require the simulation of each individual in the metacommunity, being less computationally intensive. This model allowed us to investigate thoroughly the parameter space of m and v to find the best explanatory model to the observed data. However, because the model is based on probabilities, it does not allow one to calculate statistics based on the raw data (eg. the Jaccard similarity index). Because not all original studies recorded species abundances, we compared the Morisita-Horn similarity matrix from the neutral model with the observed Jaccard similarity for optimization. These indexes are usulally highly correlated (Chao et al., 2006; Krasnov et al., 2005) and we believe this procedure did not have profound effects on the neutral fit. 
+  To calculate the Jaccard similarity index from the neutral model, we  simulated each individual in the metacommunity using the previously optimized parameters. We run an initial buffer of 30,000 generations. Then the model was run for additional 1000 generations 5,000 times, representing 5,000 simulations. The mean of all the 5,000 simulations was used to calculate the remain summary statistics (see below). The correlation between the probabilistic and the simulated model was 99.98% when comparing the Morisita-Horn index of pairwise similarity, so we believe the simulations run long enough to capture the final predictions of the neutral model.
 
 
 
@@ -107,11 +112,7 @@ To test the association of the species diversity with the environment, we fit in
 We then summed the probability of occurrence generated by the logistic model for each species to estimate the expected number of species in each quadrant:
   
 $$
-\begin{equation}
-\begin{split}
 \hat S_i = \sum_{j=1}^{S}{\frac{e^{X_i\beta_j}}{1+e^{X_i\beta_j}}}
-\end{split}
-\end{equation}
 $$
   
 Where $X_i$ denotes a vector of the environmental variables in the quadrant $i$, and $\beta_j$ is a vector with the coefficients from the logistic regression for the species $j$.
@@ -136,12 +137,21 @@ We compared the three simulation models (Mid Domain, Neutral, and based on logis
 
 
 
-Additionally, we tested for the direct association of the response variables against the environmental predictors. For this test, we used a linear regression model (OLS) starting with all environmental predictors in the model (conservation, vegetation, PCAbclim1, PCAbclim2). For the grouped data, we created three sets of models: (1) Using the neutral and Mid-domain predictions as a predictor variables along with the environmental variables in the model, as suggested by Letten et al. (2013); (2) using the neutral and Mid-domain predictions as a null hypothesis and testing for association of residuals with the environmental variables; and (3) a regression with only the environmental variables as predictors. We used both the raw environmental data and the prediction from the logistic simulation as predictor variables. This gave a total of 10 models (Table S1;S3). The models were compared by their AIC values.
+Additionally, we tested for the direct association of the response variables against the environmental predictors. For this test, we used a linear regression model (OLS) starting with the environmental predictors in the model (bio1 and bio2). For the grouped data, we created three sets of models: (1) Using just the environmental variables as predictors; (2) using just the neutral and Mid-domain models as predictors; (3) using the neutral and Mid-domain predictions as a predictor along with the environmental variables in the model, as suggested by Letten et al. (2013); and (4) using the neutral and Mid-domain predictions as null hypotheses, and testing for association of residuals with the environmental variables. We used both the raw environmental data and the prediction from the logistic simulations as predictor variables. This gave a total of 10 models (REnv; Neutral; MidD; REnv+Neutral; REnv+MidD; LEnv; REnv+Neutral; REnv+MidD; ResNeutral+Env;  ResMidD+Env; Table 2; Table 4). We assumed normality in the residuals of all models. The models were compared by their AIC values.
+  We set the regression coefficients to 1 for the neutal, Mid Domain, and logistic simulation predictors, so these parameter was not allowed to vary. We did not include an intercept in the models using only these variables as predictors as well, then there were no extra coefficients to be estimated besides the standard deviation in the residuals (one extra parameter).
   
 
 
 
-  Finally, we tested for patterns of distance-decay in the species similarity using Mantel and Partial Mantel tests correlating the matrix of Jaccard similarity (M) to the geographical distance (D) and environmental dissimilarity (E) matrices (Euclidean distance) (see Thompson and Townsend 2006). Legendre et al. (2005) and Tuomisto and Ruokolainen (2006; 2008) suggest using multiple regression on similarity matrices to separate the effects of niche and neutral processes. However, there is a strong debate about the validity of these models (Legendre et al. 2008; Tuomisto and Ruokolainen 2008). Some authors also suggest using partial Redundancy Analysis (Borcard et al. 1992) for this purpose (Gilbert and Lechowicz 2004), but this method also has serious limitations (Smith and Lundholm 2010). We preferred to base our discussion on the mantel tests and multiple regressions using the summarized data (each quadrant as a unit), as described above. 
+  
+
+
+
+  Finally, we tested for patterns of distance-decay in the species similarity using simple and artial Mantel tests correlating the matrix of Jaccard similarity (M) to the geographical distance (D) and environmental dissimilarity (E) matrices (Euclidean distance) (see Thompson and Townsend 2006). Legendre et al. (2005) and Tuomisto and Ruokolainen (2006; 2008) suggest using multiple regression on similarity matrices to separate the effects of niche and neutral processes. However, there is a strong debate about the validity of these models (Legendre et al. 2008; Tuomisto and Ruokolainen 2008). Some authors also suggest using partial Redundancy Analysis (Borcard et al. 1992) for this purpose (Gilbert and Lechowicz 2004), but this method also has serious limitations (Smith and Lundholm 2010). We preferred to base our discussion on the mantel tests and multiple regressions using the summarized data (each quadrant as a unit), as described above. We used (simple) generalized linear models (GLMs) with log links to estimate the relationship between the similartiy in species composition and geographical or environmental distances (Millar et al. 2011). Because the Jaccard similarity is a proportion (proportion of shared species), the error of this model was fit with a binomial distribution (Millar et al. 2011). We calclulated the R-squares of the GLMs by using the McFadden's apporach (McFadden 1974).
+
+
+
+
 
 
 
@@ -156,265 +166,274 @@ Additionally, we tested for the direct association of the response variables aga
   	
 ### Results
 
-  All the models had a very poor fit to species richness (Fig. S1-S2). The model with the lowest mean square error and bias was the logistic using only conservation status as a predictor followed by the logistic model based on vegetation type (Table 1). The model with the lowest variance was the neutral model, but the difference among the models was much smaller than for the bias (Table 1).
+  All the models had a very poor fit to species richness (Fig. 2; Fig. S2). The model with the lowest mean square error and bias was the Mid Domain, followed by the logistic using the bioclim variables (Table 1). The model with the lowest variance was the neutral model, but the difference among the models was much smaller than for the bias (Table 1).
 
 #### Table 1. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
 
+####
 
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:11 2014 -->
-<TABLE border=0, bgcolor=#989898>
+<TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1278.09 </TD> <TD align="right"> 196.17 </TD> <TD align="right"> 1474.26 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1286.98 </TD> <TD align="right"> 187.28 </TD> <TD align="right"> 1474.26 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
-  <TR> <TD align="right"> conservation </TD> <TD align="right"> 1038.67 </TD> <TD align="right"> 202.79 </TD> <TD align="right"> 1241.46 </TD> </TR>
-  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 1100.87 </TD> <TD align="right"> 199.00 </TD> <TD align="right"> 1299.87 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 1362.20 </TD> <TD align="right"> 181.26 </TD> <TD align="right"> 1543.46 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 1413.74 </TD> <TD align="right"> 199.67 </TD> <TD align="right"> 1613.41 </TD> </TR>
+  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 1366.20 </TD> <TD align="right"> 180.76 </TD> <TD align="right"> 1546.95 </TD> </TR>
+  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 1340.50 </TD> <TD align="right"> 197.49 </TD> <TD align="right"> 1537.99 </TD> </TR>
    </TABLE>
 
 
-  The regression models gave very similar results. The model with the lowest AIC was the linear regression of the species richness against the raw environmental predictors (Distance to the coast, vegetation, conservation and PCA axes of edaphic conditions) (Table 2). However, the inclusion of neutral and Mid-Domain predictions along the environmental variables gave similar results (Table 2). The environmental variables were able to explain 33% of the variation on species richness, and conservation status had the strongest effect (Fig. SXX).
-  Besides the poor fit for the data, the Mid Domain and Neutral models created the well known richness peak in the central areas of the Atlantic forest (Fig. S1).
-  
-#### Table 2. AIC values comparing the 10 regression models tested. MR1.1: Environmental predictors; MR1.2: Environmental + Neutral predictions; MR1.3: ; MR1.4: ; MR1.5: ; MR1.6: ; MR1.7: ; MR1.8: ; MR1.9: ; MR1.10: .
+###
 
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:11 2014 -->
-<TABLE border=0, bgcolor=#989898>
-<TR> <TH>  </TH> <TH> df </TH> <TH> AIC </TH>  </TR>
-  <TR> <TD align="right"> MR1.1 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 69.84 </TD> </TR>
-  <TR> <TD align="right"> MR1.2 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 71.78 </TD> </TR>
-  <TR> <TD align="right"> MR1.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 70.64 </TD> </TR>
-  <TR> <TD align="right"> MR1.4 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.32 </TD> </TR>
-  <TR> <TD align="right"> MR1.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.64 </TD> </TR>
-  <TR> <TD align="right"> MR1.6 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.45 </TD> </TR>
-  <TR> <TD align="right"> MR1.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.03 </TD> </TR>
-  <TR> <TD align="right"> MR1.8 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 75.96 </TD> </TR>
-  <TR> <TD align="right"> MR1.9 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.32 </TD> </TR>
-  <TR> <TD align="right"> MR1.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.64 </TD> </TR>
+  The regression model with the lowest AIC was the linear regression of the species richness against the raw environmental predictors (bio1 and bio2) (Table 2). However, the inclusion of the neutral and Mid-Domain predictions along the raw environmental variables gave similar results (Table 2). The environmental variables were able to explain 2% of the variation on species richness, and bio1 had the strongest effect. The logistic model had a similar explanatory power to the model usng the raw environmental predictors.
+  Besides the poor fit for the data, the Mid Domain and Neutral models created the well known richness peak in the central areas of the Atlantic forest (Fig. 2). The neutral and Mid Domain models were able to explain alone 9% and 7% of the variation on species richness, respectively.
+  In the small grain (original sampling units), the bioclim variables were able to explain 14% of the variation in species richness.
+
+#### Table 2. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
+
+
+####
+
+<TABLE border=1, bgcolor=#989898>
+<TR> <TH>  </TH> <TH> Model </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH>  </TR>
+  <TR> <TD align="right"> 1 </TD> <TD> MR1.1 </TD> <TD align="right"> -36.07 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 80.15 </TD> <TD align="right"> 0.02 </TD> </TR>
+  <TR> <TD align="right"> 2 </TD> <TD> MR1.2 </TD> <TD align="right"> -34.85 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 81.70 </TD> <TD align="right"> 0.14 </TD> </TR>
+  <TR> <TD align="right"> 3 </TD> <TD> MR1.3 </TD> <TD align="right"> -37.06 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 82.11 </TD> <TD align="right"> 0.16 </TD> </TR>
+  <TR> <TD align="right"> 4 </TD> <TD> MR1.4 </TD> <TD align="right"> -37.19 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 80.39 </TD> <TD align="right"> 0.09 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> MR1.5 </TD> <TD align="right"> -41.26 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.53 </TD> <TD align="right"> 0.07 </TD> </TR>
+  <TR> <TD align="right"> 6 </TD> <TD> MR1.6 </TD> <TD align="right"> -14.82 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 41.64 </TD> <TD align="right"> 0.08 </TD> </TR>
+  <TR> <TD align="right"> 7 </TD> <TD> MR1.7 </TD> <TD align="right"> -15.13 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 38.26 </TD> <TD align="right"> 0.06 </TD> </TR>
+  <TR> <TD align="right"> 8 </TD> <TD> MR1.8 </TD> <TD align="right"> -36.30 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 330.60 </TD> <TD align="right"> 0.01 </TD> </TR>
+  <TR> <TD align="right"> 9 </TD> <TD> MR1.9 </TD> <TD align="right"> -34.58 </TD> <TD align="right"> 131.00 </TD> <TD align="right"> 331.16 </TD> <TD align="right"> 0.18 </TD> </TR>
+  <TR> <TD align="right"> 10 </TD> <TD> MR1.10 </TD> <TD align="right"> -37.68 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 333.36 </TD> <TD align="right"> 0.13 </TD> </TR>
    </TABLE>
 
 
-  The similarity in species composition was well fit for either the neutral, the Mid Domain, and the environmental models (Fig. S3-S4). The mean square error in the models and the difference between the models was much smaller for the species composition than for the richness, besides the much larger number of comparisons for the species composition (325 for the pairwise similarity matrix against 26 for the vector of species richness). The lowest mean square error and bias were obtained using the edaphic conditions as predicctor, while the Mid Domain model had the lowest variance. The neutral model had the highest mean square error due to the largest variance compared to the remain models (Table 3).
-  
-  
+###
+
+
+![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral1.png) ![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral2.png) 
+
+#### Fig 2. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the environmental variables in the logistic models; (C) Predicted by the Mid Domain model; (D) Predicted by the neutral model. Shadded quadrants represent areas included in the neutral model but where actual data is not available.
+
+
+####
+
+
+  The similarity in species composition was well fit for both the neutral, the Mid Domain, and the environmental models. The MSE in the models, and the difference in MSE between the models were much smaller for the species composition than for richness (Table 3), besides the much larger number of comparisons for the species composition (325 for the pairwise similarity matrix against 26 for the vector of species richness). The lowest mean square error and bias were obtained using the edaphic conditions as predictors of species occurrence in logistic models, while the Mid Domain model had the lowest variance (Table 3). The neutral model had the highest mean square error due to its largest variance (Table 3).
+
 #### Table 3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
 
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:11 2014 -->
-<TABLE border=0, bgcolor=#989898>
+####
+
+<TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.80 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 10.68 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.82 </TD> <TD align="right"> 1.90 </TD> <TD align="right"> 10.72 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
-  <TR> <TD align="right"> conservation </TD> <TD align="right"> 5.99 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.25 </TD> </TR>
-  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 5.52 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.77 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 4.65 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 6.84 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 5.76 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 8.00 </TD> </TR>
-   </TABLE>
-
- 
- Converselly, three of the four the best regression models for the first ordination axis were obtained including the neutral results as a predictor variable (Table 4). The fourth best model was obtained using just the logistic model as a predictor. For the second axis, the best models included the environmental predictors alone, or in combination with the Neutral or Mid Domain results. The neutral and Mid Domain models alone were able to explain 78% and 77% of the variation in the first axis of species composition. The environmental variables combined explained 77% of the variation is the first axis. The combination of environmental and neutral predictors gave an explanation of 81% for the first ordination axis. The environmental variables combined with the neutral model explained 49% of the variation in the second ordination axis. The use of the Mid Domain instead of the neutral predictor gave similar results (R2 = 0.48; Table 4).
-  The Mid Domain and Neutral models were able to explain a non-linear change in species composition along the latitudinal gradient (Fig. S3;S5).  
-  
-#### Table 4. AIC values comparing the 10 regression models tested. MR1.1: Environmental predictors; MR1.2: Environmental + Neutral predictions; MR1.3: ; MR1.4: ; MR1.5: ; MR1.6: ; MR1.7: ; MR1.8: ; MR1.9: ; MR1.10: .
-
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:11 2014 -->
-<TABLE border=0, bgcolor=#989898>
-<TR> <TH>  </TH> <TH> df </TH> <TH> AIC </TH>  </TR>
-  <TR> <TD align="right"> MC1.1 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 42.92 </TD> </TR>
-  <TR> <TD align="right"> MC1.2 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 37.40 </TD> </TR>
-  <TR> <TD align="right"> MC1.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 40.31 </TD> </TR>
-  <TR> <TD align="right"> MC1.4 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 39.28 </TD> </TR>
-  <TR> <TD align="right"> MC1.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.48 </TD> </TR>
-  <TR> <TD align="right"> MC1.6 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 43.45 </TD> </TR>
-  <TR> <TD align="right"> MC1.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 45.35 </TD> </TR>
-  <TR> <TD align="right"> MC1.8 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 39.12 </TD> </TR>
-  <TR> <TD align="right"> MC1.9 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 39.28 </TD> </TR>
-  <TR> <TD align="right"> MC1.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.48 </TD> </TR>
-  <TR> <TD align="right"> MC2.1 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 64.97 </TD> </TR>
-  <TR> <TD align="right"> MC2.2 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 65.43 </TD> </TR>
-  <TR> <TD align="right"> MC2.3 </TD> <TD align="right"> 7.00 </TD> <TD align="right"> 66.46 </TD> </TR>
-  <TR> <TD align="right"> MC2.4 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 75.94 </TD> </TR>
-  <TR> <TD align="right"> MC2.5 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 74.98 </TD> </TR>
-  <TR> <TD align="right"> MC2.6 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 79.45 </TD> </TR>
-  <TR> <TD align="right"> MC2.7 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 78.39 </TD> </TR>
-  <TR> <TD align="right"> MC2.8 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 76.15 </TD> </TR>
-  <TR> <TD align="right"> MC2.9 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 75.94 </TD> </TR>
-  <TR> <TD align="right"> MC2.10 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 74.98 </TD> </TR>
+  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 4.92 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.15 </TD> </TR>
+  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 5.78 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 8.02 </TD> </TR>
    </TABLE>
 
 
-The mantel test results show a stronger environmental effect when grouping the points in quadrants than when using the original data points (Table 5). The geographical distance was highly correlated with the species composition in both cases. Geographical distance was correlated with the species composition when the environment was partialed out, but the correlation was much weaker than in the unconstrained model.
+####
+
+Converselly, the best regression models for the first ordination axis were obtained including the Mid Domain or neutral model results as predictor variables (Table 4). For the second ordination axis, the best model included the environmental predictors alone. The neutral and Mid Domain models alone were able to explain 78% and 77% of the variation in the first axis of species composition. The environmental variables combined explained 48% of the variation is the first axis. The combination of environmental and neutral predictors gave an explanation of 81% for the first ordination axis. For the second axis, the environmental variables along with the neutral model explained 8% of the variation in species composition. The use of the Mid Domain instead of the neutral predictor gave similar results (R2 = 10%; Table 4). 
+The logistic model explained 47% and 5% of the variation in the first two ordination axes, respectively.
+Besides the best explanatory power, the Mid Domain and neutral models also predicted the non-linear change in species composition along the latitudinal gradient in the first ordination axis (Fig. S4).
+
+round(cor(MC1.6$fitted.values+MC1.6$residuals,MC1.6$fitted.values)^2*100,0)
+
+#### Table 4. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
+
+####
+
+<TABLE border=1, bgcolor=#989898>
+<TR> <TH>  </TH> <TH> Model </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH>  </TR>
+  <TR> <TD align="right"> 1 </TD> <TD> MC1.1 </TD> <TD align="right"> -27.87 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 63.74 </TD> <TD align="right"> 0.48 </TD> </TR>
+  <TR> <TD align="right"> 2 </TD> <TD> MC1.2 </TD> <TD align="right"> -15.07 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 42.14 </TD> <TD align="right"> 0.81 </TD> </TR>
+  <TR> <TD align="right"> 3 </TD> <TD> MC1.3 </TD> <TD align="right"> -14.86 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 37.73 </TD> <TD align="right"> 0.81 </TD> </TR>
+  <TR> <TD align="right"> 4 </TD> <TD> MC1.4 </TD> <TD align="right"> -17.42 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.84 </TD> <TD align="right"> 0.78 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> MC1.5 </TD> <TD align="right"> -18.10 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 38.20 </TD> <TD align="right"> 0.77 </TD> </TR>
+  <TR> <TD align="right"> 6 </TD> <TD> MC1.6 </TD> <TD align="right"> -5.62 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 23.23 </TD> <TD align="right"> 0.10 </TD> </TR>
+  <TR> <TD align="right"> 7 </TD> <TD> MC1.7 </TD> <TD align="right"> -5.20 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 18.39 </TD> <TD align="right"> 0.02 </TD> </TR>
+  <TR> <TD align="right"> 8 </TD> <TD> MC1.8 </TD> <TD align="right"> -28.06 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 314.13 </TD> <TD align="right"> 0.47 </TD> </TR>
+  <TR> <TD align="right"> 9 </TD> <TD> MC1.9 </TD> <TD align="right"> -16.06 </TD> <TD align="right"> 131.00 </TD> <TD align="right"> 294.11 </TD> <TD align="right"> 0.79 </TD> </TR>
+  <TR> <TD align="right"> 10 </TD> <TD> MC1.10 </TD> <TD align="right"> -17.69 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 293.37 </TD> <TD align="right"> 0.78 </TD> </TR>
+  <TR> <TD align="right"> 11 </TD> <TD> MC2.1 </TD> <TD align="right"> -34.62 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 77.23 </TD> <TD align="right"> 0.13 </TD> </TR>
+  <TR> <TD align="right"> 12 </TD> <TD> MC2.2 </TD> <TD align="right"> -38.97 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 89.94 </TD> <TD align="right"> 0.08 </TD> </TR>
+  <TR> <TD align="right"> 13 </TD> <TD> MC2.3 </TD> <TD align="right"> -38.47 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 84.94 </TD> <TD align="right"> 0.10 </TD> </TR>
+  <TR> <TD align="right"> 14 </TD> <TD> MC2.4 </TD> <TD align="right"> -40.36 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 86.72 </TD> <TD align="right"> 0.10 </TD> </TR>
+  <TR> <TD align="right"> 15 </TD> <TD> MC2.5 </TD> <TD align="right"> -39.49 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 80.98 </TD> <TD align="right"> 0.13 </TD> </TR>
+  <TR> <TD align="right"> 16 </TD> <TD> MC2.6 </TD> <TD align="right"> -15.34 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 42.69 </TD> <TD align="right"> 0.01 </TD> </TR>
+  <TR> <TD align="right"> 17 </TD> <TD> MC2.7 </TD> <TD align="right"> -14.70 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 37.40 </TD> <TD align="right"> 0.07 </TD> </TR>
+  <TR> <TD align="right"> 18 </TD> <TD> MC2.8 </TD> <TD align="right"> -35.66 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 329.32 </TD> <TD align="right"> 0.05 </TD> </TR>
+  <TR> <TD align="right"> 19 </TD> <TD> MC2.9 </TD> <TD align="right"> -37.07 </TD> <TD align="right"> 131.00 </TD> <TD align="right"> 336.14 </TD> <TD align="right"> 0.13 </TD> </TR>
+  <TR> <TD align="right"> 20 </TD> <TD> MC2.10 </TD> <TD align="right"> -36.27 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 330.54 </TD> <TD align="right"> 0.15 </TD> </TR>
+   </TABLE>
+
+
+###
+
+![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral1.png) ![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral2.png) 
+
+#### Fig 3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those quadrants with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the environmental variables in the logistic models; (C) Species composition predicted by the Mid Domain model; (C) Species composition predicted by the neutral model. Shadded quadrants represent areas included in the neutral model but where actual data is not available.
+
+
+####
+
+
+  The mantel test results showed a stronger environmental effect when grouping the points in quadrants than when using the original data points (Table 5). The geographical distance was highly correlated with the species composition in both cases. Geographical distance was correlated with the species composition when the environment was partialed out, but the correlation was stronger in the unconstrained model (Table 5). The similarity in species composition was also weakly associated with the environment when controlling for geographical distance in the grouped data.
 
 #### Table 5. Mantel and partial Mantel test results comparing the correlation of species similarity against geographical distance and environmental dissimilarity. The minus sign indicate partial results (Geo - Env: Geographical distance without the effect of environmenal dissimilarity).
 
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:11 2014 -->
-<TABLE border=0, bgcolor=#989898>
+####
+
+
+<TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> statistic </TH> <TH> signif </TH>  </TR>
   <TR> <TD align="right"> Local Geo </TD> <TD align="right"> 0.48 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> Local Env </TD> <TD align="right"> 0.32 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> Local Env </TD> <TD align="right"> 0.22 </TD> <TD align="right"> 0.00 </TD> </TR>
   <TR> <TD align="right"> 2d Geo </TD> <TD align="right"> 0.49 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> 2d Env </TD> <TD align="right"> 0.48 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> Local Geo-Env </TD> <TD align="right"> 0.38 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> Local Env-Geo </TD> <TD align="right"> 0.05 </TD> <TD align="right"> 0.17 </TD> </TR>
-  <TR> <TD align="right"> 2d Geo-Env </TD> <TD align="right"> 0.21 </TD> <TD align="right"> 0.01 </TD> </TR>
-  <TR> <TD align="right"> 2d Env-Geo </TD> <TD align="right"> 0.18 </TD> <TD align="right"> 0.02 </TD> </TR>
+  <TR> <TD align="right"> 2d Env </TD> <TD align="right"> 0.31 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> Local Geo-Env </TD> <TD align="right"> 0.44 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> Local Env-Geo </TD> <TD align="right"> 0.09 </TD> <TD align="right"> 0.04 </TD> </TR>
+  <TR> <TD align="right"> 2d Geo-Env </TD> <TD align="right"> 0.40 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> 2d Env-Geo </TD> <TD align="right"> -0.00 </TD> <TD align="right"> 0.50 </TD> </TR>
    </TABLE>
 
 
-Both neutal and Mid Domain models had very similar predictions for the distance-decay pattern in species similarity (Fig. 5)
+###
+
+Both neutal and Mid Domain models had very similar predictions for the distance-decay pattern in species similarity (Fig. 4). However, the decay predicted the dispersal models was much steeper in shorter distances than estimated by the glm model of species similarity against geographical distance (Fig. 4). The environmental variables predicted and almost linear decay in species similarity against geographical distance (Fig. 4).
 
 
-![plot of chunk Fig 3. distance decay real.midDomain and neutral mor](figure/Fig 3. distance decay real.midDomain and neutral mor.png) 
+![plot of chunk Fig_4_distance_decay_real_midDomain_and_neutral_mor](figure/Fig_4_distance_decay_real_midDomain_and_neutral_mor.png) 
 
-#### Fig. 3. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey).
+#### Fig. 4. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey).
 
-### Discussion
-
-
+####
 
 ----------------------------
 
-![plot of chunk Fig S1. Map Richness Mid Domain vs Neutral](figure/Fig S1. Map Richness Mid Domain vs Neutral.png) 
 
-#### Fig S1. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the Mid Domain model; (C) Predicted by the neutral model. Shadded quadrants represent areas included in the neutral model but where actual data is not available.
+![plot of chunk Fig_S1-Connectivity_map_26_and_56](figure/Fig_S1-Connectivity_map_26_and_56.png) 
 
+#### Fig. S1. Map representing the connectivity of quadrants used to simulate the individual dispersal in the Mid Domain (A) and neutral (B) models.
+
+####
+
+![plot of chunk Fig_S2_rich_logis_in_the_map](figure/Fig_S2_rich_logis_in_the_map.png) 
+
+#### Fig S2. Projection of the species richness predicted by logistic models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B-Z) Predicted by logistic regressions of individual species against environmental gradients. 
+
+
+####
 
 
 ```
+## The following objects are masked _by_ .GlobalEnv:
+## 
+##     AF.Lat2, AF.Long2
 ## The following objects are masked from mammal.data:
 ## 
 ##     Lat2, Long2
 ```
 
-![plot of chunk Fig S2. rich.logis in the map](figure/Fig S2. rich.logis in the map.png) 
+![plot of chunk Fig_S3_jac_logis_in_the_map](figure/Fig_S3_jac_logis_in_the_map.png) 
 
-#### Fig S2. Projection of the species richness predicted by logistic models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B-Z) Predicted by logistic regressions of individual species against environmental gradients. 
-
-
-![plot of chunk Fig S3. Map Composition Mid Domain vs Neutral](figure/Fig S3. Map Composition Mid Domain vs Neutral.png) 
-
-#### Fig S3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those quadrants with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the Mid Domain model; (\C) Species composition predicted by the neutral model. Shadded quadrants represent areas included in the neutral model but where actual data is not available.
+#### Fig S3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those quadrants with similar colors have a similar composition of species. (A) Observed species composition; (B-Z) Species compostition predicted by logistic regressions of individual species against the environmental gradients.
 
 
-![plot of chunk Fig S4. jac.logis in the map](figure/Fig S4. jac.logis in the map.png) 
+####
 
-#### Fig S4. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those quadrants with similar colors have a similar composition of species. (A) Observed species composition; (B-Z) Species compostition predicted by logistic regressions of individual species against the environmental gradients.
+![plot of chunk Fig_S4_plot_all_predictions_against_lat](figure/Fig_S4_plot_all_predictions_against_lat.png) 
 
-![plot of chunk Fig S5. plot all predictions against lat](figure/Fig S5. plot all predictions against lat.png) 
+#### Fig S4. Comparison of the change in species composition along the latitudinal gradient predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
 
-#### Fig S5. Comparison of the change in species composition along the latitudinal gradient predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
+
+![plot of chunk Fig_S5_Residuals_similarity](figure/Fig_S5_Residuals_similarity.png) 
+
+#### Fig S5. Residuals
+
 
 
 #### Table S1. List of the sites, authors, etc. used in this manuscript
 
+###
+
 #### Table S2. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
 
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:16 2014 -->
-<TABLE border=0, bgcolor=#989898>
+####
+
+<TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1278.09 </TD> <TD align="right"> 196.17 </TD> <TD align="right"> 1474.26 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1286.98 </TD> <TD align="right"> 187.28 </TD> <TD align="right"> 1474.26 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
-  <TR> <TD align="right"> Long2 </TD> <TD align="right"> 1357.45 </TD> <TD align="right"> 179.67 </TD> <TD align="right"> 1537.12 </TD> </TR>
-  <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 1459.36 </TD> <TD align="right"> 188.67 </TD> <TD align="right"> 1648.03 </TD> </TR>
-  <TR> <TD align="right"> conservation </TD> <TD align="right"> 1038.67 </TD> <TD align="right"> 202.79 </TD> <TD align="right"> 1241.46 </TD> </TR>
-  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 1100.87 </TD> <TD align="right"> 199.00 </TD> <TD align="right"> 1299.87 </TD> </TR>
-  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 1366.41 </TD> <TD align="right"> 180.91 </TD> <TD align="right"> 1547.31 </TD> </TR>
-  <TR> <TD align="right"> bio2 </TD> <TD align="right"> 1362.95 </TD> <TD align="right"> 196.31 </TD> <TD align="right"> 1559.26 </TD> </TR>
-  <TR> <TD align="right"> bio3 </TD> <TD align="right"> 1441.70 </TD> <TD align="right"> 189.88 </TD> <TD align="right"> 1631.58 </TD> </TR>
-  <TR> <TD align="right"> bio4 </TD> <TD align="right"> 1377.84 </TD> <TD align="right"> 175.20 </TD> <TD align="right"> 1553.04 </TD> </TR>
-  <TR> <TD align="right"> bio5 </TD> <TD align="right"> 1261.78 </TD> <TD align="right"> 203.83 </TD> <TD align="right"> 1465.61 </TD> </TR>
-  <TR> <TD align="right"> bio6 </TD> <TD align="right"> 1454.76 </TD> <TD align="right"> 187.13 </TD> <TD align="right"> 1641.89 </TD> </TR>
-  <TR> <TD align="right"> bio7 </TD> <TD align="right"> 1355.76 </TD> <TD align="right"> 186.80 </TD> <TD align="right"> 1542.57 </TD> </TR>
-  <TR> <TD align="right"> bio8 </TD> <TD align="right"> 1301.47 </TD> <TD align="right"> 191.31 </TD> <TD align="right"> 1492.78 </TD> </TR>
-  <TR> <TD align="right"> bio9 </TD> <TD align="right"> 1177.35 </TD> <TD align="right"> 184.58 </TD> <TD align="right"> 1361.93 </TD> </TR>
-  <TR> <TD align="right"> bio10 </TD> <TD align="right"> 1270.14 </TD> <TD align="right"> 197.19 </TD> <TD align="right"> 1467.32 </TD> </TR>
-  <TR> <TD align="right"> bio11 </TD> <TD align="right"> 1431.17 </TD> <TD align="right"> 177.59 </TD> <TD align="right"> 1608.76 </TD> </TR>
-  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 1355.68 </TD> <TD align="right"> 193.86 </TD> <TD align="right"> 1549.54 </TD> </TR>
-  <TR> <TD align="right"> bio13 </TD> <TD align="right"> 1436.17 </TD> <TD align="right"> 198.81 </TD> <TD align="right"> 1634.98 </TD> </TR>
-  <TR> <TD align="right"> bio14 </TD> <TD align="right"> 1324.93 </TD> <TD align="right"> 189.42 </TD> <TD align="right"> 1514.34 </TD> </TR>
-  <TR> <TD align="right"> bio15 </TD> <TD align="right"> 1379.40 </TD> <TD align="right"> 187.84 </TD> <TD align="right"> 1567.25 </TD> </TR>
-  <TR> <TD align="right"> bio16 </TD> <TD align="right"> 1437.55 </TD> <TD align="right"> 198.11 </TD> <TD align="right"> 1635.66 </TD> </TR>
-  <TR> <TD align="right"> bio17 </TD> <TD align="right"> 1315.26 </TD> <TD align="right"> 189.81 </TD> <TD align="right"> 1505.06 </TD> </TR>
-  <TR> <TD align="right"> bio18 </TD> <TD align="right"> 1410.36 </TD> <TD align="right"> 202.59 </TD> <TD align="right"> 1612.95 </TD> </TR>
-  <TR> <TD align="right"> bio19 </TD> <TD align="right"> 1247.06 </TD> <TD align="right"> 196.66 </TD> <TD align="right"> 1443.72 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 1362.20 </TD> <TD align="right"> 181.26 </TD> <TD align="right"> 1543.46 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 1413.74 </TD> <TD align="right"> 199.67 </TD> <TD align="right"> 1613.41 </TD> </TR>
+  <TR> <TD align="right"> Long2 </TD> <TD align="right"> 1353.43 </TD> <TD align="right"> 183.81 </TD> <TD align="right"> 1537.24 </TD> </TR>
+  <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 1452.79 </TD> <TD align="right"> 182.48 </TD> <TD align="right"> 1635.28 </TD> </TR>
+  <TR> <TD align="right"> conservation </TD> <TD align="right"> 1033.74 </TD> <TD align="right"> 201.66 </TD> <TD align="right"> 1235.41 </TD> </TR>
+  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 1089.84 </TD> <TD align="right"> 195.53 </TD> <TD align="right"> 1285.38 </TD> </TR>
+  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 1366.20 </TD> <TD align="right"> 180.76 </TD> <TD align="right"> 1546.95 </TD> </TR>
+  <TR> <TD align="right"> bio2 </TD> <TD align="right"> 1355.39 </TD> <TD align="right"> 196.31 </TD> <TD align="right"> 1551.70 </TD> </TR>
+  <TR> <TD align="right"> bio3 </TD> <TD align="right"> 1455.14 </TD> <TD align="right"> 188.38 </TD> <TD align="right"> 1643.52 </TD> </TR>
+  <TR> <TD align="right"> bio4 </TD> <TD align="right"> 1384.24 </TD> <TD align="right"> 178.17 </TD> <TD align="right"> 1562.41 </TD> </TR>
+  <TR> <TD align="right"> bio5 </TD> <TD align="right"> 1274.38 </TD> <TD align="right"> 202.78 </TD> <TD align="right"> 1477.16 </TD> </TR>
+  <TR> <TD align="right"> bio6 </TD> <TD align="right"> 1463.32 </TD> <TD align="right"> 188.82 </TD> <TD align="right"> 1652.14 </TD> </TR>
+  <TR> <TD align="right"> bio7 </TD> <TD align="right"> 1369.02 </TD> <TD align="right"> 187.30 </TD> <TD align="right"> 1556.32 </TD> </TR>
+  <TR> <TD align="right"> bio8 </TD> <TD align="right"> 1302.98 </TD> <TD align="right"> 189.30 </TD> <TD align="right"> 1492.28 </TD> </TR>
+  <TR> <TD align="right"> bio9 </TD> <TD align="right"> 1161.33 </TD> <TD align="right"> 185.87 </TD> <TD align="right"> 1347.20 </TD> </TR>
+  <TR> <TD align="right"> bio10 </TD> <TD align="right"> 1283.26 </TD> <TD align="right"> 196.89 </TD> <TD align="right"> 1480.15 </TD> </TR>
+  <TR> <TD align="right"> bio11 </TD> <TD align="right"> 1431.97 </TD> <TD align="right"> 180.08 </TD> <TD align="right"> 1612.05 </TD> </TR>
+  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 1340.50 </TD> <TD align="right"> 197.49 </TD> <TD align="right"> 1537.99 </TD> </TR>
+  <TR> <TD align="right"> bio13 </TD> <TD align="right"> 1419.80 </TD> <TD align="right"> 199.53 </TD> <TD align="right"> 1619.33 </TD> </TR>
+  <TR> <TD align="right"> bio14 </TD> <TD align="right"> 1306.61 </TD> <TD align="right"> 189.95 </TD> <TD align="right"> 1496.55 </TD> </TR>
+  <TR> <TD align="right"> bio15 </TD> <TD align="right"> 1377.16 </TD> <TD align="right"> 187.30 </TD> <TD align="right"> 1564.46 </TD> </TR>
+  <TR> <TD align="right"> bio16 </TD> <TD align="right"> 1423.43 </TD> <TD align="right"> 200.08 </TD> <TD align="right"> 1623.51 </TD> </TR>
+  <TR> <TD align="right"> bio17 </TD> <TD align="right"> 1321.05 </TD> <TD align="right"> 191.03 </TD> <TD align="right"> 1512.08 </TD> </TR>
+  <TR> <TD align="right"> bio18 </TD> <TD align="right"> 1417.65 </TD> <TD align="right"> 201.31 </TD> <TD align="right"> 1618.96 </TD> </TR>
+  <TR> <TD align="right"> bio19 </TD> <TD align="right"> 1233.77 </TD> <TD align="right"> 196.68 </TD> <TD align="right"> 1430.45 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 1363.23 </TD> <TD align="right"> 180.92 </TD> <TD align="right"> 1544.15 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 1403.98 </TD> <TD align="right"> 203.76 </TD> <TD align="right"> 1607.73 </TD> </TR>
    </TABLE>
 
+
+###
 
 #### Table S3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
 
-<!-- html table generated in R 3.0.2 by xtable 1.7-1 package -->
-<!-- Wed Apr 16 10:48:16 2014 -->
-<TABLE border=0, bgcolor=#989898>
+<TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.80 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 10.68 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.82 </TD> <TD align="right"> 1.90 </TD> <TD align="right"> 10.72 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
-  <TR> <TD align="right"> Long2 </TD> <TD align="right"> 4.38 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.53 </TD> </TR>
-  <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 4.22 </TD> <TD align="right"> 2.19 </TD> <TD align="right"> 6.41 </TD> </TR>
-  <TR> <TD align="right"> conservation </TD> <TD align="right"> 5.99 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.25 </TD> </TR>
-  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 5.52 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.77 </TD> </TR>
-  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 4.94 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.17 </TD> </TR>
-  <TR> <TD align="right"> bio2 </TD> <TD align="right"> 5.91 </TD> <TD align="right"> 2.22 </TD> <TD align="right"> 8.13 </TD> </TR>
+  <TR> <TD align="right"> Long2 </TD> <TD align="right"> 4.36 </TD> <TD align="right"> 2.16 </TD> <TD align="right"> 6.52 </TD> </TR>
+  <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 4.20 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.35 </TD> </TR>
+  <TR> <TD align="right"> conservation </TD> <TD align="right"> 5.95 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 8.20 </TD> </TR>
+  <TR> <TD align="right"> vegetation </TD> <TD align="right"> 5.47 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 7.73 </TD> </TR>
+  <TR> <TD align="right"> bio1 </TD> <TD align="right"> 4.92 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.15 </TD> </TR>
+  <TR> <TD align="right"> bio2 </TD> <TD align="right"> 5.90 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 8.14 </TD> </TR>
   <TR> <TD align="right"> bio3 </TD> <TD align="right"> 4.75 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 6.96 </TD> </TR>
-  <TR> <TD align="right"> bio4 </TD> <TD align="right"> 4.29 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.44 </TD> </TR>
-  <TR> <TD align="right"> bio5 </TD> <TD align="right"> 6.27 </TD> <TD align="right"> 2.27 </TD> <TD align="right"> 8.54 </TD> </TR>
-  <TR> <TD align="right"> bio6 </TD> <TD align="right"> 5.01 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 7.22 </TD> </TR>
-  <TR> <TD align="right"> bio7 </TD> <TD align="right"> 5.13 </TD> <TD align="right"> 2.19 </TD> <TD align="right"> 7.32 </TD> </TR>
-  <TR> <TD align="right"> bio8 </TD> <TD align="right"> 4.72 </TD> <TD align="right"> 2.16 </TD> <TD align="right"> 6.88 </TD> </TR>
-  <TR> <TD align="right"> bio9 </TD> <TD align="right"> 5.90 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 8.15 </TD> </TR>
-  <TR> <TD align="right"> bio10 </TD> <TD align="right"> 5.96 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.22 </TD> </TR>
+  <TR> <TD align="right"> bio4 </TD> <TD align="right"> 4.32 </TD> <TD align="right"> 2.16 </TD> <TD align="right"> 6.49 </TD> </TR>
+  <TR> <TD align="right"> bio5 </TD> <TD align="right"> 6.28 </TD> <TD align="right"> 2.27 </TD> <TD align="right"> 8.55 </TD> </TR>
+  <TR> <TD align="right"> bio6 </TD> <TD align="right"> 5.06 </TD> <TD align="right"> 2.22 </TD> <TD align="right"> 7.28 </TD> </TR>
+  <TR> <TD align="right"> bio7 </TD> <TD align="right"> 5.13 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 7.30 </TD> </TR>
+  <TR> <TD align="right"> bio8 </TD> <TD align="right"> 4.71 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.87 </TD> </TR>
+  <TR> <TD align="right"> bio9 </TD> <TD align="right"> 5.85 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.11 </TD> </TR>
+  <TR> <TD align="right"> bio10 </TD> <TD align="right"> 5.99 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 8.24 </TD> </TR>
   <TR> <TD align="right"> bio11 </TD> <TD align="right"> 4.46 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 6.67 </TD> </TR>
-  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 5.78 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 8.01 </TD> </TR>
-  <TR> <TD align="right"> bio13 </TD> <TD align="right"> 5.53 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 7.76 </TD> </TR>
-  <TR> <TD align="right"> bio14 </TD> <TD align="right"> 5.32 </TD> <TD align="right"> 2.22 </TD> <TD align="right"> 7.54 </TD> </TR>
-  <TR> <TD align="right"> bio15 </TD> <TD align="right"> 5.10 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 7.35 </TD> </TR>
-  <TR> <TD align="right"> bio16 </TD> <TD align="right"> 5.61 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.86 </TD> </TR>
-  <TR> <TD align="right"> bio17 </TD> <TD align="right"> 5.37 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.60 </TD> </TR>
-  <TR> <TD align="right"> bio18 </TD> <TD align="right"> 5.83 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.09 </TD> </TR>
-  <TR> <TD align="right"> bio19 </TD> <TD align="right"> 5.75 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.98 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 4.65 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 6.84 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 5.76 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 8.00 </TD> </TR>
+  <TR> <TD align="right"> bio12 </TD> <TD align="right"> 5.78 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 8.02 </TD> </TR>
+  <TR> <TD align="right"> bio13 </TD> <TD align="right"> 5.54 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 7.78 </TD> </TR>
+  <TR> <TD align="right"> bio14 </TD> <TD align="right"> 5.29 </TD> <TD align="right"> 2.21 </TD> <TD align="right"> 7.51 </TD> </TR>
+  <TR> <TD align="right"> bio15 </TD> <TD align="right"> 5.08 </TD> <TD align="right"> 2.24 </TD> <TD align="right"> 7.33 </TD> </TR>
+  <TR> <TD align="right"> bio16 </TD> <TD align="right"> 5.59 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 7.84 </TD> </TR>
+  <TR> <TD align="right"> bio17 </TD> <TD align="right"> 5.35 </TD> <TD align="right"> 2.22 </TD> <TD align="right"> 7.57 </TD> </TR>
+  <TR> <TD align="right"> bio18 </TD> <TD align="right"> 5.84 </TD> <TD align="right"> 2.27 </TD> <TD align="right"> 8.11 </TD> </TR>
+  <TR> <TD align="right"> bio19 </TD> <TD align="right"> 5.66 </TD> <TD align="right"> 2.23 </TD> <TD align="right"> 7.89 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 4.64 </TD> <TD align="right"> 2.20 </TD> <TD align="right"> 6.84 </TD> </TR>
+  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 5.77 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.02 </TD> </TR>
    </TABLE>
 
 
+###
+
 ----------------------------
-
-
-
-
-
-
-![plot of chunk plot logis hill](figure/plot logis hill.png) 
-
-#### Fig S6.
-
-![plot of chunk plot logis rich and srich](figure/plot logis rich and srich.png) 
-
-#### Fig S7.
-
-
-
-### Figures comparing the models
-
-
-
-
-### Fig sp comp
-
-
-
-
-# Comparison of the observed and predicted by the models
-
-
-
-
 
 
 

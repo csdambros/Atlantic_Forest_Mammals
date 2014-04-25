@@ -1,7 +1,20 @@
+---
+output: html_document
+---
+
+
 Comparing dispersal, environmental and mid-domain effects on species distribution
 ============================
 
 `r rm(list=ls())`
+
+```{r Markdownopt, results='hide',warning=FALSE,message=FALSE,echo=FALSE}
+
+table.type="html"
+
+
+```
+
 
 ##### By CSDambros
 
@@ -21,6 +34,7 @@ require(rgdal)
 require(maptools)
 require(vegan)
 require(xtable)
+require(knitr)
 
 source("anetwork.R")
 source("MidD.R")
@@ -31,6 +45,10 @@ Custom.Palette<- colorRampPalette(colors=c('lightblue','yellow','red'),bias=1,sp
 #color.select<-function(x){Custom.Palette(101)[1+round(((x-min(x,na.rm=T))/diff(range(x,na.rm=TRUE)))*100)]}
 
 color.select<-function(x,ref=x,palette=topo.colors){x[x<min(ref,na.rm=TRUE)]<-min(ref,na.rm=TRUE);x[x>max(ref,na.rm=TRUE)]<-max(ref,na.rm=TRUE);palette(101)[1+round(((x-min(ref,na.rm=TRUE))/diff(range(ref,na.rm=TRUE)))*100)]}
+
+
+# Function to calculate the Nagelkerke r2
+Nagr2<-function(model){(1 - exp((sum(model$residuals^2) - sum((model$residuals+model$fitted.values)^2))/nrow(model$model)))/(1 - exp(-sum((model$residuals+model$fitted.values)^2)/nrow(model$model)))}
 
 
 op<-par(no.readonly=TRUE)
@@ -50,8 +68,8 @@ biomes<-readShapeSpatial(paste(folder,"bioma.shp",sep=""))
 #### Data collection
 
   We compiled a database based on the literature in which diverse authors have sampled small mammals along the AF (Appendix S1 in Supporting Information). We have used Google @ search tool for sampling articles, and the main keywords used in combination were “small mammal”, “marsupial”, “rodent”, “community”, “composition”, “richness”, “diversity”, and “Atlantic Forest”. Unpublished data sampled by NCC was also included (Appendix S1). There was some variation in the area covered by each surveyed study (see Appendix S1), but we have established a minimum of sampling effort for a given article to be accepted in our database: at least 1000 trap-nights, 6 months of field work, and use of wire type and/or Sherman live-traps installed on the ground or understory level of the forest. Besides that, and for independence assumptions, we have chosen surveyed areas distant at least 10 km from each other; most of the field surveys available in the literature sampled only one geographical location under this condition. From each selected survey, we obtained local species composition and abundance data when available. 
-
-  Data on conservation were taken directly from information available on the articles consulted, and classified as categories of forest conservation (degrees 1 to 5), where primary conserved forest means 5 and disturbed secondary forest, including with clearings, means 1. Physiognomy data were taken either from information available on the area descriptions and from general sources such as (Veloso et al., 1991). We compiled the 19 environmental variables available in Bioclim (www.worldclim.org/bioclim) in a scale of 2.5 arc minutes: annual mean temperature (1), mean diurnal range (2), isothermality (3), temperature seasonality (4), maximum and minimum temperature of the warmest and coldest months (5 and 6), temperature annual range (7), mean temperature of the wettest, driest, warmest and coldest quarters (8-11), annual precipitation (12), precipitation of the wettest and driest months (13 and 14), precipitation seasonality (15), and precipitation of the wettest, direst, warmest and coldest quarters (16-19).  
+  We compiled the 19 environmental variables available in Bioclim (www.worldclim.org/bioclim) in a scale of 2.5 arc minutes: annual mean temperature (1), mean diurnal range (2), isothermality (3), temperature seasonality (4), maximum and minimum temperature of the warmest and coldest months (5 and 6), temperature annual range (7), mean temperature of the wettest, driest, warmest and coldest quarters (8-11), annual precipitation (12), precipitation of the wettest and driest months (13 and 14), precipitation seasonality (15), and precipitation of the wettest, direst, warmest and coldest quarters (16-19). Because most of the variables are correlated to each other, we used just annual mean temperature (bio1) and precipitation (bio2) as predictor variables in our main models. We present the results using the remaining variables as supplements (see below). 
+  Data on conservation were taken directly from information available on the articles consulted, and classified as categories of forest conservation (degrees 1 to 5), where primary conserved forest means 5 and disturbed secondary forest, including with clearings, means 1. Vegetation type information was taken either from information available on the area descriptions and from general sources such as (Veloso et al., 1991). Because the poor classification of conservation and vegetation types, and to avoid overfitting the regression models, we present the results of these variables only as alternative models in the supplements.
 
 
 ```{r Importing data,message=FALSE,echo=FALSE,warning=FALSE}
@@ -71,7 +89,7 @@ wclim.clipped<-crop(wclim,extent(-70,-30,-35,5))
 
 #### Analysis
 
-  The environmental predictor variables were used as predictors of the species diversity and included in simulation models (see below). Most of the 19 WorldClim variables are correlated to each other, so we grouped these variables in two Principal Component Axes (PCA1 and PCA2) (But see Supplementary material S4 for individual comparisons). We standardized all the variables previously to the analyses. We preferred to use the described environmental variables as predictors and excluded the highly correlated variables of latitude and longitude. We used them to calculate the pairwise distance among sampling units and the linear distance of each sampling site to the coast.
+  The environmental predictor variables were used as predictors of the species diversity and included in simulation models (see below). We standardized the environmental variables previously to the analyses. We preferred to use the described environmental variables as predictors and excluded the highly correlated variables of latitude and longitude. We used them to calculate the pairwise distance among sampling units.
 
 
 ```{r Transforming data and extract variables, results="hide",message=FALSE,echo=FALSE,warning=FALSE}
@@ -145,7 +163,7 @@ environment.AF.2d<-unique(data.frame(AF.Long2=AF.Long2,AF.Lat2=AF.Lat2))
 
 ```
 
-  We analyzed the data using the original local sampling units and grouping the original data points in 26 2x2 degrees quadrants (Fig. 1). Most localities were surveyed by a single study, then most of the sampling points represent a single study (see data collection). We used the number of species encountered in each locality (S), and the similarity in species composition as response variables.
+  We analyzed the data using the original local sampling units and grouping the original data points in 26 2x2 degrees grid cells (Fig. 1). Most localities were surveyed by a single study, then most of the sampling points represent a single study (see data collection). We used the number of species encountered in each locality (S), and the similarity in species composition as response variables.
   We assessed the similarity in species composition by calculating the Jaccard similarity index among all pairs of samples. The matrix of similarities was summarized using a Principal Coordinates Analysis (PCoA). We used only the first two ordination axes because all axes in higher dimensions captured alone less than 10% of the variation from the similarity matrix.
 
 
@@ -185,7 +203,10 @@ environment[,paste("pcoa.jac.",1:3,sep="")]<-cmdscale(similarity.jac.loc,k=3)
 environment<-data.frame(environment,std=decostand(environment,"standardize"))
 
 geodist.loc<-dist(environment[,c("Lat","Long")])
-envdist.loc<-dist(environment[grep("std",colnames(environment))][3:24])
+#envdist.loc<-dist(environment[grep("std",colnames(environment))][c(6,17)]) #using just bio1 and bio12
+
+envdist.loc<-dist(environment[grep("std",colnames(environment))][c(30,31)])
+habdist.loc<-dist(environment[grep("std",colnames(environment))][4])
 
 ```
 
@@ -226,12 +247,12 @@ environment.2d<-data.frame(environment.2d,std=decostand(environment.2d,"standard
 environment.2d$matchin.AF.2d<-match(paste(environment.2d[,1],environment.2d[,2]),paste(environment.AF.2d[,1],environment.AF.2d[,2]))
 
 geodist.2d<-dist(environment.2d[,c("Lat2","Long2")])
-envdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][3:24])
+envdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][c(30,31)]) #Using just PCA1 and 2 of wclim var
+habdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][4]) #Using just PCA1 and 2 of wclim var
 
 ```
 
-```{r Fig. 1 Study site, fig.width=8,fig.height=8,echo=FALSE,results='hide',message=FALSE,warning=FALSE}
-
+```{r Fig_1_Study_site, fig.width=8,fig.height=8,echo=FALSE,results='hide',message=FALSE,warning=FALSE}
 
 par(xpd=NA)
 
@@ -241,7 +262,7 @@ plot(biomes[6,],col='lightblue',border="0",xlim=c(-45,-38))
 
 #plot(subset(wclim.clipped,"bio1"),add=T)
 plot(brazil,add=T,lwd=2)
-#plot(biomes[6,],add=T,col=adjustcolor(4,alpha=.2),border=0)
+#plot(biomes[6,],add=T,col=adjustcolor(4,alpha=.2),border=1)
 
 rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,col=adjustcolor("darkgrey",alpha=.1),border=adjustcolor("darkgrey",alpha=1))
 
@@ -270,19 +291,20 @@ text(-28,-4,"Area (ha)",cex=2)
 #text(environment.2d$Long2,environment.2d$Lat2,rowSums(species.2d))
 
 ```
-#### Fig. 1. Map of the Atlantic Forest (AF; blue shade) showing the orinal sampling points (red circles) and the quadrants encompassing the entire AF. The size of the circles represent the size o the original sampling area in the log scale. Green shade represent the quadrants where small mammal data was available. 
+#### Fig. 1. Map of the Atlantic Forest (AF; blue shade) showing the orinal sampling points (red circles) and the grid cells encompassing the entire AF. The size of the circles represent the size o the original sampling area in the log scale. Green shade represent the grid cells where small mammal data was available. 
 
+####
 
-  For estimating the influence of dispersal limitation on species local diversity (S) and turnover (Jaccard index; PCoA1 and PCoA2), we simulated the AF as a network of interconnected quadrants where the species or individuals could move between adjacent quadrants (Fig. 2). We used two models to recreate the species distribution under dispersal alone: the Mid-Domain spreading-dye model (Colwell and Hurtt 1994; Colwell and Lees 2000), and the analytical neutral approach borrowed from the population genetics (Nagylaki, 1980) and presented by Economo & Keitt (2008) for community ecology. These models were created just using the grouped data in quadrants because of the completeness of data, and due to computational limitation.
-  In the Mid-Domain spreading dye model, we recorded the number of quadrants occupied by each small mammal species. For each species, one of the 26 quadrants was randomly selected and the species occurrence was spread from the selected quadrant to neighboring quadrants until the original number of quadrants was occupied. This procedure was repeated 10,000 times for the `r ncol(species.2d)` species. Each quadrant had up to eight neighbors (Moore neighborhood), and the model was bounded by the domain where actual small mammal data was recorded (26 quadrants).
+  For estimating the influence of dispersal limitation on species local diversity (S) and turnover (Jaccard index; PCoA1 and PCoA2), we simulated the AF as a network of interconnected grid cells where the species or individuals could move between adjacent grid cells (Fig. S2). We used two models to recreate the species distribution under dispersal alone: the Mid-Domain spreading-dye model (Colwell and Hurtt 1994; Colwell and Lees 2000), and the analytical neutral approach borrowed from the population genetics (Nagylaki, 1980) and presented by Economo & Keitt (2008) for community ecology. These models were created just using the grouped data in grid cells because of the completeness of data, and due to computational limitation.
+  In the Mid-Domain spreading dye model, we recorded the number of grid cells occupied by each small mammal species. For each species, one of the 26 grid cells was randomly selected and the species occurrence was spread from the selected quadrant to neighboring grid cells until the original number of grid cells was occupied. This procedure was repeated 10,000 times for the `r ncol(species.2d)` species. Each quadrant had up to eight neighbors (Moore neighborhood; Fig. S2), and the model was bounded by the domain where actual small mammal data was recorded (26 grid cells).
 
 
 ```{r Connectivity 26 and 56, echo=FALSE,message=FALSE,results='hide',warning=FALSE}
 
-#Create a matrix of euclidean distances between all pairs of quadrants
+#Create a matrix of euclidean distances between all pairs of grid cells
 dist.AF.2d<-as.matrix(dist(environment.AF.2d[,1:2]))
 
-#Set as 1 the migration rate when the distance is below 4 and above 2 degrees (all adjacent quadrants, including diagonal but not self loops)
+#Set as 1 the migration rate when the distance is below 4 and above 2 degrees (all adjacent grid cells, including diagonal but not self loops)
 
 connect.AF.2d<-ifelse(dist.AF.2d<4&dist.AF.2d>0,1,0)
 connect.2d<-connect.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]
@@ -323,47 +345,10 @@ environment.2d[,paste("pcoa.MidD.jac.",1:3,sep="")]<-(
 
 ```
 
-  In the neutral model, the whole area comprising the AF was divided in 56 2x2 degrees quadrants from which 26 had small mammal data available (Fig. 1). The model started with a single species occupying all the 56 quadrants. In each generation, new species were added in each quadrant by point speciation with rate v, set the same for all quadrants (see Economo & Keitt (2010) and Muneepeerakul et al. (2008) for more details and other uses). v represents the probability of an individual to become a new species but could also represent the addition of new species by immigration from a larger species pool outside the AF (eg. the Cerrado or Amazonian forests). To recreate the dispersal of individuals, we determined that a quadrant could just be colonized by a neighbor (Moore neighborhood), and that all quadrants had the same migration rate (parameter m). The local community size (number of individuals) was set the same for all quadrants (N = 100). The model was run for multiple generations, until the diversity within (PIE and HillPIE) and among quadrants (Morisita-Horn similarity) reached a steady-state (usually more than 30,000 generations).
+  In the neutral model, the whole area comprising the AF was divided in 56 2x2 degrees grid cells from which 26 had small mammal data available (Fig. 1). The model started with a single species occupying all the 56 grid cells. In each generation, new species were added in each quadrant by point speciation with rate v, set the same for all grid cells (see Economo & Keitt (2010) and Muneepeerakul et al. (2008) for more details and other uses). v represents the probability of an individual to become a new species but could also represent the addition of new species by immigration from a larger species pool outside the AF (eg. the Cerrado or Amazonian forests). To recreate the dispersal of individuals, we determined that a quadrant could just be colonized by a neighbor (Moore neighborhood; Fig S2), and that all grid cells had the same migration rate (parameter m). The local community size (number of individuals) was set the same for all grid cells (N = 100). The model was run for multiple generations, until the diversity within (PIE and HillPIE) and among grid cells (Morisita-Horn similarity) reached a steady-state (usually more than 30,000 generations).
 
 
-```{r Fig. 2 - Connectivity map 26 and 56, echo=FALSE, fig.width=16,fig.height=8,results='hide',warning=FALSE}
-
-par(mfrow=c(1,2))
-
-plot(brazil,border="darkgrey")
-rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,border=adjustcolor("darkgrey",alpha=1))
-
-points(environment.2d$Long2,environment.2d$Lat2,pch=21,col=0,bg=2)
-
-nnodes.2d<-nrow(environment.2d)
-
-segments(matrix(environment.2d$Long2,nnodes.2d,nnodes.2d),
-         matrix(environment.2d$Lat2,nnodes.2d,nnodes.2d),
-         t(matrix(environment.2d$Long2,nnodes.2d,nnodes.2d)),
-         t(matrix(environment.2d$Lat2,nnodes.2d,nnodes.2d)),col=connect.2d*2)
-
-title("A)",cex.main=3,adj=0)
-
-plot(brazil,border="darkgrey")
-rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,border=adjustcolor("darkgrey",alpha=1))
-
-points(environment.AF.2d$AF.Long2,environment.AF.2d$AF.Lat2,pch=21,col=0,bg=2)
-
-nnodes.AF.2d<-nrow(environment.AF.2d)
-
-segments(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d),
-         matrix(environment.AF.2d$AF.Lat2,nnodes.AF.2d,nnodes.AF.2d),
-         t(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d)),
-         t(matrix(environment.AF.2d$AF.Lat2,nnodes.AF.2d,nnodes.AF.2d)),col=connect.AF.2d*2)
-
-title("B)",cex.main=3,adj=0)
-
-par(op)
-```
-#### Fig. 2. Map representing the connectivity of quadrants used to simulate the individual dispersal in the Mid Domain (A) and neutral (B) models.
-
-
-  Differently from the Mid-domain model, the values of m, v, and N were initially set independently of the observed data. Because different combinations of these parameters can create the same patterns of species distribution (Etienne 2006?; Economo and Keitt 2010), and because estimates for these parameters based on empirical data are not available, we did not attempt to estimate realistic parameters, but focused on the general patterns that the model could produce (see discussion for implications of this procedure). N was arbitrarily defined as 100 individuals for all quadrants, and m and v were used as knobs to best fit the model to the observed similarity in species composition. These parameters were simultaneously tunned using the L-BFSG-S optimization algorithm. In summary, m and v were adjusted to minimize the differences between the predictions of the neutral model to the observed data, giving the best possible explanation of dispersal to the observed data (this procedure is conceptually analog to a regression analysis using maximum likelihood optimization). Because the number of individuals per quadrant was kept constant during the optimization, the differences in diversity were due to the location of a quadrant in the network and the number of neighbor quadrants, but not affected by the differences in abundance.
+  Differently from the Mid-domain model, the values of m, v, and N were initially set independently of the observed data. Because different combinations of these parameters can create the same patterns of species distribution (Etienne 2006?; Economo and Keitt 2010), and because estimates for these parameters based on empirical data are not available, we did not attempt to estimate realistic parameters, but focused on the general patterns that the model could produce (see discussion for implications of this procedure). N was arbitrarily defined as 100 individuals for all grid cells, and m and v were used as knobs to best fit the model to the observed similarity in species composition. These parameters were simultaneously tunned using the L-BFSG-S optimization algorithm. In summary, m and v were adjusted to minimize the differences between the predictions of the neutral model to the observed data, giving the best possible explanation of dispersal to the observed data (this procedure is conceptually analog to a regression analysis using maximum likelihood optimization). Because the number of individuals per quadrant was kept constant during the optimization, the differences in diversity were due to the location of a quadrant in the network and the number of neighbor grid cells, but not affected by the differences in abundance.
 
 ```{r set the number of generations to run, echo=FALSE,results='hide',warning=FALSE,message=FALSE}
 
@@ -439,8 +424,8 @@ environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.",1:3,sep="")]<-#
 
 ```
 
-  The model proposed by Economo and Keitt (2008) is probabilistic and does not require the simulation of each individual in the metacommunity, being less computationally intensive. This model allowed us to investigate thoroughly the parameter space of m and v to find the best explanatory model for the observed data. However, because the model is based on probabilities, it does not allow one to calculate statistics based on the raw data (eg. the Jaccard similarity index). Because not all original studies recorded species abundances, we compared the Morisita-Horn from the neutral model and the Jaccard indexis from the data for optimization. These indexes are usulally highly correlated and we believe this procedure did not have profound effects on the analysis (CITATION - CHAO?). 
-  To calculate the Jaccard similarity index from the neutral model, We  simulated each individual in the metacommunity using the previously optimized parameters. We run an initial buffer of 30,000 generations. Then the model was run for additional 1000 generations 5,000 times, representing 5,000 simulations. The mean of all the 5,000 simulations was used to calculate the remain summary statistics (see below). The correlation between the probabilistic and the simulated model was 99.98% when comparing the Morisita-Horn index of pairwise similarity, so we believe the simulations run long enough to capture the final predictions of the neutral model.
+  The model proposed by Economo and Keitt (2008) is probabilistic and does not require the simulation of each individual in the metacommunity, being less computationally intensive. This model allowed us to investigate thoroughly the parameter space of m and v to find the best explanatory model to the observed data. However, because the model is based on probabilities, it does not allow one to calculate statistics based on the raw data (eg. the Jaccard similarity index). Because not all original studies recorded species abundances, we compared the Morisita-Horn similarity matrix from the neutral model with the observed Jaccard similarity for optimization. These indexes are usulally highly correlated (Chao et al., 2006; Krasnov et al., 2005) and we believe this procedure did not have profound effects on the neutral fit. 
+  To calculate the Jaccard similarity index from the neutral model, we  simulated each individual in the metacommunity using the previously optimized parameters. We run an initial buffer of 30,000 generations. Then the model was run for additional 1000 generations 5,000 times, representing 5,000 simulations. The mean of all the 5,000 simulations was used to calculate the remain summary statistics (see below). The correlation between the probabilistic and the simulated model was 99.98% when comparing the Morisita-Horn index of pairwise similarity, so we believe the simulations run long enough to capture the final predictions of the neutral model.
 
 ```{r neutral_theory_real_simulation, results='hide',message=FALSE,echo=FALSE}
 
@@ -578,11 +563,7 @@ probs.2d<-lapply(glm.coef.2d,function(x){(exp(x[[1]][,1]+x[[1]][,2]%*%t(x[[2]]))
 We then summed the probability of occurrence generated by the logistic model for each species to estimate the expected number of species in each quadrant:
   
 $$
-\begin{equation}
-\begin{split}
 \hat S_i = \sum_{j=1}^{S}{\frac{e^{X_i\beta_j}}{1+e^{X_i\beta_j}}}
-\end{split}
-\end{equation}
 $$
   
 Where $X_i$ denotes a vector of the environmental variables in the quadrant $i$, and $\beta_j$ is a vector with the coefficients from the logistic regression for the species $j$.
@@ -600,7 +581,7 @@ environment.AF.2d[environment.2d$matchin.AF.2d,colnames(rich.logis)]<-rich.logis
 
 ```
 
-To calculate the raw statistics based on these probabilities, we simulated the distribution of each species based on the probabilities of occurrence generated by the logistic curve, similarly to what was done for the neutral model. For each species, we counted the number of quadrants where the species was observed. Thus we spread the species into the map based on its probability of occurrence until the number of quadrants occupied in the simulation matched the number observed. This allowed each species to vary independently, and to the relationship between the environmental variables and the response variables (eg. number of species) to be non-linear. Differently from the non-linearities that could be used in other statistical tests, such as Generalized additive models, the deterministic part of this model has an underlying mechanistic function (logistic).
+To calculate the raw statistics based on these probabilities, we simulated the distribution of each species based on the probabilities of occurrence generated by the logistic curve, similarly to what was done for the neutral model. For each species, we counted the number of grid cells where the species was observed. Thus we spread the species into the map based on its probability of occurrence until the number of grid cells occupied in the simulation matched the number observed. This allowed each species to vary independently, and to the relationship between the environmental variables and the response variables (eg. number of species) to be non-linear. Differently from the non-linearities that could be used in other statistical tests, such as Generalized additive models, the deterministic part of this model has an underlying mechanistic function (logistic).
 
 
 ```{r logistic simulation and extract predictions, echo=FALSE,results='hide',warning=FALSE}
@@ -728,84 +709,168 @@ s.mse.logis.jac[i] = s.bias.sq.logis.jac[i] + s.var.logis.jac[i]
 
 ```
 
-Additionally, we tested for the direct association of the response variables against the environmental predictors. For this test, we used a linear regression model (OLS) starting with all environmental predictors in the model (conservation, vegetation, PCAbclim1, PCAbclim2). For the grouped data, we created three sets of models: (1) Using the neutral and Mid-domain predictions as a predictor variables along with the environmental variables in the model, as suggested by Letten et al. (2013); (2) using the neutral and Mid-domain predictions as a null hypothesis and testing for association of residuals with the environmental variables; and (3) a regression with only the environmental variables as predictors. We used both the raw environmental data and the prediction from the logistic simulation as predictor variables. This gave a total of 10 models (Table S1;S3). The models were compared by their AIC values.
-  
+Additionally, we tested for the direct association of the response variables against the environmental predictors. For this test, we used a linear regression model (OLS) starting with the environmental predictors in the model (bio1 and bio2). For the grouped data, we created three sets of models: (1) Using just the environmental variables as predictors; (2) using just the neutral and Mid-domain models as predictors; (3) using the neutral and Mid-domain predictions as a predictor along with the environmental variables in the model, as suggested by Letten et al. (2013); and (4) using the neutral and Mid-domain predictions as null hypotheses, and testing for association of residuals with the environmental variables. We used both the raw environmental data and the prediction from the logistic simulations as predictor variables. This gave a total of 10 models (REnv; Neutral; MidD; REnv+Neutral; REnv+MidD; LEnv; REnv+Neutral; REnv+MidD; ResNeutral+Env;  ResMidD+Env; Table 2; Table 4). We assumed normality in the residuals of all models. The models were compared by their AIC values.
+  We set the regression coefficients to 1 for the neutal, Mid Domain, and logistic simulation predictors, so these parameter was not allowed to vary. We did not include an intercept in the models using only these variables as predictors as well, then there were no extra coefficients to be estimated besides the standard deviation in the residuals (one extra parameter).
   
 ```{r regresions local scale, echo=FALSE, results='hide',warning=FALSE}
 
-MR1.1.loc<-lm(rich~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment,"standardize"))
+library(vegan)
 
-MC1.1.loc<-lm(pcoa.jac.1~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment,"standardize"))
+MR1.1.loc<-glm(rich~PCA.wclim.1+PCA.wclim.1,data=decostand(environment,"standardize"))
 
-MC2.1.loc<-lm(pcoa.jac.2~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment,"standardize"))
-#summary(MR1.1.loc)
-#summary(MC1.1.loc)
-#summary(MC2.1.loc)
+MC1.1.loc<-glm(pcoa.jac.1~PCA.wclim.1+PCA.wclim.1,data=decostand(environment,"standardize"))
+
+MC2.1.loc<-glm(pcoa.jac.2~PCA.wclim.1+PCA.wclim.1,data=decostand(environment,"standardize"))
+
+MR1.11.loc<-glm(rich~conservation,data=decostand(environment,"standardize"))
+
+MC1.11.loc<-glm(pcoa.jac.1~conservation,data=decostand(environment,"standardize"))
+
+MC2.11.loc<-glm(pcoa.jac.2~conservation,data=decostand(environment,"standardize"))
+
 
 ```
 
   
 ```{r regressions, echo=FALSE, results='hide',warning=FALSE}
+# 
+# MR1.1<-glm(rich~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MR1.1<-glm(rich~std.conservation,data=decostand(environment.AF.2d,"standardize"))
+# 
+# summary(MR1.1)
+# 
+# MR1.2<-update(MR1.1,~.+rich.neutral.mean)
+# MR1.3<-update(MR1.1,~.+rich.MidD.mean)
+# 
+# MR1.4<-update(MR1.1,~1+rich.neutral.mean)
+# MR1.5<-update(MR1.1,~1+rich.MidD.mean)
+# 
+# MR1.6<-glm(MR1.4$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+# 
+# MR1.7<-glm(MR1.5$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+# 
+# MR1.8<-glm(rich~rich.logis.conservation+rich.logis.vegetation+rich.logis.PCA.wclim.1+rich.logis.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MR1.9<-update(MR1.8,~.+rich.neutral.mean)
+# MR1.10<-update(MR1.8,~.+rich.MidD.mean)
+# 
+# ##### Composition
+# 
+# MC1.1<-glm(pcoa.jac.1~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MR1.1<-glm(rich~std.bio1,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MC1.1<-glm(pcoa.jac.1~std.bio1+std.bio12,data=decostand(environment.AF.2d,"standardize"))
+# 
+# 
+# MC1.2<-update(MC1.1,~.+pcoa.jac.neutral.1) # Change direction
+# MC1.3<-update(MC1.1,~.+pcoa.MidD.jac.1)
+# 
+# MC1.4<-update(MC1.1,~1+pcoa.jac.neutral.1) # Change direction
+# MC1.5<-update(MC1.1,~1+pcoa.MidD.jac.1)
+# 
+# MC1.6<-glm(MC1.4$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+# 
+# MC1.7<-glm(MC1.5$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+# 
+# MC1.8<-glm(pcoa.jac.1~pcoa.logis.jac.conservation.1+pcoa.logis.jac.vegetation.1+pcoa.logis.jac.PCA.wclim.1.1+pcoa.logis.jac.PCA.wclim.2.1,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MC1.9<-update(MC1.8,~.+pcoa.jac.neutral.1)
+# MC1.10<-update(MC1.8,~.+pcoa.MidD.jac.1)
+# 
+# 
+# #####
+# 
+# MC2.1<-glm(pcoa.jac.2~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MC2.2<-update(MC2.1,~.+pcoa.jac.neutral.2) # Change direction
+# MC2.3<-update(MC2.1,~.+pcoa.MidD.jac.2)
+# 
+# MC2.4<-update(MC2.1,~1+pcoa.jac.neutral.2) # Change direction
+# MC2.5<-update(MC2.1,~1+pcoa.MidD.jac.2)
+# 
+# MC2.6<-glm(MC2.4$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+# 
+# MC2.7<-glm(MC2.5$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+# 
+# MC2.8<-glm(pcoa.jac.2~pcoa.logis.jac.conservation.2+pcoa.logis.jac.vegetation.2+pcoa.logis.jac.PCA.wclim.1.2+pcoa.logis.jac.PCA.wclim.2.2,data=decostand(environment.AF.2d,"standardize"))
+# 
+# MC2.9<-update(MC2.8,~.+pcoa.jac.neutral.2)
+# MC2.10<-update(MC2.8,~.+pcoa.MidD.jac.2)
 
-MR1.1<-lm(rich~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
 
-MR1.2<-update(MR1.1,~.+rich.neutral.mean)
-MR1.3<-update(MR1.1,~.+rich.MidD.mean)
+# just using bio1 and bio2
+#########################################
 
-MR1.4<-update(MR1.1,~1+rich.neutral.mean)
-MR1.5<-update(MR1.1,~1+rich.MidD.mean)
+MR1.1<-glm(rich~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
 
-MR1.6<-lm(MR1.4$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+MR1.2<-update(MR1.1,~.+offset(1*rich.neutral.mean)) #Fixed slope for neutral and mid-d
+MR1.3<-update(MR1.1,~.+offset(1*rich.MidD.mean))
 
-MR1.7<-lm(MR1.5$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+MR1.4<-update(MR1.1,~0+offset(1*rich.neutral.mean)) #No intercept for these models
+MR1.5<-update(MR1.1,~0+offset(1*rich.MidD.mean))
 
-MR1.8<-lm(rich~rich.logis.conservation+rich.logis.vegetation+rich.logis.PCA.wclim.1+rich.logis.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MR1.6<-glm(MR1.4$residuals[environment.AF.2d$Lat2!=100]~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
+MR1.7<-glm(MR1.5$residuals[environment.AF.2d$Lat2!=100]~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
 
-MR1.9<-update(MR1.8,~1+rich.neutral.mean)
-MR1.10<-update(MR1.8,~1+rich.MidD.mean)
+MR1.8<-glm(rich~0+rich.logis.bio1+rich.logis.bio12,data=decostand(environment.AF.2d,"standardize"))
+
+#MR1.8<-glm(rich~0+offset(.5*rich.logis.bio1)+offset(.5*rich.logis.bio12),data=decostand(environment.AF.2d,"standardize"))
+
+#cor(MR1.1$fitted.values+MR1.1$residuals,MR1.1$fitted.values)
+
+MR1.9<-update(MR1.8,~.+offset(1*rich.neutral.mean))
+MR1.10<-update(MR1.8,~.+offset(1*rich.MidD.mean))
 
 ##### Composition
 
-MC1.1<-lm(pcoa.jac.1~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
 
-MC1.2<-update(MC1.1,~.+pcoa.jac.neutral.1) # Change direction
-MC1.3<-update(MC1.1,~.+pcoa.MidD.jac.1)
+MC1.1<-glm(pcoa.jac.1~std.bio1+std.bio12,data=decostand(environment.AF.2d,"standardize"))
 
-MC1.4<-update(MC1.1,~1+pcoa.jac.neutral.1) # Change direction
-MC1.5<-update(MC1.1,~1+pcoa.MidD.jac.1)
+MC1.2<-update(MC1.1,~.+offset(-1*pcoa.jac.neutral.1)) # Change direction
+MC1.3<-update(MC1.1,~.+offset(1*pcoa.MidD.jac.1))
 
-MC1.6<-lm(MC1.4$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+MC1.4<-update(MC1.1,~0+offset(-1*pcoa.jac.neutral.1)) # Change direction
+MC1.5<-update(MC1.1,~0+offset(1*pcoa.MidD.jac.1))
 
-MC1.7<-lm(MC1.5$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+MC1.6<-glm(MC1.4$residuals[environment.AF.2d$Lat2!=100]~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
+MC1.7<-glm(MC1.5$residuals[environment.AF.2d$Lat2!=100]~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
 
-MC1.8<-lm(pcoa.jac.1~pcoa.logis.jac.conservation.1+pcoa.logis.jac.vegetation.1+pcoa.logis.jac.PCA.wclim.1.1+pcoa.logis.jac.PCA.wclim.2.1,data=decostand(environment.AF.2d,"standardize"))
+MC1.8<-glm(pcoa.jac.1~0+pcoa.logis.jac.bio1.1+pcoa.logis.jac.bio2.1,data=decostand(environment.AF.2d,"standardize"))
+#MC1.8<-glm(pcoa.jac.1~0+offset(.5*pcoa.logis.jac.bio1.1)+offset(.5*pcoa.logis.jac.bio2.1),data=decostand(environment.AF.2d,"standardize"))
 
-MC1.9<-update(MC1.8,~1+pcoa.jac.neutral.1)
-MC1.10<-update(MC1.8,~1+pcoa.MidD.jac.1)
+#cor(MC1.8$fitted.values+MC1.8$residuals,MC1.8$fitted.values)^2
+#cor(MC1.1$fitted.values+MC1.1$residuals,MC1.1$fitted.values)^2
+
+MC1.9<-update(MC1.8,~.+offset(-1*pcoa.jac.neutral.1))
+MC1.10<-update(MC1.8,~.+offset(1*pcoa.MidD.jac.1))
 
 
 #####
 
-MC2.1<-lm(pcoa.jac.2~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MC2.1<-glm(pcoa.jac.2~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
 
-MC2.2<-update(MC2.1,~.+pcoa.jac.neutral.2) # Change direction
-MC2.3<-update(MC2.1,~.+pcoa.MidD.jac.2)
+MC2.2<-update(MC2.1,~.+offset(1*pcoa.jac.neutral.2)) # Change direction
+MC2.3<-update(MC2.1,~.+offset(1*pcoa.MidD.jac.2))
 
-MC2.4<-update(MC2.1,~1+pcoa.jac.neutral.2) # Change direction
-MC2.5<-update(MC2.1,~1+pcoa.MidD.jac.2)
+MC2.4<-update(MC2.1,~0+offset(1*pcoa.jac.neutral.2)) # Change direction
+MC2.5<-update(MC2.1,~0+offset(1*pcoa.MidD.jac.2))
 
-MC2.6<-lm(MC2.4$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+MC2.6<-glm(MC2.4$residuals[environment.AF.2d$Lat2!=0]~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
 
-MC2.7<-lm(MC2.5$residuals~std.conservation+std.vegetation+std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.2d,"standardize"))
+MC2.7<-glm(MC2.5$residuals[environment.AF.2d$Lat2!=0]~bio1+bio2,data=decostand(environment.AF.2d,"standardize"))
 
-MC2.8<-lm(pcoa.jac.2~pcoa.logis.jac.conservation.2+pcoa.logis.jac.vegetation.2+pcoa.logis.jac.PCA.wclim.1.2+pcoa.logis.jac.PCA.wclim.2.2,data=decostand(environment.AF.2d,"standardize"))
+MC2.8<-glm(pcoa.jac.2~0+pcoa.logis.jac.bio1.2+pcoa.logis.jac.bio2.2,data=decostand(environment.AF.2d,"standardize"))
 
-MC2.9<-update(MC2.8,~1+pcoa.jac.neutral.2)
-MC2.10<-update(MC2.8,~1+pcoa.MidD.jac.2)
+#MC2.8<-glm(pcoa.jac.2~0+offset(.5*pcoa.logis.jac.bio1.2)+offset(.5*pcoa.logis.jac.bio2.2),data=decostand(environment.AF.2d,"standardize"))
+
+MC2.9<-update(MC2.8,~.+offset(1*pcoa.jac.neutral.2))
+MC2.10<-update(MC2.8,~.+offset(1*pcoa.MidD.jac.2))
 
 ```
 
-  Finally, we tested for patterns of distance-decay in the species similarity using simple and artial Mantel tests correlating the matrix of Jaccard similarity (M) to the geographical distance (D) and environmental dissimilarity (E) matrices (Euclidean distance) (see Thompson and Townsend 2006). Legendre et al. (2005) and Tuomisto and Ruokolainen (2006; 2008) suggest using multiple regression on similarity matrices to separate the effects of niche and neutral processes. However, there is a strong debate about the validity of these models (Legendre et al. 2008; Tuomisto and Ruokolainen 2008). Some authors also suggest using partial Redundancy Analysis (Borcard et al. 1992) for this purpose (Gilbert and Lechowicz 2004), but this method also has serious limitations (Smith and Lundholm 2010). We preferred to base our discussion on the mantel tests and multiple regressions using the summarized data (each quadrant as a unit), as described above. 
+  Finally, we tested for patterns of distance-decay in the species similarity using simple and artial Mantel tests correlating the matrix of Jaccard similarity (M) to the geographical distance (D) and environmental dissimilarity (E) matrices (Euclidean distance) (see Thompson and Townsend 2006). Legendre et al. (2005) and Tuomisto and Ruokolainen (2006; 2008) suggest using multiple regression on similarity matrices to separate the effects of niche and neutral processes. However, there is a strong debate about the validity of these models (Legendre et al. 2008; Tuomisto and Ruokolainen 2008). Some authors also suggest using partial Redundancy Analysis (Borcard et al. 1992) for this purpose (Gilbert and Lechowicz 2004), but this method also has serious limitations (Smith and Lundholm 2010). We preferred to base our discussion on the mantel tests and multiple regressions using the summarized data (each quadrant as a unit), as described above. We used (simple) generalized linear models (GLMs) with log links to estimate the relationship between the similartiy in species composition and geographical or environmental distances (Millar et al. 2011). Because the Jaccard similarity is a proportion (proportion of shared species), the error of this model was fit with a binomial distribution (Millar et al. 2011). We calclulated the R-squares of the GLMs by using the McFadden's apporach (McFadden 1974).
 
 
 ```{r mantel tests - local, message=FALSE,echo=FALSE,results='hide',warning=FALSE}
@@ -833,71 +898,236 @@ pman.env.2d<-mantel.partial(similarity.jac,envdist.2d,geodist.2d)
 
 ```
 
+``` {r using multiple regression in similarity matrices,  message=FALSE,results='hide',echo=FALSE,warning=FALSE}
+
+MS1.0<-glm((1-similarity.jac)~geodist.2d,family = binomial(link=log))
+
+MS1.1<-glm((1-similarity.jac)~envdist.2d,family = binomial(link=log))
+
+neutral.s<-as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])
+
+#MS1.2<-glm((1-similarity.jac)~envdist.2d+neutral.s,family = binomial(link=log))
+#MS1.3<-glm((1-similarity.jac)~envdist.2d+as.dist(1-similarity.MidD.mean),family = binomial(link=log))
+
+MS1.4<-glm((1-similarity.jac)~0+offset(1*neutral.s))
+MS1.5<-glm((1-similarity.jac)~0+offset(1*as.dist(1-similarity.MidD.mean)))
+
+#MS1.4<-glm((1-similarity.jac)~0+neutral.s,family = binomial(link=logit))
+#MS1.5<-glm((1-similarity.jac)~0+as.dist(1-similarity.MidD.mean),family = binomial(link=probit))
+
+#plot((1-similarity.jac)~neutral.s)
+#lines(neutral.s,predict(MS1.4,type="response"))
+
+#plot((1-similarity.jac)~geodist.2d)
+#lines(geodist.2d,predict(MS1.0,type="response"))
+
+# summary(MS1.0)
+#cor((1-similarity.jac),predict(MS1.0))^2
+# summary(MS1.1)
+#cor((1-similarity.jac),predict(MS1.1))^2
+# summary(MS1.2)
+# summary(MS1.3)
+#summary(MS1.4)
+#cor((1-similarity.jac),predict(MS1.4))^2
+# summary(MS1.5)
+# 
+#cor((1-similarity.jac),neutral.s)^2
+# cor((1-similarity.jac),geodist.2d)
+#cor((1-similarity.jac),as.dist(1-similarity.MidD.mean))^2
+# cor((1-similarity.jac),envdist.2d)
+
+```
+
+
   All the analyses were conducted in the R program (R Development Core Team, 2013). The models and most of the summary statistics calculations were implemented by the authors, and are available as a supplementary material (see Appendix S3). We used the packages vegan (Oksanen et al., 2008) for the remaining analyses.
 
   	
 ### Results
 
-  All the models had a very poor fit to species richness (Fig. S1-S2). The model with the lowest mean square error and bias was the logistic using only conservation status as a predictor followed by the logistic model based on vegetation type (Table 1). The model with the lowest variance was the neutral model, but the difference among the models was much smaller than for the bias (Table 1).
+  All the models had a very poor fit to species richness (Fig. 2; Fig. S2). The model with the lowest mean square error and bias was the Mid Domain, followed by the logistic using the bioclim variables (Table 1). The model with the lowest variance was the neutral model, but the difference among the models was much smaller than for the bias (Table 1).
 
 #### Table 1. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
 
+####
 
 ``` {r MSE - rich Results,echo=FALSE,results='asis'}
 
 print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD,Neutral=s.bias.sq.neutral,s.bias.sq.logis),
 VAR=c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis),
-sMSE=c(MidD=s.mse.MidD,Neutral=s.mse.neutral,s.mse.logis))[c(1:2,5:6,26:27),]
-),type="html",html.table.attributes="border=0, bgcolor=#989898")
+sMSE=c(MidD=s.mse.MidD,Neutral=s.mse.neutral,s.mse.logis))[c(1:2,7,18),]
+),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
 
 ```
 
-  The regression models gave very similar results. The model with the lowest AIC was the linear regression of the species richness against the raw environmental predictors (Distance to the coast, vegetation, conservation and PCA axes of edaphic conditions) (Table 2). However, the inclusion of neutral and Mid-Domain predictions along the environmental variables gave similar results (Table 2). The environmental variables were able to explain 33% of the variation on species richness, and conservation status had the strongest effect (Fig. SXX).
-  Besides the poor fit for the data, the Mid Domain and Neutral models created the well known richness peak in the central areas of the Atlantic forest (Fig. S1).
-  In the small grain (original sampling units), the bioclim variables were more important predictors than conservation or vegetation. However, in this scale, the environmental variables were able to explain just 17% of the variation in species richness.
+###
 
-#### Table 2. AIC values comparing the 10 regression models tested. MR1.1: Environmental predictors; MR1.2: Environmental + Neutral predictions; MR1.3: ; MR1.4: ; MR1.5: ; MR1.6: ; MR1.7: ; MR1.8: ; MR1.9: ; MR1.10: .
+  The regression model with the lowest AIC was the linear regression of the species richness against the raw environmental predictors (bio1 and bio2) (Table 2). However, the inclusion of the neutral and Mid-Domain predictions along the raw environmental variables gave similar results (Table 2). The environmental variables were able to explain `r round(cor(MR1.1$fitted.values+MR1.1$residuals,MR1.1$fitted.values)^2*100,0)`% of the variation on species richness, and `r names(MR1.1$coef[-1])[order(MR1.1$coef[-1],decreasing=T)][1]` had the strongest effect. The logistic model had a similar explanatory power to the model usng the raw environmental predictors.
+  Besides the poor fit for the data, the Mid Domain and Neutral models created the well known richness peak in the central areas of the Atlantic forest (Fig. 2). The neutral and Mid Domain models were able to explain alone `r round(cor(MR1.4$fitted.values+MR1.4$residuals,MR1.4$fitted.values)^2*100,0)`% and `r round(cor(MR1.5$fitted.values+MR1.5$residuals,MR1.5$fitted.values)^2*100,0)`% of the variation on species richness, respectively.
+  In the small grain (original sampling units), the bioclim variables were able to explain `r round(cor(MR1.1.loc$fitted.values+MR1.1.loc$residuals,MR1.1.loc$fitted.values)^2*100,0)`% of the variation in species richness.
+
+#### Table 2. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
+
+
+####
 
 ```{r AICs richness, echo=FALSE, results='asis'}
 
+npar=c(4,6,4,3,1,6,4,129,131,129)
+
+logLik<-unlist(lapply(list(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10),logLik))
+
+rsquares<-unlist(lapply(list(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10),function(x)cor(x$fitted.values+x$residuals,x$fitted.values)^2))
+
+#rsquares<-unlist(lapply(list(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10),Nagr2))
+
+print(xtable(data.frame(Model=paste("MR1.",1:10,sep=""),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares)),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
 #summary(MR1.1.loc)
 
-print(xtable(AIC(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10)),type="html",html.table.attributes="border=0, bgcolor=#989898")
+#print(xtable(AIC(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10)),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
 
 ```
 
-  The similarity in species composition was well fit for either the neutral, the Mid Domain, and the environmental models (Fig. S3-S4). The mean square error in the models and the difference between the models was much smaller for the species composition than for the richness, besides the much larger number of comparisons for the species composition (325 for the pairwise similarity matrix against 26 for the vector of species richness). The lowest mean square error and bias were obtained using the edaphic conditions as predicctor, while the Mid Domain model had the lowest variance. The neutral model had the highest mean square error due to the largest variance compared to the remain models (Table 3).
-  
-  
+###
+
+
+```{r Fig_2_Map_Richness_Mid_Domain_vs_Neutral,fig.width=18,fig.height=9,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
+
+par(mfrow=c(1,2))
+
+plot(brazil)
+rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
+     col=adjustcolor(color.select(environment.2d$rich,palette=Custom.Palette),alpha=.8))
+title("A)",cex.main=3,adj=0)
+title(main="Observed",line=-15,cex.main=3)
+
+plot(brazil)
+rect(environment.AF.2d$Long2-1,environment.AF.2d$Lat2-1,environment.AF.2d$Long2+1,environment.AF.2d$Lat2+1,
+     col=adjustcolor(color.select(predict(MR1.8,newdata=decostand(environment.AF.2d,"standardize"))
+,palette=Custom.Palette),alpha=.8))
+title("B)",cex.main=3,adj=0)
+title(main="Environment",line=-15,cex.main=3)
+
+
+plot(brazil)
+rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
+     col=adjustcolor(color.select(environment.2d$rich.MidD.mean,palette=Custom.Palette),alpha=.8))
+
+title("C)",cex.main=3,adj=0)
+title(main="Mid Domain",line=-15,cex.main=3)
+
+plot(brazil)
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,
+     col=adjustcolor(color.select(environment.AF.2d$rich.neutral.mean,ref=environment.AF.2d$rich.neutral.mean*environment.AF.2d$Long2/environment.AF.2d$Long2,palette=Custom.Palette),alpha=.8))
+
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,density=ifelse(is.na(environment.AF.2d$Long2),20,0))
+
+title("D)",cex.main=3,adj=0)
+title(main="Neutral",line=-15,cex.main=3)
+
+par(op)
+```
+#### Fig 2. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the environmental variables in the logistic models; (C) Predicted by the Mid Domain model; (D) Predicted by the neutral model. Shadded grid cells represent areas included in the neutral model but where actual data is not available.
+
+
+####
+
+
+  The similarity in species composition was well fit for both the neutral, the Mid Domain, and the environmental models. The MSE in the models, and the difference in MSE between the models were much smaller for the species composition than for richness (Table 3), besides the much larger number of comparisons for the species composition (325 for the pairwise similarity matrix against 26 for the vector of species richness). The lowest mean square error and bias were obtained using the edaphic conditions as predictors of species occurrence in logistic models, while the Mid Domain model had the lowest variance (Table 3). The neutral model had the highest mean square error due to its largest variance (Table 3).
+
 #### Table 3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
+
+####
 
 ```{r MSE - comp Results,echo=FALSE,results='asis'}
 
 print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD.jac,Neutral=s.bias.sq.neu.jac,s.bias.sq.logis.jac),
 VAR=c(MidD=s.var.MidD.jac,Neutral=s.var.neu.jac,s.var.logis.jac),
-sMSE=c(MidD=s.mse.MidD.jac,Neutral=s.mse.neu.jac,s.mse.logis.jac))[c(1:2,5:6,26:27),]
-),type="html",html.table.attributes="border=0, bgcolor=#989898")
+sMSE=c(MidD=s.mse.MidD.jac,Neutral=s.mse.neu.jac,s.mse.logis.jac))[c(1:2,7,18),]
+),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
 ```
- 
- Converselly, three of the four the best regression models for the first ordination axis were obtained including the neutral results as a predictor variable (Table 4). The fourth best model was obtained using just the logistic model as a predictor. For the second axis, the best models included the environmental predictors alone, or in combination with the Neutral or Mid Domain results. The neutral and Mid Domain models alone were able to explain 78% and 77% of the variation in the first axis of species composition. The environmental variables combined explained 77% of the variation is the first axis. The combination of environmental and neutral predictors gave an explanation of 81% for the first ordination axis. The environmental variables combined with the neutral model explained 49% of the variation in the second ordination axis. The use of the Mid Domain instead of the neutral predictor gave similar results (R2 = 0.48; Table 4).
-  The Mid Domain and Neutral models were able to explain a non-linear change in species composition along the latitudinal gradient (Fig. S3;S5).
-  Similarly to species richness, the bioclim variables were the most important environmental predictors of species composition for both ordination axes. The environment alone was able to explain 61% and 32% of the variation in the first two ordination axes of species composition, respectivelly.
-  
-#### Table 4. AIC values comparing the 10 regression models tested. MR1.1: Environmental predictors; MR1.2: Environmental + Neutral predictions; MR1.3: ; MR1.4: ; MR1.5: ; MR1.6: ; MR1.7: ; MR1.8: ; MR1.9: ; MR1.10: .
+
+####
+
+Converselly, the best regression models for the first ordination axis were obtained including the Mid Domain or neutral model results as predictor variables (Table 4). For the second ordination axis, the best model included the environmental predictors alone. The neutral and Mid Domain models alone were able to explain `r round(cor(MC1.4$fitted.values+MC1.4$residuals,MC1.4$fitted.values)^2*100,0)`% and `r round(cor(MC1.5$fitted.values+MC1.5$residuals,MC1.5$fitted.values)^2*100,0)`% of the variation in the first axis of species composition. The environmental variables combined explained `r round(cor(MC1.1$fitted.values+MC1.1$residuals,MC1.1$fitted.values)^2*100,0)`% of the variation is the first axis. The combination of environmental and neutral predictors gave an explanation of `r round(cor(MC1.2$fitted.values+MC1.2$residuals,MC1.2$fitted.values)^2*100,0)`% for the first ordination axis. For the second axis, the environmental variables along with the neutral model explained `r round(cor(MC2.2$fitted.values+MC2.2$residuals,MC2.2$fitted.values)^2*100,0)`% of the variation in species composition. The use of the Mid Domain instead of the neutral predictor gave similar results (R2 = `r round(cor(MC2.3$fitted.values+MC2.3$residuals,MC2.3$fitted.values)^2*100,0)`%; Table 4). 
+The logistic model explained `r round(cor(MC1.8$fitted.values+MC1.8$residuals,MC1.8$fitted.values)^2*100,0)`% and `r round(cor(MC2.8$fitted.values+MC2.8$residuals,MC2.8$fitted.values)^2*100,0)`% of the variation in the first two ordination axes, respectively.
+Besides the best explanatory power, the Mid Domain and neutral models also predicted the non-linear change in species composition along the latitudinal gradient in the first ordination axis (Fig. S4).
+
+round(cor(MC1.6$fitted.values+MC1.6$residuals,MC1.6$fitted.values)^2*100,0)
+
+#### Table 4. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
+
+####
 
 ```{r AICs composition, echo=FALSE, results='asis'}
 
-print(xtable(rbind(AIC(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10),
-AIC(MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10))),type="html",html.table.attributes="border=0, bgcolor=#989898")
+npar=c(4,6,4,3,1,6,4,129,131,129)
 
-#AIC(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10)[order(AIC(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10)[,2]),]
+logLik<-unlist(lapply(list(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10),logLik))
+
+rsquares<-unlist(lapply(list(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10),function(x)cor(x$fitted.values+x$residuals,x$fitted.values)^2))
+
+print(xtable(data.frame(Model=c(paste("MC1.",1:10,sep=""),paste("MC2.",1:10,sep="")),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares)),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
+#print(xtable(rbind(AIC(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10),AIC(MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10))),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
+# Calculate R2
+#cor(MC1.4$fitted.values+MC1.4$residuals,MC1.4$fitted.values)^2
+
 
 ```
 
-  The mantel test results show a stronger environmental effect when grouping the points in quadrants than when using the original data points (Table 5). The geographical distance was highly correlated with the species composition in both cases. Geographical distance was correlated with the species composition when the environment was partialed out, but the correlation was much weaker than in the unconstrained model (Table 5). The similarity in species composition was also associated with the environment when controlling for geographical distance in the grouped data.
+###
+
+```{r Fig_3_Map_Composition_Mid_Domain_vs_Neutral,fig.width=18,fig.height=9,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
+
+par(mfrow=c(1,2))
+
+plot(brazil)
+rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
+     col=adjustcolor(color.select(environment.2d$pcoa.jac.1),alpha=.8))
+title("A)",cex.main=3,adj=0)
+title(main="Observed",line=-15,cex.main=3)
+
+plot(brazil)
+rect(environment.AF.2d$Long2-1,environment.AF.2d$Lat2-1,environment.AF.2d$Long2+1,environment.AF.2d$Lat2+1,
+     col=adjustcolor(color.select(predict(MC1.8,newdata=decostand(environment.AF.2d,"standardize"))
+),alpha=.8))
+title("B)",cex.main=3,adj=0)
+title(main="Environment",line=-15,cex.main=3)
+
+plot(brazil)
+rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
+     col=adjustcolor(color.select(environment.2d$pcoa.MidD.jac.1),alpha=.8))
+title("C)",cex.main=3,adj=0)
+title(main="Mid Domain",line=-15,cex.main=3)
+
+plot(brazil)
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,
+     col=adjustcolor(color.select(environment.AF.2d$pcoa.jac.neutral.total.1,ref=environment.AF.2d$pcoa.jac.neutral.total.1*environment.AF.2d$Long2/environment.AF.2d$Long2),alpha=.8))
+
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,density=ifelse(is.na(environment.AF.2d$Long2),20,0))
+
+title("D)",cex.main=3,adj=0)
+title(main="Neutral",line=-15,cex.main=3)
+
+par(op)
+```
+#### Fig 3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the environmental variables in the logistic models; (C) Species composition predicted by the Mid Domain model; (C) Species composition predicted by the neutral model. Shadded grid cells represent areas included in the neutral model but where actual data is not available.
+
+
+####
+
+
+  The mantel test results showed a stronger environmental effect when grouping the points in grid cells than when using the original data points (Table 5). The geographical distance was highly correlated with the species composition in both cases. Geographical distance was correlated with the species composition when the environment was partialed out, but the correlation was stronger in the unconstrained model (Table 5). The similarity in species composition was also weakly associated with the environment when controlling for geographical distance in the grouped data.
 
 #### Table 5. Mantel and partial Mantel test results comparing the correlation of species similarity against geographical distance and environmental dissimilarity. The minus sign indicate partial results (Geo - Env: Geographical distance without the effect of environmenal dissimilarity).
+
+####
+
 
 ```{r Mantel and Partial Mantel results, echo=FALSE,results='asis'}
 
@@ -909,67 +1139,111 @@ print(xtable(rbind("Local Geo"=man.geo.loc[c("statistic","signif")],
 "Local Env-Geo"=pman.env.loc[c("statistic","signif")],
 "2d Geo-Env"=pman.geo.2d[c("statistic","signif")],
 "2d Env-Geo"=pman.env.2d[c("statistic","signif")])
-),type="html",html.table.attributes="border=0, bgcolor=#989898")
+),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
 ```
 
-Both neutal and Mid Domain models had very similar predictions for the distance-decay pattern in species similarity (Fig. 5)
+###
+
+Both neutal and Mid Domain models had very similar predictions for the distance-decay pattern in species similarity (Fig. 4). However, the decay predicted the dispersal models was much steeper in shorter distances than estimated by the glm model of species similarity against geographical distance (Fig. 4). The environmental variables predicted and almost linear decay in species similarity against geographical distance (Fig. 4).
 
 
-```{r Fig 3. distance decay real.midDomain and neutral mor, echo=FALSE,results='hide',warning=FALSE}
+```{r Fig_4_distance_decay_real_midDomain_and_neutral_mor, echo=FALSE,results='hide',warning=FALSE}
 
-plot(geodist.2d,1-similarity.jac,ylim=c(0,1),pch=21,bg="dark grey",col=NULL,xlab="Geographical distance (arc Degrees)", ylab="Jaccard similarity",cex.lab=2)
+plot(geodist.2d,1-similarity.jac,ylim=c(0,1),pch=21,bg="dark grey",col=NULL,xlab="Geographical distance (arc Degrees)", ylab="Jaccard similarity",cex.lab=1.5)
 
-points(geodist.2d,as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]),pch=21,bg=adjustcolor(4,alpha=.2),col=NULL)
+#reg.model.jac.dist<-predict(glm((1-similarity.jac)~geodist.2d,family = binomial(link=log)))
+#reg.model.jac<-predict(lm(log(.000001+(1-similarity.jac))~geodist.2d))
 
-points(geodist.2d,1-as.dist(similarity.MidD.mean),pch=21,bg=adjustcolor(2,alpha=.2),col=NULL)
+#reg.model.jac<-predict(lm(log(.000001+(1-similarity.jac))~envdist.2d))
+#reg.model.jac<-predict(glm((1-similarity.jac)~envdist.2d,family = binomial(link=log)))
+#reg.model.jac<-predict(lm((similarity.jac)~envdist.2d))
 
+
+#points(geodist.2d,exp(reg.model.jac)-.000001,pch=21,bg=adjustcolor(3,alpha=.2),col=NULL) #Lat
+
+#points(geodist.2d,exp(reg.model.jac.dist),pch=21,bg=adjustcolor(3,alpha=.2),col=NULL) #Lat
+
+points(geodist.2d,MS1.1$fitted.values,pch=21,bg=adjustcolor(3,alpha=.3),col=NULL) #Lat
+
+#points(geodist.2d,1-(reg.model.jac),pch=21,bg=adjustcolor(3,alpha=.2),col=NULL) #Lat
+#points(geodist.2d,1-as.dist(apply(similarity.logis.jac.ls[[2]],2,rowMeans)),pch=21,bg=adjustcolor(3,alpha=.2),col=NULL) #Lat
+
+points(geodist.2d,as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]),pch=21,bg=adjustcolor(4,alpha=.3),col=NULL)
+
+points(geodist.2d,1-as.dist(similarity.MidD.mean),pch=21,bg=adjustcolor(2,alpha=.3),col=NULL)
+
+#lines(levels(factor(geodist.2d)),tapply(-.000001+exp(reg.model.jac),geodist.2d,mean),lwd=2,col=1)
+#lines(levels(factor(geodist.2d)),tapply(1-(reg.model.jac),geodist.2d,mean),lwd=2,col=1)
+lines(levels(factor(geodist.2d)),tapply(MS1.1$fitted.values,geodist.2d,mean),lwd=2,col=1)
+
+#lines(levels(factor(geodist.2d)),tapply(1-as.dist(apply(similarity.logis.jac.ls[[1]],2,rowMeans)),geodist.2d,mean),lwd=2,col=1)
 lines(levels(factor(geodist.2d)),tapply(as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]),geodist.2d,mean),lwd=2,col=4)
-
 lines(levels(factor(geodist.2d)),tapply(1-as.dist(similarity.MidD.mean),geodist.2d,mean),lwd=2,col=2)
 
+lines(levels(factor(geodist.2d)),tapply(MS1.0$fitted.values,geodist.2d,mean),lwd=2,col=1,lty=2)
+
+#Using the predictive r2 (wrong for glm)
+#legend("topright",legend=c(paste("Logarithm",round(cor(similarity.jac,predict(MS1.0))^2,3)),  paste("Environment",round(cor(similarity.jac,predict(MS1.1))^2,3)),  paste("Neutral",round(cor(similarity.jac,predict(MS1.4))^2,3)),paste("Mid Domain",round(cor(similarity.jac,predict(MS1.5))^2,3))),title="R-squares:",col=c(1,1,4,2),lwd=2,lty=c(2,1,1,1),pch=c(NA,21,21,21),pt.bg=adjustcolor(c(1,3,4,2),alpha=.7),bty="n",pt.lwd=0,pt.cex=1.3)
+
+
+#Using the McFaddens's r-square
+legend("topright",legend=c(paste("Logarithm",round(1-(MS1.0$deviance/MS1.0$null.deviance),3)),  paste("Environment",round(1-(MS1.1$deviance/MS1.1$null.deviance),3)),  paste("Neutral",round(1-(MS1.4$deviance/MS1.4$null.deviance),3)),paste("Mid Domain",round(1-(MS1.5$deviance/MS1.5$null.deviance),3))),title="R-squares:",col=c(1,1,4,2),lwd=2,lty=c(2,1,1,1),pch=c(NA,21,21,21),pt.bg=adjustcolor(c(1,3,4,2),alpha=.7),bty="n",pt.lwd=0,pt.cex=1.3)
+
+
+1-(MS1.5$deviance/MS1.5$null.deviance)
+
+
+
+# Plot the residuals of these models
+
 ```
-#### Fig. 3. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey).
+#### Fig. 4. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey).
 
-### Discussion
-
-
+####
 
 ----------------------------
 
-```{r Fig S1. Map Richness Mid Domain vs Neutral,fig.width=18,fig.height=6,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
 
-par(mfrow=c(1,3))
+```{r Fig_S1-Connectivity_map_26_and_56, echo=FALSE, fig.width=16,fig.height=8,results='hide',warning=FALSE}
 
-plot(brazil)
-rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
-     col=adjustcolor(color.select(environment.2d$rich,palette=Custom.Palette),alpha=.8))
+par(mfrow=c(1,2))
+
+plot(brazil,border="darkgrey")
+rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,border=adjustcolor("darkgrey",alpha=1))
+
+points(environment.2d$Long2,environment.2d$Lat2,pch=21,col=0,bg=2)
+
+nnodes.2d<-nrow(environment.2d)
+
+segments(matrix(environment.2d$Long2,nnodes.2d,nnodes.2d),
+         matrix(environment.2d$Lat2,nnodes.2d,nnodes.2d),
+         t(matrix(environment.2d$Long2,nnodes.2d,nnodes.2d)),
+         t(matrix(environment.2d$Lat2,nnodes.2d,nnodes.2d)),col=connect.2d*2)
+
 title("A)",cex.main=3,adj=0)
-title(main="Observed",line=-15,cex.main=3)
 
+plot(brazil,border="darkgrey")
+rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,border=adjustcolor("darkgrey",alpha=1))
 
-plot(brazil)
-rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
-     col=adjustcolor(color.select(environment.2d$rich.MidD.mean,palette=Custom.Palette),alpha=.8))
+points(environment.AF.2d$AF.Long2,environment.AF.2d$AF.Lat2,pch=21,col=0,bg=2)
+
+nnodes.AF.2d<-nrow(environment.AF.2d)
+
+segments(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d),
+         matrix(environment.AF.2d$AF.Lat2,nnodes.AF.2d,nnodes.AF.2d),
+         t(matrix(environment.AF.2d$AF.Long2,nnodes.AF.2d,nnodes.AF.2d)),
+         t(matrix(environment.AF.2d$AF.Lat2,nnodes.AF.2d,nnodes.AF.2d)),col=connect.AF.2d*2)
 
 title("B)",cex.main=3,adj=0)
-title(main="Mid Domain",line=-15,cex.main=3)
-
-plot(brazil)
-rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,
-     col=adjustcolor(color.select(environment.AF.2d$rich.neutral.mean,ref=environment.AF.2d$rich.neutral.mean*environment.AF.2d$Long2/environment.AF.2d$Long2,palette=Custom.Palette),alpha=.8))
-
-rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,density=ifelse(is.na(environment.AF.2d$Long2),20,0))
-
-title("C)",cex.main=3,adj=0)
-title(main="Neutral",line=-15,cex.main=3)
 
 par(op)
 ```
-#### Fig S1. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the Mid Domain model; (C) Predicted by the neutral model. Shadded quadrants represent areas included in the neutral model but where actual data is not available.
+#### Fig. S1. Map representing the connectivity of grid cells used to simulate the individual dispersal in the Mid Domain (A) and neutral (B) models.
 
+####
 
-```{r Fig S2. rich.logis in the map, echo=FALSE, message=FALSE,warning=FALSE}
+```{r Fig_S2_rich_logis_in_the_map, echo=FALSE, message=FALSE,warning=FALSE,results='hide'}
 
 attach(environment.2d)
 
@@ -998,37 +1272,11 @@ detach(environment.2d)
 #### Fig S2. Projection of the species richness predicted by logistic models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B-Z) Predicted by logistic regressions of individual species against environmental gradients. 
 
 
-```{r Fig S3. Map Composition Mid Domain vs Neutral,fig.width=18,fig.height=6,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
+####
 
-par(mfrow=c(1,3))
+```{r Fig_S3_jac_logis_in_the_map, echo=FALSE, message=FALSE,warning=FALSE}
 
-plot(brazil)
-rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
-     col=adjustcolor(color.select(environment.2d$pcoa.jac.1),alpha=.8))
-title("A)",cex.main=3,adj=0)
-title(main="Observed",line=-15,cex.main=3)
-
-plot(brazil)
-rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
-     col=adjustcolor(color.select(environment.2d$pcoa.MidD.jac.1),alpha=.8))
-title("B)",cex.main=3,adj=0)
-title(main="Mid Domain",line=-15,cex.main=3)
-
-plot(brazil)
-rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,
-     col=adjustcolor(color.select(environment.AF.2d$pcoa.jac.neutral.total.1,ref=environment.AF.2d$pcoa.jac.neutral.total.1*environment.AF.2d$Long2/environment.AF.2d$Long2),alpha=.8))
-
-rect(environment.AF.2d$AF.Long2-1,environment.AF.2d$AF.Lat2-1,environment.AF.2d$AF.Long2+1,environment.AF.2d$AF.Lat2+1,density=ifelse(is.na(environment.AF.2d$Long2),20,0))
-
-title("C)",cex.main=3,adj=0)
-title(main="Neutral",line=-15,cex.main=3)
-
-par(op)
-```
-#### Fig S3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those quadrants with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the Mid Domain model; (\C) Species composition predicted by the neutral model. Shadded quadrants represent areas included in the neutral model but where actual data is not available.
-
-
-```{r Fig S4. jac.logis in the map, echo=FALSE, message=FALSE,warning=FALSE}
+attach(environment.AF.2d)
 
 par(mfrow=c(ceiling((length(rich.logis)+1)/ceiling(sqrt(1+length(rich.logis)))),ceiling(sqrt(1+length(rich.logis)))),mar=c(0,0,0,0))
 
@@ -1050,245 +1298,121 @@ rect(environment.AF.2d$Long2-1,environment.AF.2d$Lat2-1,environment.AF.2d$Long2+
   }
 
 ```
-#### Fig S4. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those quadrants with similar colors have a similar composition of species. (A) Observed species composition; (B-Z) Species compostition predicted by logistic regressions of individual species against the environmental gradients.
+#### Fig S3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B-Z) Species compostition predicted by logistic regressions of individual species against the environmental gradients.
 
-```{r Fig S5. plot all predictions against lat, fig.width=16,fig.height=8,message=FALSE,results='hide',echo=FALSE,warning=FALSE}
 
-par(mfrow=c(1,2))
+####
 
-plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22,xlab="Latitude",ylab="Axis 1")
+```{r Fig_S4_plot_all_predictions_against_lat,message=FALSE,results='hide',echo=FALSE,warning=FALSE}
+
+#par(mfrow=c(1,2))
+
+plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22,xlab="Latitude",ylab="Axis 1",cex.lab=1.5)
 
 points(environment.2d$Lat2,decostand(environment.2d$pcoa.MidD.jac.1,'range'),bg=2,pch=23)
 
 points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),bg=4,pch=24)
 
-points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.neutral.1,'range',na.rm=T),bg=1,pch=3,cex=2)
+#points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.neutral.1,'range',na.rm=T),bg=1,pch=3,cex=2)
 
-plot.new()
+#plot.new()
 
-legend("topleft",c("Observed","MidD","Neutral-ana","Neutral-simu"),pch=c(22,23,24,3),pt.bg=c("gold",2,4,3),bty="n",y.intersp=1.2,cex=2)
+legend("topright",c("Observed","MidD","Neutral"),pch=c(22,23,24,3),pt.bg=c("gold",2,4,3),bty="n",y.intersp=1.2,cex=1)
 
 #plot(decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),decostand(environment.AF.2d$pcoa.mor.neutral.1,'range',na.rm=T),bg=1,pch=3,cex=2)
 #plot(environment.AF.2d$pcoa.mor.1,environment.AF.2d$pcoa.mor.neutral.1,bg=1,pch=3,cex=2)
 
 ```
-#### Fig S5. Comparison of the change in species composition along the latitudinal gradient predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
+#### Fig S4. Comparison of the change in species composition along the latitudinal gradient predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
+
+
+```{r Fig_S5_Residuals_similarity,fig.width=9,fig.height=9,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
+
+par(mfrow=c(2,2))
+
+plot(MS1.0$fitted.values,MS1.0$residuals,xlab="Fitted values",ylab="Residuals",cex.lab=1.5,pch=21,bg=1)
+
+plot(geodist.2d,MS1.4$residuals,xlab="Fitted values",ylab="Residuals",cex.lab=1.5,pch=21,bg=1)
+
+lines(smooth.spline(MS1.0$fitted.values,MS1.0$residuals))
+abline(h=0,lwd=2,col=2)
+title("A)",cex.main=1.5,adj=0)
+
+plot(MS1.1$fitted.values,MS1.1$residuals,xlab="Fitted values",ylab="Residuals",cex.lab=1.5,pch=21,bg=1)
+lines(smooth.spline(MS1.1$fitted.values,MS1.1$residuals))
+abline(h=0,lwd=2,col=2)
+title("B)",cex.main=1.5,adj=0)
+
+plot(MS1.4$fitted.values,MS1.4$residuals,xlab="Fitted values",ylab="Residuals",cex.lab=1.5,pch=21,bg=1)
+lines(smooth.spline(MS1.4$fitted.values,MS1.4$residuals))
+abline(h=0,lwd=2,col=2)
+title("C)",cex.main=1.5,adj=0)
+
+plot(MS1.5$fitted.values,MS1.5$residuals,xlab="Fitted values",ylab="Residuals",cex.lab=1.5,pch=21,bg=1)
+lines(smooth.spline(MS1.5$fitted.values,MS1.5$residuals))
+abline(h=0,lwd=2,col=2)
+title("D)",cex.main=1.5,adj=0)
+
+
+```
+#### Fig S5. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
 
 
 #### Table S1. List of the sites, authors, etc. used in this manuscript
 
+###
+
 #### Table S2. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
 
-``` {r Table S2. MSE - rich Results,echo=FALSE,results='asis'}
+####
+
+``` {r Table_S2_MSE-rich_Results,echo=FALSE,results='asis'}
 
 print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD,Neutral=s.bias.sq.neutral,s.bias.sq.logis),
 VAR=c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis),
 sMSE=c(MidD=s.mse.MidD,Neutral=s.mse.neutral,s.mse.logis))[,]
-),type="html",html.table.attributes="border=0, bgcolor=#989898")
+),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
 ```
 
+###
+
 #### Table S3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
 
-```{r Table S3. MSE - comp Results,echo=FALSE,results='asis'}
+```{r Table_S3_MSE-comp_Results,echo=FALSE,results='asis'}
 
 print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD.jac,Neutral=s.bias.sq.neu.jac,s.bias.sq.logis.jac),
 VAR=c(MidD=s.var.MidD.jac,Neutral=s.var.neu.jac,s.var.logis.jac),
 sMSE=c(MidD=s.mse.MidD.jac,Neutral=s.mse.neu.jac,s.mse.logis.jac))[,]
-),type="html",html.table.attributes="border=0, bgcolor=#989898")
+),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
 ```
+
+###
+
+
+```{r }
+
+par(mfrow=c(1,2))
+
+plot(MC1.1$fitted.values,MC1.1$fitted.values+MC1.1$residuals)
+plot(MC1.8$fitted.values,MC1.8$fitted.values+MC1.8$residuals)
+
+abline(lm(MC1.1$fitted.values+MC1.1$residuals~MC1.1$fitted.values))
+abline(0,1)
+
+plot(MC1.4$fitted.values,MC1.4$fitted.values+MC1.4$residuals)
+abline(lm(MC1.4$fitted.values+MC1.4$residuals~MC1.4$fitted.values))
+abline(0,1,col=4)
+
+
+
+
+```
+
+
 
 ----------------------------
-
-
-```{r Hill.numbers on the map - logistic, echo=FALSE,warning=FALSE,message=FALSE}
-################################
-# Plotting the diversity predictions on the map
-# 
-#attach(environment.2d)
-
-# par(mfrow=c(ceiling(length(Hill.logis)/ceiling(sqrt(length(Hill.logis)))),ceiling(sqrt(length(Hill.logis)))),mar=c(0,0,0,0))
-# for (i in glm.variables.2d){
-#   plot(brazil)
-#   title(main=i,line=-3)
-#   points(Long2,Lat2,pch=22,bg='darkgrey',col=0,cex=.5)
-#   rect(Long2-1,Lat2-1,Long2+1,Lat2+1,col=color.select(Hill.logis[[paste("Hill.logis.",i,sep="")]],palette=Custom.Palette))
-#   plot(brazil,add=T)
-#   }
-
-```
-
-
-```{r plot logis hill,fig.align='center',fig.width=8,fig.height=6, echo=FALSE,warning=FALSE,message=FALSE}
-
-par(op)
-par(mgp=c(.2,0,0))
-par(mar=c(1,1,0,0))
-
-par(mfrow=c(ceiling(length(Hill.logis)/ceiling(sqrt(length(Hill.logis)))),ceiling(sqrt(length(Hill.logis)))))
-
-for (i in glm.variables.2d){plot(Hill.logis[[paste("Hill.logis.",i,sep="")]]~environment.2d[[i]],pch=21,cex=1,bg=color.select(Hill.logis[[paste("Hill.logis.",i,sep="")]]),xlab=i,ylab="Diversity",axes=FALSE);box()}
-
-```
-#### Fig S6.
-
-```{r plot logis rich and srich,echo=FALSE,results='hide',fig.height=6,fig.width=8,warning=FALSE}
-
-par(op)
-par(mgp=c(.2,0,0))
-par(mar=c(1,1,0,0))
-
-par(mfrow=c(ceiling(length(rich.logis)/ceiling(sqrt(length(rich.logis)))),ceiling(sqrt(length(rich.logis)))))
-
-for (i in glm.variables.2d) {
-
-ver<- do.call(cbind,lapply(species.2d.logis.ls[[i]],rowSums))
-
-plot(rowSums(species.2d)~environment.2d[[i]],xlab=i,ylab="Diversity",axes=FALSE,ylim=c(0,max(rowSums(species.2d))),pch=21,col=0,bg="dark grey")  
-  
-points(rowMeans(ver)~environment.2d[[i]],xlab=i,ylab="Diversity",axes=FALSE,ylim=c(0,max(rowSums(species.2d))),pch=21,col=0,bg=1)  
-  
-points(rich.logis[[paste("rich.logis.",i,sep="")]]~environment.2d[[i]],pch=21,bg=color.select(rich.logis[[paste("rich.logis.",i,sep="")]]))
-  
-  box()
-
-  }
-
-```
-#### Fig S7.
-
-
-
-### Figures comparing the models
-
-```{r comparisons of the models - richness, echo=FALSE,eval=FALSE}
-
-#Environment
-
-vars<-c("Lat2","Long2","conservation","vegetation",paste("bio",1:19,sep=""),"PCA.wclim.1","PCA.wclim.2")
-
-par(mgp=c(.2,0,0))
-par(mar=c(2,2,0,0))
-par(mfrow=c(ceiling(length(vars)/ceiling(sqrt(length(vars)))),ceiling(sqrt(length(vars)))))
-
-for (i in vars){
-  plot(as.formula(paste("rich~",i)),data=environment.AF.2d[!is.na(environment.AF.2d$bio19),],axes=FALSE)
-  abline(lm(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),paste("rich",sep="")]~environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),i]),lwd=2,col=2)
-  abline(lm(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),paste("rich.logis.",i,sep="")]~environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),i]),lwd=2,col=4)
-  points(environment.AF.2d[,i],environment.AF.2d[,paste("rich.logis.",i,sep="")],pch=21,bg=2,col=0)
-  box()
-  #abline(lm(as.formula(paste("rich~",i)),data=environment.AF.2d))
-  }
-
-# Neutral
-
-par(op)
-plot(rich~rich.neutral.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],pch=21,col=NULL,bg=4)
-abline(lm(rich~rich.neutral.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]))
-
-# Mid Domain
-
-par(op)
-plot(rich~rich.MidD.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],col=NULL,bg=2,pch=21)
-abline(lm(rich~rich.MidD.mean,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]))
-
-```
-
-### Fig sp comp
-
-```{r species composition plot, echo=FALSE,eval=FALSE}
-
-vars<-c("Lat2","Long2","conservation","vegetation",paste("bio",1:19,sep=""),"PCA.wclim.1","PCA.wclim.2")
-
-par(mgp=c(.2,0,0))
-par(mar=c(2,2,0,0))
-par(mfrow=c(ceiling(length(vars)/ceiling(sqrt(length(vars)))),ceiling(sqrt(length(vars)))))
-
-for (i in vars){
-  plot(as.formula(paste("pcoa.jac.1~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range"),axes=FALSE)
-  abline(lm(as.formula(paste("pcoa.jac.1~",i)),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=4)
-  abline(lm(as.formula(paste("pcoa.logis.jac.",i,".1~",i,sep="")),data=decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),],"range")),lwd=2,col=2)
-  points(decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),i],"range"),decostand(environment.AF.2d[!is.na(environment.AF.2d$bio19),paste("pcoa.logis.jac.",i,".1",sep="")],"range"),pch=21,bg=2,col=0)
-  box()
-  #abline(lm(as.formula(paste("rich~",i)),data=environment.AF.2d))
-  }
-
-
-par(op)
-plot(pcoa.jac.1~pcoa.jac.neutral.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),])
-
-abline(lm(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"pcoa.jac.1"]~environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),"pcoa.jac.neutral.1"]),lwd=2,col=4)
-
-par(op)
-
-#################
-# Mid-Domain
-
-par(op)
-
-plot(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),])
-
-abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),]),lwd=2,col=2)
-
-
-```
-
-# Comparison of the observed and predicted by the models
-
-```{r observed vs predicted, echo=FALSE,eval=FALSE}
-
-par(mfrow=c(1,3))
-
-plot(0:1,0:1,type="n",xlab="Predicted",ylab="Observed")
-
-abline(0,1,lwd=2,lty=2)
-
-title("Richness")
-
-abline(lm(rich~rich.neutral.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),lwd=2,col=4)
-
-abline(lm(rich~rich.MidD.mean,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),lwd=2,col=2)
-
-vars<-c("conservation","PCA.wclim.1","PCA.wclim.2")
-
-# Species composition (PCA)
-
-plot(0:1,0:1,type="n",xlab="Predicted",ylab="Observed")
-abline(0,1,lwd=2,lty=2)
-
-title("Species composition (PCA)")
-
-abline(lm(pcoa.jac.1~pcoa.jac.neutral.1,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),col=4)
-
-
-abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),col=2)
-
-
-#Species composition (Jaccard index )
-
-plot(0:1,0:1,type="n",xlab="Predicted",ylab="Observed")
-
-abline(0,1,lwd=2,lty=2)
-
-title("Species composition (Jaccard)")
-
-points(1-decostand(as.vector(as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])),"range")
-,decostand(as.vector(similarity.jac),"range"),col=4)
-
-points(decostand(as.vector(as.dist(similarity.MidD.mean)),"range")
-,decostand(as.vector(similarity.jac),"range"),col=2)
-
-
-abline(lm(decostand(as.vector(similarity.jac),"range")~decostand(-as.vector(as.dist(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])),"range"))
-,col=4)
-
-
-abline(lm(pcoa.jac.1~pcoa.MidD.jac.1,data=decostand(environment.AF.2d[!is.na(environment.AF.2d[,"rich"]),],"range")),col=2)
-
-
-```
-
 
 ```{r detach_data, echo=FALSE,results='hide',warning=FALSE,message=FALSE}
 
@@ -1299,8 +1423,7 @@ detach(mammal.data)
 
 ```{r extracting_R_chunks, echo=FALSE, message=FALSE,warning=FALSE,results='hide'}
 
-
-purl("All_analysis.Rmd")
+purl("All_analysis_simplified.Rmd")
 
 ```
 
@@ -1308,7 +1431,11 @@ purl("All_analysis.Rmd")
 ```{r knit2html, echo=FALSE, eval=FALSE,results='hide'}
 
 library(knitr)
+library(rmarkdown)
 
-knit2html("All_analysis.Rmd")
+knit("All_analysis_simplified.Rmd")
+render("All_analysis_simplified.md","all")
+render("All_analysis_simplified.md","pdf_document")
+render("All_analysis_simplified.md","word_document")
 
 ```

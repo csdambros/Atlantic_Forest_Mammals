@@ -14,7 +14,7 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 ##### By CSDambros
 
->html updated at 2014-04-30 10:07:31
+>html updated at 2014-05-01 16:27:47
 
 ### Methods
 
@@ -168,51 +168,22 @@ Additionally, we tested for the direct association of the response variables aga
 
   All the models had a very poor fit to species richness (Fig. 2; Fig. S2). The model with the lowest mean square error and bias was the logistic simulation using habitat quality as a predictor of species presence (Table 1). The model with the lowest variance was the neutral model, but the difference among the models was much smaller than for the bias (Table 1).
 
-#### Table 1. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
-
-####
-
-<TABLE border=1, bgcolor=#989898>
-<TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1277.60 </TD> <TD align="right"> 199.85 </TD> <TD align="right"> 1477.44 </TD> </TR>
-  <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
-  <TR> <TD align="right"> habitat </TD> <TD align="right"> 1033.74 </TD> <TD align="right"> 201.66 </TD> <TD align="right"> 1235.41 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 1363.23 </TD> <TD align="right"> 180.92 </TD> <TD align="right"> 1544.15 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 1403.98 </TD> <TD align="right"> 203.76 </TD> <TD align="right"> 1607.73 </TD> </TR>
-   </TABLE>
-
-
-###
-
-Similarly, the regression model with the lowest AIC was the linear regression of the species richness against habitat quality (Table 2). However, the inclusion of the neutral model prediction in the same model produced a similar AIC value and increased the explanatory power in about 7% (Table 2). Habitat quality alone was able to explain 24% of the variation in species richness. The climatic variables were able to explain 7% of the variation on species richness. The logistic models had similar explanatory power to the models using the raw environmental predictors.
+Similarly, the regression model with the lowest AIC was the linear regression of the species richness against habitat quality (Table 2). However, the inclusion of the neutral model prediction in the same model produced a similar AIC value and increased the explanatory power in about 7% (Table 2). Habitat quality alone was able to explain 24% of the variation in species richness. The climatic variables were able to explain 4% of the variation on species richness. The logistic models had similar explanatory power to the models using the raw environmental predictors.
   Besides the poor fit for the data, the Mid Domain and Neutral models created the well known richness peak in the central areas of the Atlantic forest (Fig. 2). The neutral and Mid Domain models were able to explain alone 9% and 8% of the variation on species richness, respectively.
-  In the small grain (original sampling units), the habitat quality and climatic variables were able to explain 21% and 2% of the variation in species richness.
+  In the small grain (original sampling units), the habitat quality and climatic variables were able to explain 12% and 2% of the variation in species richness.
 
-#### Table 2. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
+
+#### Table 1. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
 
 
 ####
 
 <TABLE border=1, bgcolor=#989898>
-<TR> <TH>  </TH> <TH> model </TH> <TH> Var </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH>  </TR>
-  <TR> <TD align="right"> 1 </TD> <TD> MR1.1 </TD> <TD> Clim </TD> <TD align="right"> -35.44 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 78.88 </TD> <TD align="right"> 0.07 </TD> </TR>
-  <TR> <TD align="right"> 2 </TD> <TD> MR1.2 </TD> <TD> Clim+Neu </TD> <TD align="right"> -34.51 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 81.02 </TD> <TD align="right"> 0.15 </TD> </TR>
-  <TR> <TD align="right"> 3 </TD> <TD> MR1.3 </TD> <TD> Clim+Mid </TD> <TD align="right"> -35.40 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 78.80 </TD> <TD align="right"> 0.16 </TD> </TR>
-  <TR> <TD align="right"> 4 </TD> <TD> MR1.4 </TD> <TD> Neu </TD> <TD align="right"> -37.19 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 80.39 </TD> <TD align="right"> 0.09 </TD> </TR>
-  <TR> <TD align="right"> 5 </TD> <TD> MR1.5 </TD> <TD> Mid </TD> <TD align="right"> -41.14 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.28 </TD> <TD align="right"> 0.08 </TD> </TR>
-  <TR> <TD align="right"> 6 </TD> <TD> MR1.6 </TD> <TD> ResN~Clim </TD> <TD align="right"> -14.43 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 40.86 </TD> <TD align="right"> 0.14 </TD> </TR>
-  <TR> <TD align="right"> 7 </TD> <TD> MR1.7 </TD> <TD> ResN~Clim </TD> <TD align="right"> -15.42 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 38.85 </TD> <TD align="right"> 0.02 </TD> </TR>
-  <TR> <TD align="right"> 8 </TD> <TD> MR1.8 </TD> <TD> LogisC </TD> <TD align="right"> -36.29 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 330.57 </TD> <TD align="right"> 0.01 </TD> </TR>
-  <TR> <TD align="right"> 9 </TD> <TD> MR1.9 </TD> <TD> LogisC+Neu </TD> <TD align="right"> -34.31 </TD> <TD align="right"> 131.00 </TD> <TD align="right"> 330.62 </TD> <TD align="right"> 0.19 </TD> </TR>
-  <TR> <TD align="right"> 10 </TD> <TD> MR1.10 </TD> <TD> LogisC+Mid </TD> <TD align="right"> -35.88 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 329.76 </TD> <TD align="right"> 0.18 </TD> </TR>
-  <TR> <TD align="right"> 11 </TD> <TD> MR1.11 </TD> <TD> Hab </TD> <TD align="right"> -32.79 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 71.57 </TD> <TD align="right"> 0.24 </TD> </TR>
-  <TR> <TD align="right"> 12 </TD> <TD> MR1.12 </TD> <TD> Hab+Neu </TD> <TD align="right"> -32.88 </TD> <TD align="right"> 5.00 </TD> <TD align="right"> 75.77 </TD> <TD align="right"> 0.30 </TD> </TR>
-  <TR> <TD align="right"> 13 </TD> <TD> MR1.13 </TD> <TD> Hab+Mid </TD> <TD align="right"> -36.21 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 78.42 </TD> <TD align="right"> 0.31 </TD> </TR>
-  <TR> <TD align="right"> 14 </TD> <TD> MR1.16 </TD> <TD> ResN~Hab </TD> <TD align="right"> -15.23 </TD> <TD align="right"> 5.00 </TD> <TD align="right"> 40.45 </TD> <TD align="right"> 0.01 </TD> </TR>
-  <TR> <TD align="right"> 15 </TD> <TD> MR1.17 </TD> <TD> ResN~Hab </TD> <TD align="right"> -15.51 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 37.01 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> 16 </TD> <TD> MR1.18 </TD> <TD> LogisH </TD> <TD align="right"> -33.31 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 196.63 </TD> <TD align="right"> 0.21 </TD> </TR>
-  <TR> <TD align="right"> 17 </TD> <TD> MR1.19 </TD> <TD> LogisH+Neu </TD> <TD align="right"> -34.05 </TD> <TD align="right"> 67.00 </TD> <TD align="right"> 202.11 </TD> <TD align="right"> 0.27 </TD> </TR>
-  <TR> <TD align="right"> 18 </TD> <TD> MR1.20 </TD> <TD> LogisH+Mid </TD> <TD align="right"> -36.95 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 203.90 </TD> <TD align="right"> 0.27 </TD> </TR>
+<TR> <TH>  </TH> <TH> Model </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> MSE </TH>  </TR>
+  <TR> <TD align="right"> 8 </TD> <TD> Cimatic </TD> <TD align="right"> -36.32 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.63 </TD> <TD align="right"> 0.01 </TD> <TD align="right"> 1363.23 </TD> <TD align="right"> 180.92 </TD> <TD align="right"> 1544.15 </TD> </TR>
+  <TR> <TD align="right"> 16 </TD> <TD> Habitat </TD> <TD align="right"> -33.31 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 196.63 </TD> <TD align="right"> 0.21 </TD> <TD align="right"> 1033.74 </TD> <TD align="right"> 201.66 </TD> <TD align="right"> 1235.41 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> Mid domain </TD> <TD align="right"> -41.12 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.25 </TD> <TD align="right"> 0.08 </TD> <TD align="right"> 1278.06 </TD> <TD align="right"> 191.99 </TD> <TD align="right"> 1470.05 </TD> </TR>
+  <TR> <TD align="right"> 4 </TD> <TD> Neutral </TD> <TD align="right"> -37.19 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 80.39 </TD> <TD align="right"> 0.09 </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
    </TABLE>
 
 
@@ -229,67 +200,25 @@ Similarly, the regression model with the lowest AIC was the linear regression of
 
   The similarity in species composition was well fit for both the neutral, the Mid Domain, and the climatic models. The MSE in the models, and the difference in MSE between the models were much smaller for the species composition than for richness (Table 3), besides the much larger number of comparisons for the species composition (325 for the pairwise similarity matrix against 26 for the vector of species richness). The lowest mean square error and bias were obtained using the climatic variables as predictors of the species occurrence in the logistic models, while the mid domain model had the lowest variance (Table 3). The neutral model had the highest mean square error due to its largest variance (Table 3).
 
-#### Table 3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
+####
+
+Conversely, the best regression models for the first ordination axis were obtained including the mid domain or neutral model results as predictor variables (Table 4). For the second ordination axis, the best model included habitat quality, and habitat quality along the mid domain model. The neutral and mid domain models alone were able to explain 74% and 73% of the variation in the first axis of species composition. The climatic variables combined explained 59% of the variation is the first axis. Habitat quality alone was a poor predictor of the species composition in the first ordination axis, but the best explanatory model was obtained by combining habitat quality and one of the dispersal models (R²=80%). 
+For the second axis, the mid domain model along habitat quality explained about 15% of the variation in species composition (Table 4). Besides the largest AICs due to the high number of parameters, the combination of the dispersal models with the climatic variables in the logistic regressions gave the best explanatory power for the second ordination axis (R²=62%; Table 4). 
+
+#### Table 2. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
 
 ####
 
 <TABLE border=1, bgcolor=#989898>
-<TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.83 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 10.71 </TD> </TR>
-  <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
-  <TR> <TD align="right"> habitat </TD> <TD align="right"> 5.95 </TD> <TD align="right"> 2.25 </TD> <TD align="right"> 8.20 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.1 </TD> <TD align="right"> 4.64 </TD> <TD align="right"> 2.20 </TD> <TD align="right"> 6.84 </TD> </TR>
-  <TR> <TD align="right"> PCA.wclim.2 </TD> <TD align="right"> 5.77 </TD> <TD align="right"> 2.26 </TD> <TD align="right"> 8.02 </TD> </TR>
-   </TABLE>
-
-
-####
-
-Conversely, the best regression models for the first ordination axis were obtained including the mid domain or neutral model results as predictor variables (Table 4). For the second ordination axis, the best model included habitat quality, and habitat quality along the mid domain model. The neutral and mid domain models alone were able to explain 78% and 77% of the variation in the first axis of species composition. The climatic variables combined explained 69% of the variation is the first axis. Habitat quality alone was a poor predictor of the species composition in the first ordination axis, but the best explanatory model was obtained by combining habitat quality and one of the dispersal models (R²=82%). 
-For the second axis, the mid domain model along habitat quality explained about 20% of the variation in species composition (Table 4). Besides the largest AICs due to the high number of parameters, the combination of the dispersal models with the climatic variables in the logistic regressions gave the best explanatory power for the second ordination axis (R²=68%; Table 4). 
-
-#### Table 4. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
-
-####
-
-<TABLE border=1, bgcolor=#989898>
-<TR> <TH>  </TH> <TH> model </TH> <TH> Var </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH>  </TR>
-  <TR> <TD align="right"> 1 </TD> <TD> MC1.1 </TD> <TD> Clim </TD> <TD align="right"> -21.10 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 50.20 </TD> <TD align="right"> 0.69 </TD> </TR>
-  <TR> <TD align="right"> 2 </TD> <TD> MC1.2 </TD> <TD> Clim+Neu </TD> <TD align="right"> -16.36 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 44.72 </TD> <TD align="right"> 0.79 </TD> </TR>
-  <TR> <TD align="right"> 3 </TD> <TD> MC1.3 </TD> <TD> Clim+Mid </TD> <TD align="right"> -16.72 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 41.44 </TD> <TD align="right"> 0.78 </TD> </TR>
-  <TR> <TD align="right"> 4 </TD> <TD> MC1.4 </TD> <TD> Neu </TD> <TD align="right"> -17.42 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 40.84 </TD> <TD align="right"> 0.78 </TD> </TR>
-  <TR> <TD align="right"> 5 </TD> <TD> MC1.5 </TD> <TD> Mid </TD> <TD align="right"> -18.07 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 38.13 </TD> <TD align="right"> 0.77 </TD> </TR>
-  <TR> <TD align="right"> 6 </TD> <TD> MC1.6 </TD> <TD> ResN~Clim </TD> <TD align="right"> -6.18 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 24.35 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> 7 </TD> <TD> MC1.7 </TD> <TD> ResN~Clim </TD> <TD align="right"> -4.91 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 17.82 </TD> <TD align="right"> 0.05 </TD> </TR>
-  <TR> <TD align="right"> 8 </TD> <TD> MC1.8 </TD> <TD> LogisC </TD> <TD align="right"> -21.59 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 301.19 </TD> <TD align="right"> 0.68 </TD> </TR>
-  <TR> <TD align="right"> 9 </TD> <TD> MC1.9 </TD> <TD> LogisC+Neu </TD> <TD align="right"> -16.39 </TD> <TD align="right"> 131.00 </TD> <TD align="right"> 294.79 </TD> <TD align="right"> 0.79 </TD> </TR>
-  <TR> <TD align="right"> 10 </TD> <TD> MC1.10 </TD> <TD> LogisC+Mid </TD> <TD align="right"> -17.16 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 292.32 </TD> <TD align="right"> 0.77 </TD> </TR>
-  <TR> <TD align="right"> 11 </TD> <TD> MC1.11 </TD> <TD> Hab </TD> <TD align="right"> -35.46 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 76.93 </TD> <TD align="right"> 0.07 </TD> </TR>
-  <TR> <TD align="right"> 12 </TD> <TD> MC1.12 </TD> <TD> Hab+Neu </TD> <TD align="right"> -14.99 </TD> <TD align="right"> 5.00 </TD> <TD align="right"> 39.98 </TD> <TD align="right"> 0.82 </TD> </TR>
-  <TR> <TD align="right"> 13 </TD> <TD> MC1.13 </TD> <TD> Hab+Mid </TD> <TD align="right"> -15.33 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 36.66 </TD> <TD align="right"> 0.82 </TD> </TR>
-  <TR> <TD align="right"> 14 </TD> <TD> MC1.16 </TD> <TD> ResN~Hab </TD> <TD align="right"> -3.49 </TD> <TD align="right"> 5.00 </TD> <TD align="right"> 16.97 </TD> <TD align="right"> 0.39 </TD> </TR>
-  <TR> <TD align="right"> 15 </TD> <TD> MC1.17 </TD> <TD> ResN~Hab </TD> <TD align="right"> -3.80 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 13.60 </TD> <TD align="right"> 0.22 </TD> </TR>
-  <TR> <TD align="right"> 16 </TD> <TD> MC1.18 </TD> <TD> LogisH </TD> <TD align="right"> -35.28 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 200.55 </TD> <TD align="right"> 0.08 </TD> </TR>
-  <TR> <TD align="right"> 17 </TD> <TD> MC1.19 </TD> <TD> LogisH+Neu </TD> <TD align="right"> -14.34 </TD> <TD align="right"> 67.00 </TD> <TD align="right"> 162.68 </TD> <TD align="right"> 0.83 </TD> </TR>
-  <TR> <TD align="right"> 18 </TD> <TD> MC1.20 </TD> <TD> LogisH+Mid </TD> <TD align="right"> -14.77 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 159.54 </TD> <TD align="right"> 0.83 </TD> </TR>
-  <TR> <TD align="right"> 19 </TD> <TD> MC2.1 </TD> <TD> Clim </TD> <TD align="right"> -34.00 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 76.01 </TD> <TD align="right"> 0.17 </TD> </TR>
-  <TR> <TD align="right"> 20 </TD> <TD> MC2.2 </TD> <TD> Clim+Neu </TD> <TD align="right"> -33.69 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 79.37 </TD> <TD align="right"> 0.21 </TD> </TR>
-  <TR> <TD align="right"> 21 </TD> <TD> MC2.3 </TD> <TD> Clim+Mid </TD> <TD align="right"> -33.95 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 75.90 </TD> <TD align="right"> 0.20 </TD> </TR>
-  <TR> <TD align="right"> 22 </TD> <TD> MC2.4 </TD> <TD> Neu </TD> <TD align="right"> -40.36 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 86.72 </TD> <TD align="right"> 0.10 </TD> </TR>
-  <TR> <TD align="right"> 23 </TD> <TD> MC2.5 </TD> <TD> Mid </TD> <TD align="right"> -39.51 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 81.01 </TD> <TD align="right"> 0.13 </TD> </TR>
-  <TR> <TD align="right"> 24 </TD> <TD> MC2.6 </TD> <TD> ResN~Clim </TD> <TD align="right"> -15.28 </TD> <TD align="right"> 6.00 </TD> <TD align="right"> 42.56 </TD> <TD align="right"> 0.02 </TD> </TR>
-  <TR> <TD align="right"> 25 </TD> <TD> MC2.7 </TD> <TD> ResN~Clim </TD> <TD align="right"> -14.81 </TD> <TD align="right"> 4.00 </TD> <TD align="right"> 37.61 </TD> <TD align="right"> 0.05 </TD> </TR>
-  <TR> <TD align="right"> 26 </TD> <TD> MC2.8 </TD> <TD> LogisC </TD> <TD align="right"> -33.18 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 324.35 </TD> <TD align="right"> 0.22 </TD> </TR>
-  <TR> <TD align="right"> 27 </TD> <TD> MC2.9 </TD> <TD> LogisC+Neu </TD> <TD align="right"> -31.78 </TD> <TD align="right"> 131.00 </TD> <TD align="right"> 325.55 </TD> <TD align="right"> 0.35 </TD> </TR>
-  <TR> <TD align="right"> 28 </TD> <TD> MC2.10 </TD> <TD> LogisC+Mid </TD> <TD align="right"> -32.09 </TD> <TD align="right"> 129.00 </TD> <TD align="right"> 322.19 </TD> <TD align="right"> 0.36 </TD> </TR>
-  <TR> <TD align="right"> 29 </TD> <TD> MC2.11 </TD> <TD> Hab </TD> <TD align="right"> -33.80 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 73.60 </TD> <TD align="right"> 0.18 </TD> </TR>
-  <TR> <TD align="right"> 30 </TD> <TD> MC2.12 </TD> <TD> Hab+Neu </TD> <TD align="right"> -33.69 </TD> <TD align="right"> 5.00 </TD> <TD align="right"> 77.37 </TD> <TD align="right"> 0.21 </TD> </TR>
-  <TR> <TD align="right"> 31 </TD> <TD> MC2.13 </TD> <TD> Hab+Mid </TD> <TD align="right"> -33.95 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 73.90 </TD> <TD align="right"> 0.20 </TD> </TR>
-  <TR> <TD align="right"> 32 </TD> <TD> MC2.16 </TD> <TD> ResN~Hab </TD> <TD align="right"> -15.29 </TD> <TD align="right"> 5.00 </TD> <TD align="right"> 40.58 </TD> <TD align="right"> 0.02 </TD> </TR>
-  <TR> <TD align="right"> 33 </TD> <TD> MC2.17 </TD> <TD> ResN~Hab </TD> <TD align="right"> -15.00 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 36.00 </TD> <TD align="right"> 0.02 </TD> </TR>
-  <TR> <TD align="right"> 34 </TD> <TD> MC2.18 </TD> <TD> LogisH </TD> <TD align="right"> -36.32 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.64 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> 35 </TD> <TD> MC2.19 </TD> <TD> LogisH+Neu </TD> <TD align="right"> -40.36 </TD> <TD align="right"> 67.00 </TD> <TD align="right"> 214.72 </TD> <TD align="right"> 0.10 </TD> </TR>
-  <TR> <TD align="right"> 36 </TD> <TD> MC2.20 </TD> <TD> LogisH+Mid </TD> <TD align="right"> -39.49 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 208.98 </TD> <TD align="right"> 0.13 </TD> </TR>
+<TR> <TH>  </TH> <TH> Model </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> MSE </TH>  </TR>
+  <TR> <TD align="right"> 8 </TD> <TD> Cimatic </TD> <TD align="right"> -23.74 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 177.48 </TD> <TD align="right"> 0.62 </TD> <TD align="right"> 4.22 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 6.40 </TD> </TR>
+  <TR> <TD align="right"> 16 </TD> <TD> Habitat </TD> <TD align="right"> -34.86 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 199.73 </TD> <TD align="right"> 0.11 </TD> <TD align="right"> 4.18 </TD> <TD align="right"> 1.40 </TD> <TD align="right"> 5.58 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> Mid domain </TD> <TD align="right"> -20.35 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 42.70 </TD> <TD align="right"> 0.73 </TD> <TD align="right"> 1.62 </TD> <TD align="right"> 3.20 </TD> <TD align="right"> 4.82 </TD> </TR>
+  <TR> <TD align="right"> 4 </TD> <TD> Neutral </TD> <TD align="right"> -19.63 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 45.26 </TD> <TD align="right"> 0.74 </TD> <TD align="right"> 1.50 </TD> <TD align="right"> 5.54 </TD> <TD align="right"> 7.03 </TD> </TR>
+  <TR> <TD align="right"> 26 </TD> <TD> Cimatic </TD> <TD align="right"> -35.84 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 201.68 </TD> <TD align="right"> 0.04 </TD> <TD align="right"> 1.92 </TD> <TD align="right"> 1.14 </TD> <TD align="right"> 3.06 </TD> </TR>
+  <TR> <TD align="right"> 34 </TD> <TD> Habitat </TD> <TD align="right"> -36.38 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.76 </TD> <TD align="right"> 0.00 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 1.05 </TD> <TD align="right"> 2.93 </TD> </TR>
+  <TR> <TD align="right"> 23 </TD> <TD> Mid domain </TD> <TD align="right"> -38.91 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 79.83 </TD> <TD align="right"> 0.15 </TD> <TD align="right"> 2.11 </TD> <TD align="right"> 2.86 </TD> <TD align="right"> 4.97 </TD> </TR>
+  <TR> <TD align="right"> 22 </TD> <TD> Neutral </TD> <TD align="right"> -39.79 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 85.59 </TD> <TD align="right"> 0.12 </TD> <TD align="right"> 1.70 </TD> <TD align="right"> 4.39 </TD> <TD align="right"> 6.09 </TD> </TR>
    </TABLE>
 
 
@@ -312,17 +241,17 @@ For the second axis, the mid domain model along habitat quality explained about 
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> statistic </TH> <TH> signif </TH>  </TR>
   <TR> <TD align="right"> Local Geo </TD> <TD align="right"> 0.48 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> Local Clim </TD> <TD align="right"> 0.35 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> Local Clim </TD> <TD align="right"> 0.37 </TD> <TD align="right"> 0.00 </TD> </TR>
   <TR> <TD align="right"> Local Hab </TD> <TD align="right"> 0.01 </TD> <TD align="right"> 0.41 </TD> </TR>
   <TR> <TD align="right"> 2d Geo </TD> <TD align="right"> 0.49 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> 2d Env </TD> <TD align="right"> 0.42 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> 2d Env </TD> <TD align="right"> 0.40 </TD> <TD align="right"> 0.00 </TD> </TR>
   <TR> <TD align="right"> 2d Hab </TD> <TD align="right"> 0.02 </TD> <TD align="right"> 0.36 </TD> </TR>
-  <TR> <TD align="right"> Local Geo-Env </TD> <TD align="right"> 0.38 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> Local Env-Geo </TD> <TD align="right"> 0.14 </TD> <TD align="right"> 0.01 </TD> </TR>
+  <TR> <TD align="right"> Local Geo-Env </TD> <TD align="right"> 0.35 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> Local Env-Geo </TD> <TD align="right"> 0.12 </TD> <TD align="right"> 0.01 </TD> </TR>
   <TR> <TD align="right"> Local Hab-Geo </TD> <TD align="right"> -0.02 </TD> <TD align="right"> 0.76 </TD> </TR>
-  <TR> <TD align="right"> 2d Geo-Env </TD> <TD align="right"> 0.31 </TD> <TD align="right"> 0.00 </TD> </TR>
-  <TR> <TD align="right"> 2d Env-Geo </TD> <TD align="right"> 0.11 </TD> <TD align="right"> 0.09 </TD> </TR>
-  <TR> <TD align="right"> 2d Hab-Geo </TD> <TD align="right"> 0.11 </TD> <TD align="right"> 0.09 </TD> </TR>
+  <TR> <TD align="right"> 2d Geo-Env </TD> <TD align="right"> 0.32 </TD> <TD align="right"> 0.00 </TD> </TR>
+  <TR> <TD align="right"> 2d Env-Geo </TD> <TD align="right"> -0.06 </TD> <TD align="right"> 0.77 </TD> </TR>
+  <TR> <TD align="right"> 2d Hab-Geo </TD> <TD align="right"> -0.06 </TD> <TD align="right"> 0.77 </TD> </TR>
    </TABLE>
 
 
@@ -397,7 +326,7 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1277.60 </TD> <TD align="right"> 199.85 </TD> <TD align="right"> 1477.44 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1278.06 </TD> <TD align="right"> 191.99 </TD> <TD align="right"> 1470.05 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
   <TR> <TD align="right"> Long2 </TD> <TD align="right"> 1353.43 </TD> <TD align="right"> 183.81 </TD> <TD align="right"> 1537.24 </TD> </TR>
   <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 1452.79 </TD> <TD align="right"> 182.48 </TD> <TD align="right"> 1635.28 </TD> </TR>
@@ -433,7 +362,7 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.83 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 10.71 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.86 </TD> <TD align="right"> 1.90 </TD> <TD align="right"> 10.76 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
   <TR> <TD align="right"> Long2 </TD> <TD align="right"> 4.36 </TD> <TD align="right"> 2.16 </TD> <TD align="right"> 6.52 </TD> </TR>
   <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 4.20 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.35 </TD> </TR>

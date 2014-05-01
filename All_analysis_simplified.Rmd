@@ -199,14 +199,14 @@ environment[,paste("PCA.wclim.",1:3,sep="")]<-prcomp(decostand(environment[,past
 
 environment$rich<-rowSums(species.loc)
 similarity.jac.loc<-vegdist(species.loc,"jaccard")
-environment[,paste("pcoa.jac.",1:3,sep="")]<-cmdscale(similarity.jac.loc,k=3)
+environment[,paste("pcoa.jac.",1:3,sep="")]<--prcomp(similarity.jac.loc)$x[,1:3]
 
 environment<-data.frame(environment,std=decostand(environment,"standardize"))
 
 geodist.loc<-dist(environment[,c("Lat","Long")])
 #envdist.loc<-dist(environment[grep("std",colnames(environment))][c(6,17)]) #using just bio1 and bio12
 
-envdist.loc<-dist(environment[grep("std",colnames(environment))][c(25,26)])
+envdist.loc<-dist(environment[grep("std",colnames(environment))][c(25)])
 habdist.loc<-dist(environment[grep("std",colnames(environment))][4])
 
 
@@ -236,12 +236,12 @@ for(i in 1:nrow(environment.2d)){
 
 environment.2d[,paste("PCA.wclim.",1:3,sep="")]<-prcomp(decostand(environment.2d[,paste("bio",1:19,sep="")],"standardize"))$x[,1:3]
 
-
 # Creating observed statistics
 
 environment.2d$rich<-rowSums(species.2d)
 similarity.jac<-vegdist(species.2d,"jaccard")
-environment.2d[,paste("pcoa.jac.",1:3,sep="")]<-cmdscale(similarity.jac,k=3)
+environment.2d[,paste("pcoa.jac.",1:3,sep="")]<--prcomp(similarity.jac)$x[,1:3]
+
 
 #plot(pcoa.jac.1~Lat2,data=environment.2d)
 
@@ -250,7 +250,7 @@ environment.2d<-data.frame(environment.2d,std=decostand(environment.2d,"standard
 environment.2d$matchin.AF.2d<-match(paste(environment.2d[,1],environment.2d[,2]),paste(environment.AF.2d[,1],environment.AF.2d[,2]))
 
 geodist.2d<-dist(environment.2d[,c("Lat2","Long2")])
-envdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][c(25,26)]) #Using just PCA1 and 2 of wclim var
+envdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][c(25)]) #Using just PCA1 and 2 of wclim var
 habdist.2d<-dist(environment.2d[grep("std",colnames(environment.2d))][4]) #Using just PCA1 and 2 of wclim var
 
 ```
@@ -341,8 +341,7 @@ environment.2d$rich.MidD.sd<-apply(rich.MidD.vec,1,sd)
 similarity.MidD.mean<-matrix(rowMeans(similarity.MidD.vec),nrow(species.2d),nrow(species.2d))
 similarity.MidD.sd<-matrix(apply(similarity.MidD.vec,1,sd),nrow(species.2d),nrow(species.2d))
 
-environment.2d[,paste("pcoa.MidD.jac.",1:3,sep="")]<-(
-  prcomp(similarity.MidD.mean)$x)[,1:3]
+environment.2d[,paste("pcoa.MidD.jac.",1:3,sep="")]<-(prcomp(similarity.MidD.mean)$x[,1:3])
 
 #plot(pcoa.jac.1~pcoa.MidD.jac.1,data=environment.2d)
 
@@ -413,13 +412,13 @@ F1=neutral.AF$finalF
 environment.AF.2d$Hill<-1/(diag(neutral.AF$finalF))
 morisita.AF.2d<-extractMH(neutral.AF$finalF)
 
-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]<-prcomp((morisita.AF.2d))$x[,1:3]
+environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]<-prcomp(as.dist(morisita.AF.2d))$x[,1:3]
 environment.AF.2d[,paste("pcoa.mor.",1:3,sep="")]<-environment.AF.2d[,paste("pcoa.mor.AF",1:3,sep="")]*NA
 
 environment.AF.2d[environment.2d$matchin.AF.2d,paste("pcoa.mor.",1:3,sep="")]<-#PCA.AF[,1:3]
   prcomp(morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d])$x[,1:3]
 
-#plot(environment.2d$Lat2,decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22)
+#plot(environment.2d$Lat2,1-decostand(environment.2d$pcoa.jac.1,'range'),bg="gold",pch=22)
 #points((environment.AF.2d$AF.Lat2),decostand(environment.AF.2d$pcoa.mor.1,'range',na.rm=T),bg=1,pch=21)
 #points(environment.2d$Lat2,decostand(environment.2d$pcoa.MidD.jac.1,'range'),bg=2,pch=23)
 
@@ -679,6 +678,79 @@ s.mse.logis[i] = s.bias.sq.logis[i] + s.var.logis[i]
 
 ```{r MSE composition,echo=FALSE,results='hide',warning=FALSE}
 
+## Composition first and second axes
+
+O<-environment.2d$pcoa.jac.1
+
+S<-apply(similarity.MidD.vec,2,function(x){prcomp(matrix(x,26,26))$x[,1]})
+E<-rowMeans(S)
+
+s.bias.sq.MidD.c1<-sum((O-E)^2)/2
+s.var.MidD.c1<-(sum(colSums((S-E)^2)))/(ncol(S)-1)/2
+s.mse.MidD.c1 = s.bias.sq.MidD.c1 + s.var.MidD.c1
+
+S<-apply(similarity.neutral,3,function(x){prcomp(x)$x[,1]})
+E<-rowMeans(S)
+#E2<-prcomp((1-morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]))$x[,1] ### CHANGE
+
+s.bias.sq.neu.c1<-sum((O-E)^2)/2
+s.var.neu.c1<-(sum(colSums((S-E)^2)))/(ncol(S)-1)/2
+s.mse.neu.c1 <- s.bias.sq.neu.c1 + s.var.neu.c1
+
+s.bias.sq.logis.c1<-{}
+s.var.logis.c1<-{}
+s.mse.logis.c1<- {}
+
+for (i in glm.variables.2d){ 
+  
+S<-apply(similarity.logis.jac.ls[[i]],3,function(x){prcomp(x)$x[,1]})
+E<-rowMeans(S)
+  
+s.bias.sq.logis.c1[i]<-sum((O-E)^2)/2
+s.var.logis.c1[i]<-(sum(colSums((S-E)^2)))/(ncol(S)-1)/2
+s.mse.logis.c1[i] = s.bias.sq.logis.c1[i] + s.var.logis.c1[i]
+
+}
+
+#second
+
+O<-environment.2d$pcoa.jac.2
+
+S<-apply(similarity.MidD.vec,2,function(x){prcomp(matrix(x,26,26))$x[,2]})
+E<-rowMeans(S)
+
+s.bias.sq.MidD.c2<-sum((O-E)^2)/2
+s.var.MidD.c2<-(sum(colSums((S-E)^2)))/(ncol(S)-1)/2
+s.mse.MidD.c2 = s.bias.sq.MidD.c2 + s.var.MidD.c2
+
+S<-apply(similarity.neutral,3,function(x){prcomp(x)$x[,2]})
+E<-rowMeans(S)
+#E2<-prcomp((1-morisita.AF.2d[environment.2d$matchin.AF.2d,environment.2d$matchin.AF.2d]))$x[,1] ### CHANGE
+
+s.bias.sq.neu.c2<-sum((O-E)^2)/2
+s.var.neu.c2<-(sum(colSums((S-E)^2)))/(ncol(S)-1)/2
+s.mse.neu.c2 <- s.bias.sq.neu.c2 + s.var.neu.c2
+
+s.bias.sq.logis.c2<-{}
+s.var.logis.c2<-{}
+s.mse.logis.c2<- {}
+
+for (i in glm.variables.2d){ 
+  
+S<-apply(similarity.logis.jac.ls[[i]],3,function(x){prcomp(x)$x[,2]})
+E<-rowMeans(S)
+  
+s.bias.sq.logis.c2[i]<-sum((O-E)^2)/2
+s.var.logis.c2[i]<-(sum(colSums((S-E)^2)))/(ncol(S)-1)/2
+s.mse.logis.c2[i] = s.bias.sq.logis.c2[i] + s.var.logis.c2[i]
+
+}
+
+
+
+
+## jac matrix
+
 O<-as.vector(as.matrix(similarity.jac))
 
 S<-similarity.MidD.vec
@@ -718,13 +790,13 @@ Additionally, we tested for the direct association of the response variables aga
 
 ```{r regresions local scale, echo=FALSE, results='hide',warning=FALSE}
 
-library(vegan)
+#library(vegan)
 
-MR1.1.loc<-glm(rich~PCA.wclim.1+PCA.wclim.2,data=decostand(environment,"standardize"))
+MR1.1.loc<-glm(rich~PCA.wclim.1,data=decostand(environment,"standardize"))
 
-MC1.1.loc<-glm(pcoa.jac.1~PCA.wclim.1+PCA.wclim.2,data=decostand(environment,"standardize"))
+MC1.1.loc<-glm(pcoa.jac.1~PCA.wclim.1,data=decostand(environment,"standardize"))
 
-MC2.1.loc<-glm(pcoa.jac.2~PCA.wclim.1+PCA.wclim.2,data=decostand(environment,"standardize"))
+MC2.1.loc<-glm(pcoa.jac.2~PCA.wclim.1,data=decostand(environment,"standardize"))
 
 #MR1.11.loc<-glm(rich~conservation,data=decostand(environment,"standardize"))
 MR1.11.loc<-glm(rich~habitat,data=decostand(environment,"standardize"))
@@ -740,7 +812,7 @@ MC2.11.loc<-glm(pcoa.jac.2~habitat,data=decostand(environment,"standardize"))
   
 ```{r regressions, echo=FALSE, results='hide',warning=FALSE}
 
-MR1.1<-glm(rich~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MR1.1<-glm(rich~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
 MR1.2<-update(MR1.1,~.+offset(1*rich.neutral.mean)) #Fixed slope for neutral and mid-d
 MR1.3<-update(MR1.1,~.+offset(1*rich.MidD.mean))
@@ -748,10 +820,10 @@ MR1.3<-update(MR1.1,~.+offset(1*rich.MidD.mean))
 MR1.4<-update(MR1.1,~0+offset(1*rich.neutral.mean)) #No intercept for these models
 MR1.5<-update(MR1.1,~0+offset(1*rich.MidD.mean))
 
-MR1.6<-glm(MR1.4$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
-MR1.7<-glm(MR1.5$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MR1.6<-glm(MR1.4$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
+MR1.7<-glm(MR1.5$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
-MR1.8<-glm(rich~0+rich.logis.PCA.wclim.1+rich.logis.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MR1.8<-glm(rich~0+rich.logis.PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
 MR1.9<-update(MR1.8,~.+offset(1*rich.neutral.mean))
 MR1.10<-update(MR1.8,~.+offset(1*rich.MidD.mean))
@@ -787,7 +859,7 @@ MR1.20<-update(MR1.18,~.+offset(1*rich.MidD.mean))
 ##### Composition
 
 
-MC1.1<-glm(pcoa.jac.1~std.PCA.wclim.1+std.PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MC1.1<-glm(pcoa.jac.1~std.PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
 MC1.2<-update(MC1.1,~.+offset(-1*pcoa.jac.neutral.1)) # Change direction
 MC1.3<-update(MC1.1,~.+offset(1*pcoa.MidD.jac.1))
@@ -795,10 +867,10 @@ MC1.3<-update(MC1.1,~.+offset(1*pcoa.MidD.jac.1))
 MC1.4<-update(MC1.1,~0+offset(-1*pcoa.jac.neutral.1)) # Change direction
 MC1.5<-update(MC1.1,~0+offset(1*pcoa.MidD.jac.1))
 
-MC1.6<-glm(MC1.4$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
-MC1.7<-glm(MC1.5$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MC1.6<-glm(MC1.4$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
+MC1.7<-glm(MC1.5$residuals[environment.AF.2d$Lat2!=100]~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
-MC1.8<-glm(pcoa.jac.1~0+pcoa.logis.jac.PCA.wclim.1.1+pcoa.logis.jac.PCA.wclim.2.1,data=decostand(environment.AF.2d,"standardize"))
+MC1.8<-glm(pcoa.jac.1~0+pcoa.logis.jac.PCA.wclim.1.1,data=decostand(environment.AF.2d,"standardize"))
 
 MC1.9<-update(MC1.8,~.+offset(-1*pcoa.jac.neutral.1))
 MC1.10<-update(MC1.8,~.+offset(1*pcoa.MidD.jac.1))
@@ -833,7 +905,7 @@ MC1.20<-update(MC1.18,~.+offset(1*pcoa.MidD.jac.1))
 
 #####
 
-MC2.1<-glm(pcoa.jac.2~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MC2.1<-glm(pcoa.jac.2~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
 MC2.2<-update(MC2.1,~.+offset(1*pcoa.jac.neutral.2)) # Change direction
 MC2.3<-update(MC2.1,~.+offset(1*pcoa.MidD.jac.2))
@@ -841,11 +913,11 @@ MC2.3<-update(MC2.1,~.+offset(1*pcoa.MidD.jac.2))
 MC2.4<-update(MC2.1,~0+offset(1*pcoa.jac.neutral.2)) # Change direction
 MC2.5<-update(MC2.1,~0+offset(1*pcoa.MidD.jac.2))
 
-MC2.6<-glm(MC2.4$residuals[environment.AF.2d$Lat2!=0]~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MC2.6<-glm(MC2.4$residuals[environment.AF.2d$Lat2!=0]~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
-MC2.7<-glm(MC2.5$residuals[environment.AF.2d$Lat2!=0]~PCA.wclim.1+PCA.wclim.2,data=decostand(environment.AF.2d,"standardize"))
+MC2.7<-glm(MC2.5$residuals[environment.AF.2d$Lat2!=0]~PCA.wclim.1,data=decostand(environment.AF.2d,"standardize"))
 
-MC2.8<-glm(pcoa.jac.2~0+pcoa.logis.jac.PCA.wclim.1.2+pcoa.logis.jac.PCA.wclim.2.2,data=decostand(environment.AF.2d,"standardize"))
+MC2.8<-glm(pcoa.jac.2~0+pcoa.logis.jac.PCA.wclim.1.2,data=decostand(environment.AF.2d,"standardize"))
 
 MC2.9<-update(MC2.8,~.+offset(1*pcoa.jac.neutral.2))
 MC2.10<-update(MC2.8,~.+offset(1*pcoa.MidD.jac.2))
@@ -938,40 +1010,32 @@ MS1.11<-glm((1-similarity.jac)~habdist.2d,family = binomial(link=log))
 
   All the models had a very poor fit to species richness (Fig. 2; Fig. S2). The model with the lowest mean square error and bias was the logistic simulation using habitat quality as a predictor of species presence (Table 1). The model with the lowest variance was the neutral model, but the difference among the models was much smaller than for the bias (Table 1).
 
-#### Table 1. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
-
-####
-
-``` {r Tab1_MSE - rich Results,echo=FALSE,results='asis'}
-
-print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD,Neutral=s.bias.sq.neutral,s.bias.sq.logis),
-VAR=c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis),
-sMSE=c(MidD=s.mse.MidD,Neutral=s.mse.neutral,s.mse.logis))[c(1:2,5,26,27),]
-),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
-
-
-```
-
-###
-
 Similarly, the regression model with the lowest AIC was the linear regression of the species richness against habitat quality (Table 2). However, the inclusion of the neutral model prediction in the same model produced a similar AIC value and increased the explanatory power in about 7% (Table 2). Habitat quality alone was able to explain `r round(cor(MR1.11$fitted.values+MR1.11$residuals,MR1.11$fitted.values)^2*100,0)`% of the variation in species richness. The climatic variables were able to explain `r round(cor(MR1.1$fitted.values+MR1.1$residuals,MR1.1$fitted.values)^2*100,0)`% of the variation on species richness. The logistic models had similar explanatory power to the models using the raw environmental predictors.
   Besides the poor fit for the data, the Mid Domain and Neutral models created the well known richness peak in the central areas of the Atlantic forest (Fig. 2). The neutral and Mid Domain models were able to explain alone `r round(cor(MR1.4$fitted.values+MR1.4$residuals,MR1.4$fitted.values)^2*100,0)`% and `r round(cor(MR1.5$fitted.values+MR1.5$residuals,MR1.5$fitted.values)^2*100,0)`% of the variation on species richness, respectively.
   In the small grain (original sampling units), the habitat quality and climatic variables were able to explain `r round(cor(MR1.1.loc$fitted.values+MR1.1.loc$residuals,MR1.1.loc$fitted.values)^2*100,0)`% and `r round(cor(MR1.11.loc$fitted.values+MR1.11.loc$residuals,MR1.11.loc$fitted.values)^2*100,0)`% of the variation in species richness.
 
-#### Table 2. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
+
+#### Table 1. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
 
 
 ####
 
-```{r Tab2_AICs richness, echo=FALSE, results='asis'}
+```{r Tab1_AICs richness, echo=FALSE, results='asis'}
 
-npar=c(4,6,4,3,1,6,4,129,131,129,3,5,3,5,3,65,67,65)
+npar=c(4,6,4,3,1,6,4,65,67,65,3,5,3,5,3,65,67,65)
 
 logLik<-unlist(lapply(list(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20),logLik))
 
 rsquares<-unlist(lapply(list(MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20),function(x)cor(x$fitted.values+x$residuals,x$fitted.values)^2))
 
-print(xtable(data.frame(model=strsplit("MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20",",")[[1]],Var=c("Clim","Clim+Neu","Clim+Mid","Neu","Mid","ResN~Clim","ResN~Clim","LogisC","LogisC+Neu","LogisC+Mid","Hab","Hab+Neu","Hab+Mid","ResN~Hab","ResN~Hab","LogisH","LogisH+Neu","LogisH+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares)),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
+BIASsq<-rep(NA,18)
+VAR<-rep(NA,18)
+
+BIASsq[c(5,4,8,16)]<-c(MidD=s.bias.sq.MidD,Neutral=s.bias.sq.neutral,s.bias.sq.logis[c(24,3)])
+VAR[c(5,4,8,16)]<-c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis[c(24,3)])
+
+print(xtable(data.frame(modeln=strsplit("MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4),-1]),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
 
 ```
@@ -1031,37 +1095,32 @@ par(op)
 
   The similarity in species composition was well fit for both the neutral, the Mid Domain, and the climatic models. The MSE in the models, and the difference in MSE between the models were much smaller for the species composition than for richness (Table 3), besides the much larger number of comparisons for the species composition (325 for the pairwise similarity matrix against 26 for the vector of species richness). The lowest mean square error and bias were obtained using the climatic variables as predictors of the species occurrence in the logistic models, while the mid domain model had the lowest variance (Table 3). The neutral model had the highest mean square error due to its largest variance (Table 3).
 
-#### Table 3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
-
-####
-
-```{r Tab3_MSE - comp Results,echo=FALSE,results='asis'}
-
-print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD.jac,Neutral=s.bias.sq.neu.jac,s.bias.sq.logis.jac),
-VAR=c(MidD=s.var.MidD.jac,Neutral=s.var.neu.jac,s.var.logis.jac),
-sMSE=c(MidD=s.mse.MidD.jac,Neutral=s.mse.neu.jac,s.mse.logis.jac))[c(1:2,5,26,27),]
-),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
-
-```
-
 ####
 
 Conversely, the best regression models for the first ordination axis were obtained including the mid domain or neutral model results as predictor variables (Table 4). For the second ordination axis, the best model included habitat quality, and habitat quality along the mid domain model. The neutral and mid domain models alone were able to explain `r round(cor(MC1.4$fitted.values+MC1.4$residuals,MC1.4$fitted.values)^2*100,0)`% and `r round(cor(MC1.5$fitted.values+MC1.5$residuals,MC1.5$fitted.values)^2*100,0)`% of the variation in the first axis of species composition. The climatic variables combined explained `r round(cor(MC1.1$fitted.values+MC1.1$residuals,MC1.1$fitted.values)^2*100,0)`% of the variation is the first axis. Habitat quality alone was a poor predictor of the species composition in the first ordination axis, but the best explanatory model was obtained by combining habitat quality and one of the dispersal models (R²=`r round(cor(MC1.13$fitted.values+MC1.13$residuals,MC1.13$fitted.values)^2*100,0)`%). 
 For the second axis, the mid domain model along habitat quality explained about `r round(cor(MC2.13$fitted.values+MC2.13$residuals,MC2.13$fitted.values)^2*100,0)`% of the variation in species composition (Table 4). Besides the largest AICs due to the high number of parameters, the combination of the dispersal models with the climatic variables in the logistic regressions gave the best explanatory power for the second ordination axis (R²=`r round(cor(MC1.8$fitted.values+MC1.8$residuals,MC1.8$fitted.values)^2*100,0)`%; Table 4). 
 
-#### Table 4. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
+#### Table 2. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
 
 ####
 
-```{r Tab4_AICs composition, echo=FALSE, results='asis'}
+```{r Tab2_AICs composition, echo=FALSE, results='asis'}
 
-npar=c(4,6,4,3,1,6,4,129,131,129,3,5,3,5,3,65,67,65)
+npar=c(4,6,4,3,1,6,4,65,67,65,3,5,3,5,3,65,67,65)
 
 logLik<-unlist(lapply(list(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC1.11,MC1.12,MC1.13,MC1.16,MC1.17,MC1.18,MC1.19,MC1.20,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10,MC2.11,MC2.12,MC2.13,MC2.16,MC2.17,MC2.18,MC2.19,MC2.20),logLik))
 
 rsquares<-unlist(lapply(list(MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC1.11,MC1.12,MC1.13,MC1.16,MC1.17,MC1.18,MC1.19,MC1.20,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10,MC2.11,MC2.12,MC2.13,MC2.16,MC2.17,MC2.18,MC2.19,MC2.20),function(x)cor(x$fitted.values+x$residuals,x$fitted.values)^2))
 
-print(xtable(data.frame(model=strsplit("MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC1.11,MC1.12,MC1.13,MC1.16,MC1.17,MC1.18,MC1.19,MC1.20,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10,MC2.11,MC2.12,MC2.13,MC2.16,MC2.17,MC2.18,MC2.19,MC2.20",",")[[1]],Var=c("Clim","Clim+Neu","Clim+Mid","Neu","Mid","ResN~Clim","ResN~Clim","LogisC","LogisC+Neu","LogisC+Mid","Hab","Hab+Neu","Hab+Mid","ResN~Hab","ResN~Hab","LogisH","LogisH+Neu","LogisH+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares)),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+BIASsq<-rep(NA,36)
+VAR<-rep(NA,36)
+
+BIASsq[c(5,4,8,16,23,22,26,34)]<-c(MidD=s.bias.sq.MidD.c1,Neutral=s.bias.sq.neu.c1,s.bias.sq.logis.c1[c(24,3)],MidD=s.bias.sq.MidD.c2,Neutral=s.bias.sq.neu.c2,s.bias.sq.logis.c2[c(24,3)])
+VAR[c(5,4,8,16,23,22,26,34)]<-c(MidD=s.var.MidD.c1,Neutral=s.var.neu.c1,s.var.logis.c1[c(24,3)],MidD=s.var.MidD.c2,Neutral=s.var.neu.c2,s.var.logis.c2[c(24,3)])
+
+print(xtable(
+  data.frame(modeln=strsplit("MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC1.11,MC1.12,MC1.13,MC1.16,MC1.17,MC1.18,MC1.19,MC1.20,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10,MC2.11,MC2.12,MC2.13,MC2.16,MC2.17,MC2.18,MC2.19,MC2.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4,26,34,23,22),-1]
+  ),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
 ```
 

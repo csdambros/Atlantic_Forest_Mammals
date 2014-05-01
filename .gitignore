@@ -8,3 +8,4 @@
 *.csv
 *.txt
 test.debug.Rmd
+!figure/

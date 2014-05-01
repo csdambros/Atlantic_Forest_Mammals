@@ -16,7 +16,7 @@ table.type="html"
 ```
 
 
-##### By CSDambros
+##### By Dambros, Cáceres, Magnus, Sponchiado, Melo, Della-Flora and Gotelli
 
 >html updated at `r as.character(Sys.time())`
 

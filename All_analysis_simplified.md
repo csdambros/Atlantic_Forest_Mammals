@@ -12,7 +12,8 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 
 
-##### By CSDambros
+##### By Dambros, Cáceres, Magnus, Sponchiado, Melo, Della-Flora and Gotelli
+
 
 >html updated at 2014-05-01 16:27:47
 

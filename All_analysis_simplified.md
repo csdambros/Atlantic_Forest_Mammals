@@ -181,7 +181,7 @@ Similarly, the regression model with the highest explained variance was the logi
   In the small grain (original sampling units), the habitat quality and climatic variables were able to explain 12% and 2% of the variation in species richness.
 
 
-#### Table 1. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
+###### Table 1. AIC values comparing the 10 regression models tested for species Richness. MR1.1: Environmental variables as predictors; MR1.2: Environmental variables + Neutral as predictors; MR1.3: Environmental variables + Mid Domain as predictors; MR1.4: Neutral; MR1.5: Mid Domain; MR1.6: Environmental variables as predictors of residuals from Neutral; MR1.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8: Logistic models as predictors; MR1.9: Logistic model + Neutral as predictors; MR1.10: Logistic model + Mid Domain as predictors.
 
 
 ####
@@ -200,7 +200,7 @@ Similarly, the regression model with the highest explained variance was the logi
 
 ![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral1.png) ![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral2.png) ![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral3.png) 
 
-#### Fig 2. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the climatic variables in the logistic models; (B) Predicted by habitat quality in the logistic models; (D) Predicted by the Mid Domain model; (E) Predicted by the neutral model. Blank cells represent areas included in the neutral model but where actual data is not available.
+###### Fig 2. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the climatic variables in the logistic models; (B) Predicted by habitat quality in the logistic models; (D) Predicted by the Mid Domain model; (E) Predicted by the neutral model. Blank cells represent areas included in the neutral model but where actual data is not available.
 
 
 ####
@@ -211,7 +211,7 @@ Habitat quality was a poor predictor of both ordination axes.
 
 ####
 
-#### Table 2. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
+###### Table 2. AIC values comparing the 10 regression models tested for species composition. Specias composition was measured as the first (MC1) and second (MC2) axes of the principal component analysis summarizing the jaccard similarity matrix. MC1.1 and MC2.1: Environmental variables as predictors; MC1.2 and MC2.2: Environmental variables + Neutral as predictors; MC1.3 and MC2.3: Environmental variables + Mid Domain as predictors; MC1.4 and MC2.4: Neutral; MC1.5 and MC2.5: Mid Domain; MC1.6 and MC2.6: Environmental variables as predictors of residuals from Neutral; MC1.7 and MC2.7:  Environmental variables as predictors of residuals from Mid Domain; MR1.8 and MC2.8: Logistic models as predictors; MC1.9 and MC2.9: Logistic model + Neutral as predictors; MC1.10 and MC2.10: Logistic model + Mid Domain as predictors.
 
 ####
 
@@ -232,14 +232,14 @@ Habitat quality was a poor predictor of both ordination axes.
 
 ![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral1.png) ![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral2.png) ![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral3.png) 
 
-#### Fig 3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the climatic variables in the logistic models; (C) Species composition predicted by habitat quality in the logistic models; (D) Species composition predicted by the Mid Domain model; (E) Species composition predicted by the neutral model. Shadded grid cells represent areas included in the neutral model but where actual data is not available.
+###### Fig 3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the climatic variables in the logistic models; (C) Species composition predicted by habitat quality in the logistic models; (D) Species composition predicted by the Mid Domain model; (E) Species composition predicted by the neutral model. Shadded grid cells represent areas included in the neutral model but where actual data is not available.
 
 ####
 
 
   The mantel test results showed a stronger climatic effect on species composition when grouping the data in grid cells (Table 3). The geographical distance was highly correlated with the species composition in both cases. Geographical distance was correlated with the species composition when the climatic effect was partialed out, but the correlation was stronger in the unconstrained model (Table 3). The similarity in species composition was also weakly associated with the climatic variables when controlling for geographical distance in the grouped data. Habitat quality was a poor predictor of species composition in all models (Table 3).
 
-#### Table 5. Mantel and partial Mantel test results comparing the correlation of species similarity against geographical distance and environmental dissimilarity. The minus sign indicate partial results (Geo - Env: Geographical distance without the effect of environmenal dissimilarity).
+###### Table 3. Mantel and partial Mantel test results comparing the correlation of species similarity against geographical distance and environmental dissimilarity. The minus sign indicate partial results (Geo - Env: Geographical distance without the effect of environmenal dissimilarity).
 
 ####
 
@@ -268,7 +268,7 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 ![plot of chunk Fig_4_distance_decay_real_midDomain_and_neutral_mor](figure/Fig_4_distance_decay_real_midDomain_and_neutral_mor.png) 
 
-#### Fig. 4. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey). Habitat quality and the climatic variables did not predict the exponential decay with geographical distance.
+###### Fig. 4. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey). Habitat quality and the climatic variables did not predict the exponential decay with geographical distance.
 
 ####
 
@@ -277,56 +277,56 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 ![plot of chunk Fig_S1-Connectivity_map_26_and_56](figure/Fig_S1-Connectivity_map_26_and_56.png) 
 
-#### Fig. S1. Map representing the connectivity of grid cells used to simulate the individual dispersal in the Mid Domain (A) and neutral (B) models.
+###### Fig. S1. Map representing the connectivity of grid cells used to simulate the individual dispersal in the Mid Domain (A) and neutral (B) models.
 
 ####
 
 ![plot of chunk Fig_S2_rich_logis_in_the_map](figure/Fig_S2_rich_logis_in_the_map.png) 
 
-#### Fig S2. Projection of the species richness predicted by logistic models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B-Z) Predicted by logistic regressions of individual species against environmental gradients. 
+###### Fig S2. Projection of the species richness predicted by logistic models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B-Z) Predicted by logistic regressions of individual species against environmental gradients. 
 
 
 ####
 
 ![plot of chunk Fig_S3_jac_logis_in_the_map](figure/Fig_S3_jac_logis_in_the_map.png) 
 
-#### Fig S3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summarized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B-Z) Species composition predicted by logistic regressions of individual species against the environmental gradients.
+###### Fig S3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summarized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B-Z) Species composition predicted by logistic regressions of individual species against the environmental gradients.
 
 
 ####
 
 ![plot of chunk Fig_S4_plot_all_predictions_against_lat](figure/Fig_S4_plot_all_predictions_against_lat.png) 
 
-#### Fig S4. Change in species composition along the latitudinal gradient as predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
+###### Fig S4. Change in species composition along the latitudinal gradient as predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
 
 
 ![plot of chunk Fig_S5_Residuals_similarity](figure/Fig_S5_Residuals_similarity.png) 
 
-#### Fig S5. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
+###### Fig S5. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
 
 ###
 
 ![plot of chunk FigS6_residuals_regressions_richness](figure/FigS6_residuals_regressions_richness.png) 
 
-#### Fig S6. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
+###### Fig S6. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
 
 ###
 
 
 ![plot of chunk FigS7_residuals_regressions_composition](figure/FigS7_residuals_regressions_composition.png) 
 
-#### Fig S7. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
+###### Fig S7. Residual plots of the the fitted models using the pairwise Jaccard similarity as a response variable. The plots represent the models using (A) geographical distance; (B) environmental distance; (C) Neutral; and (D) Mid-Domain models as predictors. For A and B, the fitted model was a Generalized Linear Model with a log link and binomial distribution. For C and D, the graphs represent the deviations predicted by simulations (see data analysis for details).
 
 
 ####
 
 
 
-#### Table S1. List of the sites, authors, etc. used in this manuscript
+###### Table S1. List of the sites, authors, etc. used in this manuscript
 
 ###
 
-#### Table S2. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
+###### Table S2. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for species richness. The Mean Square Error is the sum of the Bias and Variance.
 
 ####
 
@@ -364,7 +364,7 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 ###
 
-#### Table S3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
+###### Table S3. Bias, Variance and Mean Square Error of the Mid Domain, Neutral and Logistic simulation models for the jaccard pairwise similarity. The Mean Square Error is the sum of the Bias and Variance.
 
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>

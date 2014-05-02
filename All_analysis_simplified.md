@@ -67,7 +67,7 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 ![plot of chunk Fig_1_Study_site](figure/Fig_1_Study_site.png) 
 
-#### Fig. 1. Map of the Atlantic Forest (AF; blue shade) showing the orinal sampling points (red circles) and the grid cells encompassing the entire AF. The size of the circles represent the size o the original sampling area in the log scale. Green shade represent the grid cells where small mammal data was available. 
+###### Fig. 1. Map of the Atlantic Forest (AF; blue shade) showing the orinal sampling points (red circles) and the grid cells encompassing the entire AF. The size of the circles represent the size o the original sampling area in the log scale. Green shade represent the grid cells where small mammal data was available. 
 
 ####
 

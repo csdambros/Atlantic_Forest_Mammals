@@ -15,7 +15,7 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 ##### By Dambros, Cáceres, Magnus, and Gotelli
 
 
->html updated at 2014-05-02 10:35:05
+>html updated at 2014-05-02 11:48:45
 
 ### Methods
 
@@ -81,9 +81,6 @@ Comparing dispersal, environmental and mid-domain effects on species distributio
 
 
 
-```
-## Error: infinite or missing values in 'x'
-```
 
 
   In the neutral model, the whole area comprising the AF was divided in 56 2x2 degrees grid cells from which 26 had small mammal data available (Fig. 1). The model started with a single species occupying all the 56 cells. In each generation, new species were added in each cell by point speciation with rate $\nu$, set the same for al cells (see Economo & Keitt (2010) and Muneepeerakul et al. (2008) for more details and other uses). $\nu$ represents the probability of an individual to become a new species but could also represent the addition of new species by immigration from a larger species pool outside the AF (eg. the Cerrado or Amazonian forests). To recreate the dispersal of individuals, we determined that a cell could just be colonized by a neighbor (Moore neighborhood; Fig S2), and that all grid cells had the same migration rate (parameter $m$). The local community size (number of individuals) was set the same for all grid cells ($N$ = 100). The model was run for multiple generations, until the diversity within (PIE and HillPIE) and between all cells (Morisita-Horn similarity) reached a steady-state (usually more than 30,000 generations).
@@ -145,13 +142,6 @@ We compared the three simulation models (Mid Domain, Neutral, and based on logis
 
 
 
-```
-## Error: infinite or missing values in 'x'
-```
-
-```
-## Error: infinite or missing values in 'x'
-```
 
 
 Alternatively, we tested for the direct association of the response variables against the environmental predictors and present these results as supplements. For this test, linear regression models (OLS) were fit for species richness and the two ordination axes of species composition. For the original sampling units, the OLS models had the climatic and habitat quality variables as predictors. For the grouped data, we created three sets of models: (1) Using just the climatic and habitat quality variables as predictors; (2) using just the neutral and mid domain models as predictors; (3) using the neutral and mid domain predictions as predictor variables along with the climatic and habitat quality variables, as suggested by Letten et al. (2013); and (4) using the neutral and mid domain predictions as null hypotheses, and testing for the association of residuals with the climatic and habitat quality variables. Both the raw environmental variables and the prediction from the logistic simulations were used as predictor variables. This gave a total of 20 models (REnv; Neutral; MidD; REnv+Neutral; REnv+MidD; LEnv; REnv+Neutral; REnv+MidD; ResNeutral+Env;  ResMidD+Env; Table 2; Table 4). We assumed normality in the residuals of all models. The models were compared by their AIC values.
@@ -162,61 +152,6 @@ Alternatively, we tested for the direct association of the response variables ag
 
   
 
-```
-## Error: object 'pcoa.MidD.jac.1' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.1' not found
-```
-
-```
-## Error: object 'MC1.5' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.1' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.1' not found
-```
-
-```
-## Error: object 'MC1.5' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.1' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.2' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.2' not found
-```
-
-```
-## Error: object 'MC2.5' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.2' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.2' not found
-```
-
-```
-## Error: object 'MC2.5' not found
-```
-
-```
-## Error: object 'pcoa.MidD.jac.2' not found
-```
 
 
 ##### Distance-decay analyses
@@ -255,7 +190,7 @@ Similarly, the regression model with the highest explained variance was the logi
 <TR> <TH>  </TH> <TH> Model </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> MSE </TH>  </TR>
   <TR> <TD align="right"> 8 </TD> <TD> Cimatic </TD> <TD align="right"> -36.32 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.63 </TD> <TD align="right"> 0.01 </TD> <TD align="right"> 1363.23 </TD> <TD align="right"> 180.92 </TD> <TD align="right"> 1544.15 </TD> </TR>
   <TR> <TD align="right"> 16 </TD> <TD> Habitat </TD> <TD align="right"> -33.31 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 196.63 </TD> <TD align="right"> 0.21 </TD> <TD align="right"> 1033.74 </TD> <TD align="right"> 201.66 </TD> <TD align="right"> 1235.41 </TD> </TR>
-  <TR> <TD align="right"> 5 </TD> <TD> Mid domain </TD> <TD align="right"> -41.29 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.58 </TD> <TD align="right"> 0.07 </TD> <TD align="right"> 1282.41 </TD> <TD align="right"> 196.62 </TD> <TD align="right"> 1479.03 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> Mid domain </TD> <TD align="right"> -41.22 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.45 </TD> <TD align="right"> 0.08 </TD> <TD align="right"> 1280.47 </TD> <TD align="right"> 189.81 </TD> <TD align="right"> 1470.28 </TD> </TR>
   <TR> <TD align="right"> 4 </TD> <TD> Neutral </TD> <TD align="right"> -37.19 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 80.39 </TD> <TD align="right"> 0.09 </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
    </TABLE>
 
@@ -263,7 +198,7 @@ Similarly, the regression model with the highest explained variance was the logi
 ###
 
 
-![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral1.png) ![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral2.png) ![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral3.png) 
+![plot of chunk Fig_2_Map_Richness_Mid_Domain_vs_Neutral](figure/Fig_2_Map_Richness_Mid_Domain_vs_Neutral.png) 
 
 ###### Fig 2. Projection of the species richness predicted by dispersal models on the map and comparison with the observed species distribution. Warmer colors represent areas with hiher species richness. (A) Observed species richness; (B) Predicted by the climatic variables in the logistic models; (B) Predicted by habitat quality in the logistic models; (D) Predicted by the Mid Domain model; (E) Predicted by the neutral model. Blank cells represent areas included in the neutral model but where actual data is not available.
 
@@ -280,31 +215,22 @@ Habitat quality was a poor predictor of both ordination axes.
 
 ####
 
-
-```
-## Error: object 'MC1.3' not found
-```
-
-```
-## Error: object 'MC1.3' not found
-```
-
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> Model </TH> <TH> logLik </TH> <TH> npar </TH> <TH> AIC </TH> <TH> rsquares </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> MSE </TH>  </TR>
-  <TR> <TD align="right"> 8 </TD> <TD> Cimatic </TD> <TD align="right"> -36.32 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.63 </TD> <TD align="right"> 0.01 </TD> <TD align="right"> 4.22 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 6.40 </TD> </TR>
-  <TR> <TD align="right"> 16 </TD> <TD> Habitat </TD> <TD align="right"> -33.31 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 196.63 </TD> <TD align="right"> 0.21 </TD> <TD align="right"> 4.18 </TD> <TD align="right"> 1.40 </TD> <TD align="right"> 5.58 </TD> </TR>
-  <TR> <TD align="right"> 5 </TD> <TD> Mid domain </TD> <TD align="right"> -41.29 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.58 </TD> <TD align="right"> 0.07 </TD> <TD align="right"> 2606.43 </TD> <TD align="right"> 101.88 </TD> <TD align="right"> 2708.30 </TD> </TR>
-  <TR> <TD align="right"> 4 </TD> <TD> Neutral </TD> <TD align="right"> -37.19 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 80.39 </TD> <TD align="right"> 0.09 </TD> <TD align="right"> 1.50 </TD> <TD align="right"> 5.54 </TD> <TD align="right"> 7.03 </TD> </TR>
-  <TR> <TD align="right"> 26 </TD> <TD> Cimatic </TD> <TD align="right"> -36.32 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.63 </TD> <TD align="right"> 0.01 </TD> <TD align="right"> 1.92 </TD> <TD align="right"> 1.14 </TD> <TD align="right"> 3.06 </TD> </TR>
-  <TR> <TD align="right"> 34 </TD> <TD> Habitat </TD> <TD align="right"> -33.31 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 196.63 </TD> <TD align="right"> 0.21 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 1.05 </TD> <TD align="right"> 2.93 </TD> </TR>
-  <TR> <TD align="right"> 23 </TD> <TD> Mid domain </TD> <TD align="right"> -41.29 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 84.58 </TD> <TD align="right"> 0.07 </TD> <TD align="right"> 1.90 </TD> <TD align="right"> 1.40 </TD> <TD align="right"> 3.29 </TD> </TR>
-  <TR> <TD align="right"> 22 </TD> <TD> Neutral </TD> <TD align="right"> -37.19 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 80.39 </TD> <TD align="right"> 0.09 </TD> <TD align="right"> 1.70 </TD> <TD align="right"> 4.39 </TD> <TD align="right"> 6.09 </TD> </TR>
+  <TR> <TD align="right"> 8 </TD> <TD> Cimatic </TD> <TD align="right"> -23.74 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 177.48 </TD> <TD align="right"> 0.62 </TD> <TD align="right"> 4.22 </TD> <TD align="right"> 2.18 </TD> <TD align="right"> 6.40 </TD> </TR>
+  <TR> <TD align="right"> 16 </TD> <TD> Habitat </TD> <TD align="right"> -34.86 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 199.73 </TD> <TD align="right"> 0.11 </TD> <TD align="right"> 4.18 </TD> <TD align="right"> 1.40 </TD> <TD align="right"> 5.58 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> Mid domain </TD> <TD align="right"> -20.11 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 42.23 </TD> <TD align="right"> 0.73 </TD> <TD align="right"> 1.67 </TD> <TD align="right"> 2.91 </TD> <TD align="right"> 4.58 </TD> </TR>
+  <TR> <TD align="right"> 4 </TD> <TD> Neutral </TD> <TD align="right"> -19.63 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 45.26 </TD> <TD align="right"> 0.74 </TD> <TD align="right"> 1.50 </TD> <TD align="right"> 5.54 </TD> <TD align="right"> 7.03 </TD> </TR>
+  <TR> <TD align="right"> 26 </TD> <TD> Cimatic </TD> <TD align="right"> -35.84 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 201.68 </TD> <TD align="right"> 0.04 </TD> <TD align="right"> 1.92 </TD> <TD align="right"> 1.14 </TD> <TD align="right"> 3.06 </TD> </TR>
+  <TR> <TD align="right"> 34 </TD> <TD> Habitat </TD> <TD align="right"> -36.38 </TD> <TD align="right"> 65.00 </TD> <TD align="right"> 202.76 </TD> <TD align="right"> 0.00 </TD> <TD align="right"> 1.88 </TD> <TD align="right"> 1.05 </TD> <TD align="right"> 2.93 </TD> </TR>
+  <TR> <TD align="right"> 23 </TD> <TD> Mid domain </TD> <TD align="right"> -39.00 </TD> <TD align="right"> 1.00 </TD> <TD align="right"> 80.01 </TD> <TD align="right"> 0.15 </TD> <TD align="right"> 2.08 </TD> <TD align="right"> 2.91 </TD> <TD align="right"> 4.99 </TD> </TR>
+  <TR> <TD align="right"> 22 </TD> <TD> Neutral </TD> <TD align="right"> -39.79 </TD> <TD align="right"> 3.00 </TD> <TD align="right"> 85.59 </TD> <TD align="right"> 0.12 </TD> <TD align="right"> 1.70 </TD> <TD align="right"> 4.39 </TD> <TD align="right"> 6.09 </TD> </TR>
    </TABLE>
 
 
 ###
 
-![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral1.png) ![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral2.png) ![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral3.png) 
+![plot of chunk Fig_3_Map_Composition_Mid_Domain_vs_Neutral](figure/Fig_3_Map_Composition_Mid_Domain_vs_Neutral.png) 
 
 ###### Fig 3. Projection of the species composition predicted by dispersal models on the map and comparison with the observed species distribution. The colors represent the similarity in species composition measured by the pairwise jaccard similarity index between sites summirized in one axis of a principal coordinates analysis (pcoa). Those grid cells with similar colors have a similar composition of species. (A) Observed species composition; (B) Species composition predicted by the climatic variables in the logistic models; (C) Species composition predicted by habitat quality in the logistic models; (D) Species composition predicted by the Mid Domain model; (E) Species composition predicted by the neutral model. Shadded grid cells represent areas included in the neutral model but where actual data is not available.
 
@@ -342,10 +268,6 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 ![plot of chunk Fig_4_distance_decay_real_midDomain_and_neutral_mor](figure/Fig_4_distance_decay_real_midDomain_and_neutral_mor.png) 
 
-```
-## Error: incompatible dimensions
-```
-
 ###### Fig. 4. Distance-decay in species similarity using the Jaccard similarity index. The Mid Domain (red) and Neutral model (blue) have similar fit for the data, but the variance was much smaller than observed (grey). Habitat quality and the climatic variables did not predict the exponential decay with geographical distance.
 
 ####
@@ -373,24 +295,10 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 ####
 
-
-```
-## Error: 'data' must be of a vector type, was 'NULL'
-```
-
 ![plot of chunk Fig_S4_plot_all_predictions_against_lat](figure/Fig_S4_plot_all_predictions_against_lat.png) 
 
 ###### Fig S4. Change in species composition along the latitudinal gradient as predicted by the Neutral and Mid Domain models. The composition was measured by the Jaccard similarity index between all pairs of sites and summarized by the first axis of a Principal Coordinates Analysis (PCoA).
 
-
-
-```
-## Error: 'x' and 'y' lengths differ
-```
-
-```
-## Error: 'x' and 'y' lengths differ
-```
 
 ![plot of chunk Fig_S5_Residuals_similarity](figure/Fig_S5_Residuals_similarity.png) 
 
@@ -404,15 +312,6 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 ###
 
-
-
-```
-## Error: error in evaluating the argument 'x' in selecting a method for function 'plot': Error: object 'MC1.5' not found
-```
-
-```
-## Error: object 'MC1.5' not found
-```
 
 ![plot of chunk FigS7_residuals_regressions_composition](figure/FigS7_residuals_regressions_composition.png) 
 
@@ -433,7 +332,7 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1282.41 </TD> <TD align="right"> 196.62 </TD> <TD align="right"> 1479.03 </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 1280.47 </TD> <TD align="right"> 189.81 </TD> <TD align="right"> 1470.28 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 1518.38 </TD> <TD align="right"> 145.41 </TD> <TD align="right"> 1663.79 </TD> </TR>
   <TR> <TD align="right"> Long2 </TD> <TD align="right"> 1353.43 </TD> <TD align="right"> 183.81 </TD> <TD align="right"> 1537.24 </TD> </TR>
   <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 1452.79 </TD> <TD align="right"> 182.48 </TD> <TD align="right"> 1635.28 </TD> </TR>
@@ -469,7 +368,7 @@ Both neutral and Mid Domain models had very similar predictions for the distance
 
 <TABLE border=1, bgcolor=#989898>
 <TR> <TH>  </TH> <TH> BIASsq </TH> <TH> VAR </TH> <TH> sMSE </TH>  </TR>
-  <TR> <TD align="right"> MidD </TD> <TD align="right">  </TD> <TD align="right">  </TD> <TD align="right">  </TD> </TR>
+  <TR> <TD align="right"> MidD </TD> <TD align="right"> 8.85 </TD> <TD align="right"> 1.86 </TD> <TD align="right"> 10.71 </TD> </TR>
   <TR> <TD align="right"> Neutral </TD> <TD align="right"> 7.07 </TD> <TD align="right"> 9.43 </TD> <TD align="right"> 16.51 </TD> </TR>
   <TR> <TD align="right"> Long2 </TD> <TD align="right"> 4.36 </TD> <TD align="right"> 2.16 </TD> <TD align="right"> 6.52 </TD> </TR>
   <TR> <TD align="right"> Lat2 </TD> <TD align="right"> 4.20 </TD> <TD align="right"> 2.15 </TD> <TD align="right"> 6.35 </TD> </TR>

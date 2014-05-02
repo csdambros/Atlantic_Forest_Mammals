@@ -1057,9 +1057,9 @@ data.frame(modeln=strsplit("MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.
 ###
 
 
-```{r Fig_2_Map_Richness_Mid_Domain_vs_Neutral,fig.width=18,fig.height=9,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
+```{r Fig_2_Map_Richness_Mid_Domain_vs_Neutral,fig.width=12,fig.height=18,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
 
-par(mfrow=c(1,2))
+par(mfrow=c(3,2))
 
 plot(brazil)
 rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,
@@ -1144,9 +1144,9 @@ data.frame(modeln=strsplit("MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.
 
 ###
 
-```{r Fig_3_Map_Composition_Mid_Domain_vs_Neutral,fig.width=18,fig.height=9,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
+```{r Fig_3_Map_Composition_Mid_Domain_vs_Neutral,fig.width=12,fig.height=18,echo=FALSE,message=FALSE,results='hide',warning=FALSE}
 
-par(mfrow=c(1,2))
+par(mfrow=c(3,2))
 
 plot(brazil)
 rect(environment.2d$Long2-1,environment.2d$Lat2-1,environment.2d$Long2+1,environment.2d$Lat2+1,

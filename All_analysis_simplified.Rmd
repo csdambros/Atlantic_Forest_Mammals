@@ -1043,7 +1043,13 @@ VAR<-rep(NA,18)
 BIASsq[c(5,4,8,16)]<-c(MidD=s.bias.sq.MidD,Neutral=s.bias.sq.neutral,s.bias.sq.logis[c(24,3)])
 VAR[c(5,4,8,16)]<-c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis[c(24,3)])
 
-print(xtable(data.frame(modeln=strsplit("MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4),-1]),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+print(xtable(
+data.frame(modeln=strsplit("MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4),-1]
+),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
+write.csv(
+data.frame(modeln=strsplit("MR1.1,MR1.2,MR1.3,MR1.4,MR1.5,MR1.6,MR1.7,MR1.8,MR1.9,MR1.10,MR1.11,MR1.12,MR1.13,MR1.16,MR1.17,MR1.18,MR1.19,MR1.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4),-1]
+,"Table_1.csv")
 
 
 ```
@@ -1128,6 +1134,12 @@ print(xtable(
   data.frame(modeln=strsplit("MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC1.11,MC1.12,MC1.13,MC1.16,MC1.17,MC1.18,MC1.19,MC1.20,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10,MC2.11,MC2.12,MC2.13,MC2.16,MC2.17,MC2.18,MC2.19,MC2.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4,26,34,23,22),-1]
   ),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
+write.csv(  
+data.frame(modeln=strsplit("MC1.1,MC1.2,MC1.3,MC1.4,MC1.5,MC1.6,MC1.7,MC1.8,MC1.9,MC1.10,MC1.11,MC1.12,MC1.13,MC1.16,MC1.17,MC1.18,MC1.19,MC1.20,MC2.1,MC2.2,MC2.3,MC2.4,MC2.5,MC2.6,MC2.7,MC2.8,MC2.9,MC2.10,MC2.11,MC2.12,MC2.13,MC2.16,MC2.17,MC2.18,MC2.19,MC2.20",",")[[1]],Model=c("rawClim","rawClim+Neu","rawClim+Mid","Neutral","Mid domain","ResN~rawClim","ResN~rawClim","Cimatic","Climatic+Neu","Climatic+Mid","rawHab","rawHab+Neu","rawHab+Mid","ResN~rawHab","ResN~rawHab","Habitat","Habitat+Neu","Habitat+Mid"),logLik=logLik,npar=npar,AIC=-2*logLik+2*npar,rsquares=rsquares,BIASsq=BIASsq,VAR=VAR,MSE=BIASsq+VAR)[c(8,16,5,4,26,34,23,22),-1]
+,"Table_2.csv")
+
+
+
 ```
 
 ###
@@ -1186,7 +1198,7 @@ par(op)
 ####
 
 
-```{r Mantel and Partial Mantel results, echo=FALSE,results='asis'}
+```{r Table_3_Mantel and Partial Mantel results, echo=FALSE,results='asis'}
 
 print(xtable(rbind("Local Geo"=man.geo.loc[c("statistic","signif")],
 "Local Clim"=man.env.loc[c("statistic","signif")],
@@ -1201,6 +1213,23 @@ print(xtable(rbind("Local Geo"=man.geo.loc[c("statistic","signif")],
 "2d Env-Geo"=pman.env.2d[c("statistic","signif")],
 "2d Hab-Geo"=pman.env.2d[c("statistic","signif")])
 ),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
+
+write.csv(
+rbind("Local Geo"=man.geo.loc[c("statistic","signif")],
+"Local Clim"=man.env.loc[c("statistic","signif")],
+"Local Hab"=man.hab.loc[c("statistic","signif")],
+"2d Geo"=man.geo.2d[c("statistic","signif")],
+"2d Env"=man.env.2d[c("statistic","signif")],
+"2d Hab"=man.hab.2d[c("statistic","signif")],
+"Local Geo-Env"=pman.geo.loc[c("statistic","signif")],
+"Local Env-Geo"=pman.env.loc[c("statistic","signif")],
+"Local Hab-Geo"=pman.hab.loc[c("statistic","signif")],
+"2d Geo-Env"=pman.geo.2d[c("statistic","signif")],
+"2d Env-Geo"=pman.env.2d[c("statistic","signif")],
+"2d Hab-Geo"=pman.env.2d[c("statistic","signif")])
+,"Table_3.csv")
+
 
 ```
 
@@ -1484,6 +1513,12 @@ VAR=c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis),
 sMSE=c(MidD=s.mse.MidD,Neutral=s.mse.neutral,s.mse.logis))[,]
 ),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
 
+write.csv(data.frame(BIASsq=c(MidD=s.bias.sq.MidD,Neutral=s.bias.sq.neutral,s.bias.sq.logis),
+VAR=c(MidD=s.var.MidD,Neutral=s.var.neutral,s.var.logis),
+sMSE=c(MidD=s.mse.MidD,Neutral=s.mse.neutral,s.mse.logis))[,]
+,"Table_S2.csv")
+
+
 ```
 
 ###
@@ -1496,6 +1531,12 @@ print(xtable(data.frame(BIASsq=c(MidD=s.bias.sq.MidD.jac,Neutral=s.bias.sq.neu.j
 VAR=c(MidD=s.var.MidD.jac,Neutral=s.var.neu.jac,s.var.logis.jac),
 sMSE=c(MidD=s.mse.MidD.jac,Neutral=s.mse.neu.jac,s.mse.logis.jac))[,]
 ),type=table.type,html.table.attributes="border=1, bgcolor=#989898",comment=FALSE)
+
+write.csv(data.frame(BIASsq=c(MidD=s.bias.sq.MidD.jac,Neutral=s.bias.sq.neu.jac,s.bias.sq.logis.jac),
+VAR=c(MidD=s.var.MidD.jac,Neutral=s.var.neu.jac,s.var.logis.jac),
+sMSE=c(MidD=s.mse.MidD.jac,Neutral=s.mse.neu.jac,s.mse.logis.jac))[,]
+,"Table_S3.csv")
+
 
 ```
 
